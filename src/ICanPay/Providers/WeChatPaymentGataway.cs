@@ -15,7 +15,7 @@ namespace ICanPay.Providers
     /// <remarks>
     /// 使用模式二实现微信支付
     /// </remarks>
-    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IQueryNow,IWapPaymentUrl, IAppParams
+    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IQueryNow, IWapPaymentUrl, IAppParams
     {
 
         #region 私有字段
@@ -80,7 +80,7 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化支付订单的参数
         /// </summary>
-        private void InitPaymentOrderParameter(string trade_type = "NATIVE")
+        private void InitPaymentOrderParameter(string trade_type = "NATIVE", string spbill_create_ip = "127.0.0.1")
         {
             SetGatewayParameterValue("appid", Merchant.AppId);
             SetGatewayParameterValue("mch_id", Merchant.Partner);
@@ -88,7 +88,7 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("body", Order.Subject);
             SetGatewayParameterValue("out_trade_no", Order.OrderNo);
             SetGatewayParameterValue("total_fee", (Order.OrderAmount * 100).ToString());
-            SetGatewayParameterValue("spbill_create_ip", "127.0.0.1");
+            SetGatewayParameterValue("spbill_create_ip", spbill_create_ip);
             SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
             SetGatewayParameterValue("trade_type", trade_type);
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
@@ -217,7 +217,7 @@ namespace ICanPay.Providers
             ReadResultXml(resultXml);
             if (IsSuccessResult())
             {
-                return GetGatewayParameterValue("code_url");
+                return string.IsNullOrEmpty(GetGatewayParameterValue("code_url")) ? GetGatewayParameterValue("mweb_url") : GetGatewayParameterValue("code_url");
             }
 
             return string.Empty;
@@ -379,10 +379,49 @@ namespace ICanPay.Providers
             return resParam;
         }
 
+        /// <summary>
+        /// https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4
+        /// </summary>
+        /// <returns></returns>
         public string BuildWapPaymentUrl()
         {
-            InitPaymentOrderParameter("MWEB");
+            InitPaymentOrderParameter("MWEB", GetClientIP());
             return string.Format("{0}&redirect_url={1}", GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl)), HttpUtility.UrlEncode(Merchant.ReturnUrl.ToString(), Encoding.UTF8));
+        }
+
+        private string GetClientIP()
+        {
+            string ip = HttpContext.Current.Request.Headers["X-Real-IP"];
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["X-Forwarded-For"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["Proxy-Client-IP"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["WL-Proxy-Client-IP"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.UserHostAddress;
+            }
+            if (!string.IsNullOrEmpty(ip))
+            {
+                var ips = ip.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (ips.Length > 1)
+                {
+                    ip = ips[0].Trim();
+                }
+                var ipport = ip.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                if (ipport.Length > 1)
+                {
+                    ip = ipport[0].Trim();
+                }
+            }
+            return ip;
         }
     }
 }
