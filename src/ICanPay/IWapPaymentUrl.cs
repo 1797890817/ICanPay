@@ -8,6 +8,6 @@
         /// <summary>
         /// 创建包含支付订单数据的url地址
         /// </summary>
-        string BuildWapPaymentUrl();
+        string BuildWapPaymentUrl(string redirect_url = "");
     }
 }

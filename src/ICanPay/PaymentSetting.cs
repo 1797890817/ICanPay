@@ -194,13 +194,13 @@ namespace ICanPay
         }
 
 
-        public void WapPayment()
+        public void WapPayment(string redirect_url = "")
         {
             HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding("utf-8");
             IWapPaymentUrl paymentUrl = gateway as IWapPaymentUrl;
             if (paymentUrl != null)
             {
-                HttpContext.Current.Response.Redirect(paymentUrl.BuildWapPaymentUrl());
+                HttpContext.Current.Response.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(redirect_url)}'</script>");
                 return;
             }
 

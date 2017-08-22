@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Web;
 
 namespace ICanPay
 {
@@ -102,6 +102,43 @@ namespace ICanPay
             return Convert.ToInt64(ts.TotalSeconds).ToString();
         }
 
+        /// <summary>
+        /// 获取客户端IP
+        /// </summary>
+        public static string GetClientIP()
+        {
+            string ip = HttpContext.Current.Request.Headers["X-Real-IP"];
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["X-Forwarded-For"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["Proxy-Client-IP"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.Headers["WL-Proxy-Client-IP"];
+            }
+            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
+            {
+                ip = HttpContext.Current.Request.UserHostAddress;
+            }
+            if (!string.IsNullOrEmpty(ip))
+            {
+                var ips = ip.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (ips.Length > 1)
+                {
+                    ip = ips[0].Trim();
+                }
+                var ipport = ip.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                if (ipport.Length > 1)
+                {
+                    ip = ipport[0].Trim();
+                }
+            }
+            return ip;
+        }
         #endregion
 
     }

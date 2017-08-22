@@ -383,45 +383,10 @@ namespace ICanPay.Providers
         /// https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4
         /// </summary>
         /// <returns></returns>
-        public string BuildWapPaymentUrl()
+        public string BuildWapPaymentUrl(string redirect_url = "")
         {
-            InitPaymentOrderParameter("MWEB", GetClientIP());
-            return string.Format("{0}&redirect_url={1}", GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl)), HttpUtility.UrlEncode(Merchant.ReturnUrl.ToString(), Encoding.UTF8));
-        }
-
-        private string GetClientIP()
-        {
-            string ip = HttpContext.Current.Request.Headers["X-Real-IP"];
-            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
-            {
-                ip = HttpContext.Current.Request.Headers["X-Forwarded-For"];
-            }
-            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
-            {
-                ip = HttpContext.Current.Request.Headers["Proxy-Client-IP"];
-            }
-            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
-            {
-                ip = HttpContext.Current.Request.Headers["WL-Proxy-Client-IP"];
-            }
-            if (string.IsNullOrEmpty(ip) || ip.Length == 0)
-            {
-                ip = HttpContext.Current.Request.UserHostAddress;
-            }
-            if (!string.IsNullOrEmpty(ip))
-            {
-                var ips = ip.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                if (ips.Length > 1)
-                {
-                    ip = ips[0].Trim();
-                }
-                var ipport = ip.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-                if (ipport.Length > 1)
-                {
-                    ip = ipport[0].Trim();
-                }
-            }
-            return ip;
-        }
+            InitPaymentOrderParameter("MWEB", Utility.GetClientIP());
+            return string.Format("{0}&redirect_url={1}", GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl)), HttpUtility.UrlEncode(string.IsNullOrEmpty(redirect_url) ? Merchant.ReturnUrl.ToString() : redirect_url, Encoding.UTF8));
+        }     
     }
 }

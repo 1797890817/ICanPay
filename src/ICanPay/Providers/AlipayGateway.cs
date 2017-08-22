@@ -103,7 +103,7 @@ namespace ICanPay.Providers
             return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
         }
 
-        public string BuildWapPaymentUrl()
+        public string BuildWapPaymentUrl(string redirect_url = "")
         {
             DefaultAopClient defaultAopClient = new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, true);
             defaultAopClient.return_url = Merchant.ReturnUrl.ToString();
