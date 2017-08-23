@@ -22,6 +22,7 @@ namespace ICanPay
         // 建议使用网关中返回的不为空的参数名，并使用尽可能多的参数名。
         static string[] tenpayGatewayVerifyParmaNames = { "trade_mode", "trade_state", "transaction_id", "notify_id", "total_fee", "fee_type" };
         static string[] alipayGatewayVerifyParmaNames = { "notify_type", "notify_id", "notify_time", "sign", "sign_type" };
+        static string[] alipayWapGatewayVerifyParmaNames = { "auth_app_id", "method", "seller_id", "sign", "sign_type" };
         static string[] weixinpayGatewayVerifyParmaNames = { "return_code", "appid", "mch_id", "nonce_str", "result_code" };
         static string[] unionpayGatewayVerifyParmaNames = { "respMsg", "merId", "respCode", "orderId", "queryId" };
         #endregion
@@ -73,7 +74,7 @@ namespace ICanPay
         /// </summary>
         private static bool IsAlipayGateway(List<GatewayParameter> gatewayParameterData)
         {
-            return ExistParameter(alipayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(alipayGatewayVerifyParmaNames, gatewayParameterData) || ExistParameter(alipayWapGatewayVerifyParmaNames, gatewayParameterData);
         }
 
 
