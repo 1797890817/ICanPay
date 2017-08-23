@@ -1,5 +1,5 @@
 ﻿## ICanPay
-https://github.com/hiihellox10/ICanPay 新增UnionPay，并支持移动端SDK，Wap支付
+https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化。支持支付宝，微信，银联支付渠道通过Web，App，Wap方式支付。简化订单的创建、查询跟接收网关返回的支付通知等功能
 
 
 ## WebPayment
