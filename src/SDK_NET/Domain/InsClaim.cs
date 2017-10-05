@@ -52,5 +52,11 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("out_request_no")]
         public string OutRequestNo { get; set; }
+
+        /// <summary>
+        /// 当状态是拒赔时给出拒赔原因
+        /// </summary>
+        [XmlElement("reject_reason")]
+        public string RejectReason { get; set; }
     }
 }

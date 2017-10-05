@@ -11,7 +11,7 @@ namespace Aop.Api.Domain
     public class AlipayOpenPublicMessageTotalSendModel : AopObject
     {
         /// <summary>
-        /// 图文消息，当msg_type为text，该值必须设置
+        /// 图文消息，当msg_type为image-text，该值必须设置
         /// </summary>
         [XmlArray("articles")]
         [XmlArrayItem("article")]
@@ -24,7 +24,7 @@ namespace Aop.Api.Domain
         public string MsgType { get; set; }
 
         /// <summary>
-        /// 文本消息内容，当msg_type为image-text，必须设置该值
+        /// 文本消息内容，当msg_type为text，必须设置该值
         /// </summary>
         [XmlElement("text")]
         public Text Text { get; set; }

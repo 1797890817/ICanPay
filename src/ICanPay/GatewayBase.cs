@@ -1,3 +1,4 @@
+using ICanPay.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace ICanPay
 
         Merchant merchant;
         Order order;
-        ICollection<GatewayParameter> gatewayParameterData;
+        List<GatewayParameter> gatewayParameterData;
         const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         #endregion
@@ -28,7 +29,7 @@ namespace ICanPay
         }
 
 
-        protected GatewayBase(ICollection<GatewayParameter> gatewayParameterData)
+        protected GatewayBase(List<GatewayParameter> gatewayParameterData)
         {
             this.gatewayParameterData = gatewayParameterData;
         }

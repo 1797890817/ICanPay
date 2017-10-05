@@ -1,4 +1,5 @@
 ﻿using ICanPay;
+using ICanPay.Enums;
 using System;
 using System.Web.Mvc;
 
@@ -21,7 +22,5 @@ namespace Demo.Controllers
             paymentSetting.Order.Subject = "WebPayment";
             paymentSetting.Payment();
         }
-
-
     }
 }

@@ -70,10 +70,22 @@ namespace Aop.Api.Domain
         public string Gender { get; set; }
 
         /// <summary>
+        /// 国籍
+        /// </summary>
+        [XmlElement("nationality")]
+        public string Nationality { get; set; }
+
+        /// <summary>
         /// 电话号码
         /// </summary>
         [XmlElement("phone")]
         public string Phone { get; set; }
+
+        /// <summary>
+        /// 张三
+        /// </summary>
+        [XmlElement("pronounce_name")]
+        public string PronounceName { get; set; }
 
         /// <summary>
         /// 支付宝会员ID;如果是投保人则必填

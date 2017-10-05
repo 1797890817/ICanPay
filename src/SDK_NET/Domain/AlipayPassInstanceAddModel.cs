@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class AlipayPassInstanceAddModel : AopObject
     {
         /// <summary>
-        /// 支付宝用户识别信息：  包括partner_id（商户的签约账号）和out_trade_no
+        /// 支付宝用户识别信息：  包括partner_id（商户的签约账号）和out_trade_no（某笔订单号）
         /// </summary>
         [XmlElement("recognition_info")]
         public string RecognitionInfo { get; set; }
@@ -28,7 +28,7 @@ namespace Aop.Api.Domain
         public string TplId { get; set; }
 
         /// <summary>
-        /// 模版动态参数信息【支付宝pass模版参数键值对JSON字符串】。
+        /// 模版动态参数信息：对应模板中$变量名$的动态参数，见模板创建接口返回值中的tpl_params字段
         /// </summary>
         [XmlElement("tpl_params")]
         public string TplParams { get; set; }

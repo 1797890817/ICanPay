@@ -22,7 +22,7 @@ namespace Aop.Api.Domain
         public string Desc { get; set; }
 
         /// <summary>
-        /// 图片链接，对于多条图文消息的第一条消息，该字段不能为空
+        /// 图片链接，对于多条图文消息的第一条消息，该字段不能为空; 请先调用<a href="https://docs.open.alipay.com/api_3/alipay.offline.material.image.upload"> 图片上传接口</a>获得图片url
         /// </summary>
         [XmlElement("image_url")]
         public string ImageUrl { get; set; }

@@ -70,13 +70,13 @@ namespace Aop.Api.Domain
         public string BusinessCertificate { get; set; }
 
         /// <summary>
-        /// 许可证有效期，格式：2020-03-20。
+        /// 许可证有效期，格式：2020-03-20或长期。严格按照格式填写。
         /// </summary>
         [XmlElement("business_certificate_expires")]
         public string BusinessCertificateExpires { get; set; }
 
         /// <summary>
-        /// 营业时间，支持分段营业时间，以英文逗号分隔。
+        /// 请严格按"周一-周五 09:00-20:00,周六-周日 10:00-22:00"的格式进行填写，时间段不能重复，最多支持两个时间段，24小时营业请填写"00:00-23:59"
         /// </summary>
         [XmlElement("business_time")]
         public string BusinessTime { get; set; }
@@ -160,13 +160,13 @@ namespace Aop.Api.Domain
         public string Licence { get; set; }
 
         /// <summary>
-        /// 门店营业执照编号，营业执照信息与is_operating_online至少填一项。
+        /// 门店营业执照编号，只支持输入中文，英文和数字，营业执照信息与is_operating_online至少填一项。
         /// </summary>
         [XmlElement("licence_code")]
         public string LicenceCode { get; set; }
 
         /// <summary>
-        /// 营业执照过期时间。
+        /// 营业执照过期时间。格式：2020-10-20或长期。严格按照格式填写。
         /// </summary>
         [XmlElement("licence_expires")]
         public string LicenceExpires { get; set; }

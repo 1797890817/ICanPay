@@ -1,4 +1,5 @@
 ﻿using ICanPay;
+using ICanPay.Enums;
 using System;
 using System.Web.Mvc;
 

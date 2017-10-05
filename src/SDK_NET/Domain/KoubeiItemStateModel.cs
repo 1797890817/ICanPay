@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class KoubeiItemStateModel : AopObject
     {
         /// <summary>
-        /// 服务商、服务商员工、商户员工操作时必填业务，对应为《koubei.member.data.oauth.query》中的auth_code，有效期24小时；商户自己操作的时候，无需传该参数
+        /// 服务商、服务商员工、商户、商户员工等口碑角色操作时必填，对应为《koubei.member.data.oauth.query》中的auth_code，有效期24小时；
         /// </summary>
         [XmlElement("auth_code")]
         public string AuthCode { get; set; }
@@ -28,7 +28,7 @@ namespace Aop.Api.Domain
         public string Memo { get; set; }
 
         /// <summary>
-        /// 操作上下文 商户角色或ISV角色需传入
+        /// 操作上下文 ISV角色操作时必填；其他角色不需填写
         /// </summary>
         [XmlElement("operation_context")]
         public KoubeiOperationContext OperationContext { get; set; }
@@ -40,7 +40,7 @@ namespace Aop.Api.Domain
         public string RequestId { get; set; }
 
         /// <summary>
-        /// 控制商品的售卖状态，RESUME：恢复售卖；PAUSE：暂停售卖,C端不可见;INVALID：将商品失效（不可恢复）
+        /// 控制商品的售卖状态，RESUME：恢复售卖；PAUSE：暂停售卖,C端不可见;
         /// </summary>
         [XmlElement("state_type")]
         public string StateType { get; set; }

@@ -213,8 +213,8 @@ namespace Aop.Api
             txtParams.Add(PROD_CODE, request.GetProdCode());
             txtParams.Add(NOTIFY_URL, request.GetNotifyUrl());
             txtParams.Add(CHARSET, this.charset);
-            txtParams.Add(RETURN_URL, this.return_url);
-            //  txtParams.Add("return_url", request.GetReturnUrl() );    
+            //txtParams.Add(RETURN_URL, this.return_url);
+             txtParams.Add(RETURN_URL, request.GetReturnUrl() );    
             //字典排序
             IDictionary<string, string> sortedTxtParams = new SortedDictionary<string, string>(txtParams);
             txtParams = new AopDictionary(sortedTxtParams);
@@ -510,7 +510,7 @@ namespace Aop.Api
             StringBuilder sbHtml = new StringBuilder();
             //sbHtml.Append("<head><meta http-equiv=\"Content-Type\" content=\"text/html\" charset= \"" + charset + "\" /></head>");
 
-            sbHtml.Append("<form id='alipaysubmit' name='alipaysubmit' action='" + this.serverUrl +
+            sbHtml.Append("<form id='alipaysubmit' name='alipaysubmit' action='" + this.serverUrl + "?charset=" + this.charset + 
                  "' method='" + strMethod + "'>");
             ;
             foreach (KeyValuePair<string, string> temp in dicPara)
@@ -618,7 +618,7 @@ namespace Aop.Api
             result.Add(PROD_CODE, request.GetProdCode());
             result.Add(NOTIFY_URL, request.GetNotifyUrl());
             result.Add(CHARSET, charset);
-            result.Add(RETURN_URL, this.return_url);
+            result.Add(RETURN_URL, request.GetReturnUrl());
             result.Add(APP_AUTH_TOKEN, appAuthToken);
 
             if (request.GetNeedEncrypt())

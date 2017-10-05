@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -20,6 +21,19 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("ext_info")]
         public string ExtInfo { get; set; }
+
+        /// <summary>
+        /// 注意：此字段已废弃，卡面样式以模板中的定义为准。  会员卡卡面展示样式  参考：展示位置详情参考"商户会员卡->快速接入文档->第四步"   备注：mcard_style_info与card_info下的template_id不能同时更新
+        /// </summary>
+        [XmlElement("mcard_style_info")]
+        public McardStylInfo McardStyleInfo { get; set; }
+
+        /// <summary>
+        /// 卡信息变更通知消息  1、在列表中定义的消息，才会发送给用户，消息格式一定。  2、根据卡信息变更情况，一次可发送多个消息
+        /// </summary>
+        [XmlArray("notify_messages")]
+        [XmlArrayItem("mcard_notify_message")]
+        public List<McardNotifyMessage> NotifyMessages { get; set; }
 
         /// <summary>
         /// 标识业务发生的时间

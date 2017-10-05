@@ -214,6 +214,12 @@ namespace Aop.Api.Domain
         public string GmtBizCreate { get; set; }
 
         /// <summary>
+        /// 差错资金自服务入口开放类型，TAOBAO-对淘宝开放，ALIPAY-对支付宝站内开放
+        /// </summary>
+        [XmlElement("open_self_slip_type")]
+        public string OpenSelfSlipType { get; set; }
+
+        /// <summary>
         /// 导致该资金变动在业务上的另一方的卡别名
         /// </summary>
         [XmlElement("opposite_biz_card_alias")]
@@ -248,6 +254,24 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("refund_bank_status")]
         public string RefundBankStatus { get; set; }
+
+        /// <summary>
+        /// 差错可提取金额，单位元
+        /// </summary>
+        [XmlElement("slip_amount")]
+        public string SlipAmount { get; set; }
+
+        /// <summary>
+        /// 差错挂账id
+        /// </summary>
+        [XmlElement("slip_id")]
+        public string SlipId { get; set; }
+
+        /// <summary>
+        /// 差错挂账资金申领状态，W-待申领，P-申领中，S-成功，F-失败
+        /// </summary>
+        [XmlElement("slip_status")]
+        public string SlipStatus { get; set; }
 
         /// <summary>
         /// 预付子卡类型

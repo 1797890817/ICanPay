@@ -21,6 +21,18 @@ namespace Aop.Api.Request
         void SetNotifyUrl(string notifyUrl);
 
         /// <summary>
+        /// 获取AOP的同步通知地址。
+        /// </summary>
+        /// <returns>异步通知地址</returns>
+        string GetReturnUrl();
+
+        /// <summary>
+        /// 设置AOP的同步通知地址。
+        /// </summary>
+        /// <returns>异步通知地址</returns>
+        void SetReturnUrl(string returnUrl);
+
+        /// <summary>
         /// 设置请求是否需要加密
         /// </summary>
         void SetNeedEncrypt(bool needEncrypt);

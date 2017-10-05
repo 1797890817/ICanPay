@@ -1,3 +1,6 @@
+using ICanPay.Enums;
+using ICanPay.Interfaces;
+using ICanPay.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +15,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 微信支付网关
     /// </summary>
-    /// <remarks>
-    /// 使用模式二实现微信支付
-    /// </remarks>
-    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IQueryNow, IWapPaymentUrl, IAppParams
+    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow
     {
 
         #region 私有字段
@@ -53,16 +53,6 @@ namespace ICanPay.Providers
             get { return GatewayType.WeChatPayment; }
         }
 
-        protected override bool CheckNotifyData()
-        {
-            ReadNotifyOrderParameter();
-            if (IsSuccessResult())
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         public string GetPaymentQRCodeContent()
         {
@@ -70,11 +60,69 @@ namespace ICanPay.Providers
             return GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl));
         }
 
+
+        /// <summary>
+        /// https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4
+        /// </summary>
+        /// <returns></returns>
+        public string BuildWapPaymentUrl(Dictionary<string, string> map)
+        {
+            string redirect_url = string.Empty;
+            map.TryGetValue("redirect_url", out redirect_url);
+            InitPaymentOrderParameter("MWEB", Utility.GetClientIP());
+            return string.Format("{0}&redirect_url={1}", GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl)), HttpUtility.UrlEncode(string.IsNullOrEmpty(redirect_url) ? Merchant.ReturnUrl.ToString() : redirect_url, Encoding.UTF8));
+        }
+
+        public Dictionary<string, string> BuildPayParams()
+        {
+            InitPaymentOrderParameter("APP");
+            GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl));
+
+            var prepayid = GetGatewayParameterValue("prepay_id");
+            ClearGatewayParameterData();
+
+            SetGatewayParameterValue("appid", Merchant.AppId);
+            SetGatewayParameterValue("partnerid", Merchant.Partner);
+            SetGatewayParameterValue("prepayid", prepayid);
+            SetGatewayParameterValue("package", "Sign=WXPay");
+            SetGatewayParameterValue("noncestr", GenerateNonceString());
+            SetGatewayParameterValue("timestamp", DateTime.Now.TimeStamp());
+            SetGatewayParameterValue("sign", GetSign());
+
+            Dictionary<string, string> resParam = new Dictionary<string, string>();
+            resParam.Add("prepayid", prepayid);
+            resParam.Add("noncestr", GetGatewayParameterValue("noncestr"));
+            resParam.Add("sign", GetGatewayParameterValue("sign"));
+            resParam.Add("timestamp", GetGatewayParameterValue("timestamp"));
+            resParam.Add("partnerid", GetGatewayParameterValue("partnerid"));
+            return resParam;
+        }
+
+   
         public bool QueryNow(ProductSet productSet)
         {
             InitQueryOrderParameter();
             return CheckQueryResult(PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl));
         }
+
+        protected override bool CheckNotifyData()
+        {
+            ReadNotifyOrderParameter();
+            if (IsSuccessResult())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public override void WriteSucceedFlag()
+        {
+            // 需要先清除之前接收到的通知的参数，否则会对生成标志成功接收到通知的XML造成干扰。
+            ClearGatewayParameterData();
+            InitProcessSuccessParameter();
+            HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
+        }
+
 
 
         /// <summary>
@@ -343,50 +391,6 @@ namespace ICanPay.Providers
         private void InitProcessSuccessParameter()
         {
             SetGatewayParameterValue("return_code", "SUCCESS");
-        }
-
-
-        public override void WriteSucceedFlag()
-        {
-            // 需要先清除之前接收到的通知的参数，否则会对生成标志成功接收到通知的XML造成干扰。
-            ClearGatewayParameterData();
-            InitProcessSuccessParameter();
-            HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
-        }
-
-        public Dictionary<string, object> BuildPayParams()
-        {
-            InitPaymentOrderParameter("APP");
-            GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl));
-
-            var prepayid = GetGatewayParameterValue("prepay_id");
-            ClearGatewayParameterData();
-
-            SetGatewayParameterValue("appid", Merchant.AppId);
-            SetGatewayParameterValue("partnerid", Merchant.Partner);
-            SetGatewayParameterValue("prepayid", prepayid);
-            SetGatewayParameterValue("package", "Sign=WXPay");
-            SetGatewayParameterValue("noncestr", GenerateNonceString());
-            SetGatewayParameterValue("timestamp", DateTime.Now.TimeStamp());
-            SetGatewayParameterValue("sign", GetSign());
-
-            Dictionary<string, object> resParam = new Dictionary<string, object>();
-            resParam.Add("prepayid", prepayid);
-            resParam.Add("noncestr", GetGatewayParameterValue("noncestr"));
-            resParam.Add("sign", GetGatewayParameterValue("sign"));
-            resParam.Add("timestamp", GetGatewayParameterValue("timestamp"));
-            resParam.Add("partnerid", GetGatewayParameterValue("partnerid"));
-            return resParam;
-        }
-
-        /// <summary>
-        /// https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4
-        /// </summary>
-        /// <returns></returns>
-        public string BuildWapPaymentUrl(string redirect_url = "")
-        {
-            InitPaymentOrderParameter("MWEB", Utility.GetClientIP());
-            return string.Format("{0}&redirect_url={1}", GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl)), HttpUtility.UrlEncode(string.IsNullOrEmpty(redirect_url) ? Merchant.ReturnUrl.ToString() : redirect_url, Encoding.UTF8));
-        }     
+        }    
     }
 }

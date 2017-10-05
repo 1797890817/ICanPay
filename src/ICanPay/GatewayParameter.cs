@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICanPay.Enums;
+using System;
 
 namespace ICanPay
 {

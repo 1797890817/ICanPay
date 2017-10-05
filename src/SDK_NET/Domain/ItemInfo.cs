@@ -59,5 +59,11 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("original_price")]
         public string OriginalPrice { get; set; }
+
+        /// <summary>
+        /// 券适用SKU的最低消费金额门槛  如券适用A,B两个SKU，该字段设置的值为100，则订单中购买A,B两个SKU的合计金额需大于100元才可用券
+        /// </summary>
+        [XmlElement("sku_min_consume")]
+        public string SkuMinConsume { get; set; }
     }
 }

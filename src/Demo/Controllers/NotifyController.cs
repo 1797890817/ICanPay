@@ -1,4 +1,6 @@
 ﻿using ICanPay;
+using ICanPay.Enums;
+using ICanPay.Events;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -35,13 +37,13 @@ namespace Demo.Controllers
             weChatPaymentMerchant.Partner = "000000000000000";
             weChatPaymentMerchant.Key = "000000000000000000000000000000000000000000";
 
-            // 添加到商户数据集合
-            notify = new PaymentNotify(merchantList);
             merchantList.Add(alipayMerchant);
             merchantList.Add(unionPayMerchant);
             merchantList.Add(weChatPaymentMerchant);
 
-
+            // 添加到商户数据集合
+            notify = new PaymentNotify(merchantList);
+          
             notify.PaymentSucceed += new PaymentSucceedEventHandler(notify_PaymentSucceed);
             notify.PaymentFailed += new PaymentFailedEventHandler(notify_PaymentFailed);
             notify.UnknownGateway += new UnknownGatewayEventHandler(notify_UnknownGateway);
@@ -65,6 +67,11 @@ namespace Demo.Controllers
             if (e.PaymentNotifyMethod == PaymentNotifyMethod.AutoReturn)
             {
                 // 当前是用户的浏览器自动返回时显示充值成功页面
+            }
+            else
+            {
+                // 支付结果的发送方式，以服务端接收为准
+                
             }
         }
 

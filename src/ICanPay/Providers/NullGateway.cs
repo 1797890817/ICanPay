@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ICanPay.Enums;
 using System.Collections.Generic;
 
 namespace ICanPay.Providers
@@ -38,11 +38,6 @@ namespace ICanPay.Providers
             get { return GatewayType.None; }
         }
 
-
-        //public override PaymentNotifyMethod PaymentNotifyMethod
-        //{
-        //    get { return PaymentNotifyMethod.None; }
-        //}
 
         #endregion
 

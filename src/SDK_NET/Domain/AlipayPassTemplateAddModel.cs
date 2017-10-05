@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class AlipayPassTemplateAddModel : AopObject
     {
         /// <summary>
-        /// 模板内容信息，遵循JSON规范，详情参见<a href="https://doc.open.alipay.com/doc2/detail.htm?treeId=193&articleId=105249&docType=1#tpl_content">tpl_content参数说明</a>
+        /// 模板内容信息，遵循JSON规范，详情参见tpl_content参数说明：https://doc.open.alipay.com/doc2/detail.htm?treeId=193&articleId=105249&docType=1#tpl_content
         /// </summary>
         [XmlElement("tpl_content")]
         public string TplContent { get; set; }

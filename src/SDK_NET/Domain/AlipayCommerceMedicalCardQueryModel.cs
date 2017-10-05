@@ -10,6 +10,12 @@ namespace Aop.Api.Domain
     public class AlipayCommerceMedicalCardQueryModel : AopObject
     {
         /// <summary>
+        /// 支付授权码
+        /// </summary>
+        [XmlElement("auth_code")]
+        public string AuthCode { get; set; }
+
+        /// <summary>
         /// 买家支付宝账号对应的支付宝唯一用户号。  以2088开头的纯16位数字。
         /// </summary>
         [XmlElement("buyer_id")]
@@ -32,5 +38,11 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("return_url")]
         public string ReturnUrl { get; set; }
+
+        /// <summary>
+        /// 支付场景  条码支付，取值：bar_code  声波支付，取值：wave_code
+        /// </summary>
+        [XmlElement("scene")]
+        public string Scene { get; set; }
     }
 }

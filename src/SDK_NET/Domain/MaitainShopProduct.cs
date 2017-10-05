@@ -10,19 +10,19 @@ namespace Aop.Api.Domain
     public class MaitainShopProduct : AopObject
     {
         /// <summary>
-        /// 销售价格（分），服务售卖价格，展示给用户。无优惠时的下单支付金额。  新增：必填； 修改：可空
+        /// 销售价格（元），服务售卖价格，展示给用户。无优惠时的下单支付金额。 新增：必填； 修改：可空
         /// </summary>
         [XmlElement("off_price")]
-        public long OffPrice { get; set; }
+        public string OffPrice { get; set; }
 
         /// <summary>
-        /// 原始价格（分），服务商品原始价格，可以和销售价格相同。  新增：必填； 修改：可空
+        /// 原始价格（元），服务商品原始价格，可以和销售价格相同。 新增：必填； 修改：可空
         /// </summary>
         [XmlElement("orig_price")]
-        public long OrigPrice { get; set; }
+        public string OrigPrice { get; set; }
 
         /// <summary>
-        /// ISV 优惠活动ID  新增：可空； 修改：可空  (out_privilege_id、privilege_start_time、privilege_close_time、privilege_tags、privilege_price必须同时存在)
+        /// ISV 优惠活动ID（由ISV自行生成，保证其唯一）  新增：可空； 修改：可空  (out_privilege_id、privilege_start_time、privilege_close_time、privilege_tags、privilege_price必须同时存在)
         /// </summary>
         [XmlElement("out_privilege_id")]
         public string OutPrivilegeId { get; set; }
@@ -40,10 +40,10 @@ namespace Aop.Api.Domain
         public string PrivilegeCloseTime { get; set; }
 
         /// <summary>
-        /// 优惠价格（分），ISV上传优惠价格，上传后立刻生效。有效期间为下单支付金额。  新增：可空； 修改：可空  (out_privilege_id、privilege_start_time、privilege_close_time、privilege_tags、privilege_price必须同时存在)
+        /// 优惠价格（元），ISV上传优惠价格，上传后立刻生效。有效期间为下单支付金额。 新增：可空； 修改：可空 (out_privilege_id、privilege_start_time、privilege_close_time、privilege_tags、privilege_price必须同时存在)
         /// </summary>
         [XmlElement("privilege_price")]
-        public long PrivilegePrice { get; set; }
+        public string PrivilegePrice { get; set; }
 
         /// <summary>
         /// 优惠截止时间。格式"yyyy-MM-dd HH:mm:ss"  优惠有效时间，超过时间不再显示优惠价，下单使用销售价格。  新增：可空； 修改：可空  (out_privilege_id、privilege_start_time、privilege_close_time、privilege_tags、privilege_price必须同时存在)

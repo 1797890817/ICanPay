@@ -71,6 +71,11 @@ namespace Aop.Api.Request
         public string VideoSource { get; set; }
 
         /// <summary>
+        /// 视频的临时链接（优酷来源的视频消息，该字段不能为空）
+        /// </summary>
+        public string VideoTemporaryUrl { get; set; }
+
+        /// <summary>
         /// 生活号视频类消息视频id或url（视频类消息必填，根据来源区分）
         /// </summary>
         public string VideoUrl { get; set; }
@@ -82,6 +87,7 @@ namespace Aop.Api.Request
 		private string terminalInfo;
         private string prodCode;
 		private string notifyUrl;
+        private string returnUrl;
 		private AopObject bizModel;
 
     	 public void SetNeedEncrypt(bool needEncrypt){
@@ -99,6 +105,14 @@ namespace Aop.Api.Request
 
         public string GetNotifyUrl(){
             return this.notifyUrl;
+        }
+
+        public void SetReturnUrl(string returnUrl){
+            this.returnUrl = returnUrl;
+        }
+
+        public string GetReturnUrl(){
+            return this.returnUrl;
         }
 
 		public void SetTerminalType(String terminalType){
@@ -152,6 +166,7 @@ namespace Aop.Api.Request
             parameters.Add("video_samples", this.VideoSamples);
             parameters.Add("video_size", this.VideoSize);
             parameters.Add("video_source", this.VideoSource);
+            parameters.Add("video_temporary_url", this.VideoTemporaryUrl);
             parameters.Add("video_url", this.VideoUrl);
             return parameters;
         }

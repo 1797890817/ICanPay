@@ -15,7 +15,7 @@ namespace Aop.Api.Response
         public string ActionUrl { get; set; }
 
         /// <summary>
-        /// 广告位标识码，目前开放的广告位是钱包APP/口碑TAB/商家详情页中，传值：CDP_OPEN_MERCHANT
+        /// 广告位标识码，目前广告位只支持在支付宝钱包中显示，口碑app暂不支持。传值：CDP_OPEN_MERCHANT
         /// </summary>
         [XmlElement("ad_code")]
         public string AdCode { get; set; }
@@ -25,6 +25,18 @@ namespace Aop.Api.Response
         /// </summary>
         [XmlElement("ad_rules")]
         public string AdRules { get; set; }
+
+        /// <summary>
+        /// 广告消失机制，CLOSE_AFTER_CLICK：总共点击一定次数消失
+        /// </summary>
+        [XmlElement("behavior")]
+        public string Behavior { get; set; }
+
+        /// <summary>
+        /// 广告扩展字段
+        /// </summary>
+        [XmlElement("biz_ext_info")]
+        public string BizExtInfo { get; set; }
 
         /// <summary>
         /// 广告内容。如果广告类型是HTML5，则传入H5链接地址，建议为https协议。最大尺寸不得超过1242px＊242px，小屏幕将按分辨率宽度同比例放大缩小；如果类型是图片，则传入图片ID标识，如何获取图片ID参考图片上传接口：alipay.offline.material.image.upload。图片尺寸为1242px＊290px。图片大小不能超过50kb。

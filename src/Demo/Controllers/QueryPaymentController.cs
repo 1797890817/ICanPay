@@ -1,4 +1,5 @@
 ﻿using ICanPay;
+using ICanPay.Enums;
 using System.Web.Mvc;
 
 namespace Demo.Controllers
@@ -6,7 +7,7 @@ namespace Demo.Controllers
     public class QueryPaymentController : Controller
     {
         // GET: QueryPayment
-        public void QueryWeChatPayOrder()
+        public void QueryOrder()
         {
             PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPayment);
             querySetting.Merchant.AppId="wx000000000000000";

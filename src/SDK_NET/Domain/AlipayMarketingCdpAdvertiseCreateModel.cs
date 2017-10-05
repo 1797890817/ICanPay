@@ -16,7 +16,7 @@ namespace Aop.Api.Domain
         public string ActionUrl { get; set; }
 
         /// <summary>
-        /// 广告位标识码，目前开放的广告位是钱包APP/口碑TAB/商家详情页中，传值：CDP_OPEN_MERCHANT
+        /// 广告位标识码（务必注意保存），目前广告位只支持在支付宝钱包中显示，口碑app暂不支持。传值：CDP_OPEN_MERCHANT
         /// </summary>
         [XmlElement("ad_code")]
         public string AdCode { get; set; }

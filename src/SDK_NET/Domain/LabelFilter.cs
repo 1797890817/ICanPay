@@ -11,7 +11,7 @@ namespace Aop.Api.Domain
     public class LabelFilter : AopObject
     {
         /// <summary>
-        /// 标签组名，商户自定义的标签固定为label_id_list，支付宝开放的标签详见<a href="https://i.alipayobjects.com/i/ecmng/zip/201501/FirstPartOfTagsFromAlipay.zip?spm=a219a.7629140.0.0.FHtmkZ&file=FirstPartOfTagsFromAlipay.zip">支付宝开放标签</a>
+        /// 标签组名，商户自定义的标签固定为label_id_list，支付宝开放的标签详见<a href="http://aopsdkdownload.cn-hangzhou.alipay-pub.aliyun-inc.com/doc/FirstPartOfTagsFromAlipay.xlsx">支付宝开放标签</a>
         /// </summary>
         [XmlElement("column_name")]
         public string ColumnName { get; set; }

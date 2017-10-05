@@ -11,16 +11,23 @@ namespace Aop.Api.Response
     public class AlipayMarketingCardTemplateQueryResponse : AopResponse
     {
         /// <summary>
-        /// 业务卡号前缀，由商户自定义
+        /// 业务卡号前缀，由商户指定  支付宝业务卡号生成规则：biz_no_prefix(商户指定)卡号前缀 + biz_no_suffix(实时生成）卡号后缀
         /// </summary>
         [XmlElement("biz_no_prefix")]
         public string BizNoPrefix { get; set; }
 
         /// <summary>
-        /// 卡号长度
+        /// 业务卡号后缀的长度  支付宝业务卡号生成规则：biz_no_prefix(商户指定)卡号前缀 + biz_no_suffix(实时生成）卡号后缀
         /// </summary>
         [XmlElement("biz_no_suffix_len")]
         public string BizNoSuffixLen { get; set; }
+
+        /// <summary>
+        /// 卡行动点配置；  行动点，即用户可点击跳转的区块，类似按钮控件的交互；  单张卡最多4个行动点。
+        /// </summary>
+        [XmlArray("card_action_list")]
+        [XmlArrayItem("template_action_info_d_t_o")]
+        public List<TemplateActionInfoDTO> CardActionList { get; set; }
 
         /// <summary>
         /// 卡等级配置
@@ -48,6 +55,12 @@ namespace Aop.Api.Response
         [XmlArray("field_rule_list")]
         [XmlArrayItem("template_field_rule_d_t_o")]
         public List<TemplateFieldRuleDTO> FieldRuleList { get; set; }
+
+        /// <summary>
+        /// 商户动态码通知参数配置：  当write_off_type指定为商户动态码mdbarcode或mdqrcode时不为空；  在此字段配置用户打开会员卡时支付宝通知商户生成动态码（发码）的通知参数，如接收通知地址等。
+        /// </summary>
+        [XmlElement("mdcode_notify_conf")]
+        public TemplateMdcodeNotifyConfDTO MdcodeNotifyConf { get; set; }
 
         /// <summary>
         /// 会员卡用户领卡配置，在门店等渠道露出领卡入口时，需要部署的商户领卡H5页面地址

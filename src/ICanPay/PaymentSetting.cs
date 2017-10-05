@@ -1,3 +1,5 @@
+using ICanPay.Enums;
+using ICanPay.Interfaces;
 using ICanPay.Providers;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,7 @@ namespace ICanPay
     /// 设置需要支付的订单的数据，创建支付订单URL地址或HTML表单
     /// </summary>
     /// <remarks>
-    /// 因为部分支付网关的编码仅支持GB2312，所以所有支付网关统一使用GB2312编码。
-    /// 你需要保证输出HTML代码的页面为GB2312编码，否则可能会因为乱码而造成无法正常创建支付订单和识别支付网关的支付通知。
-    /// 通过在 Web.config 中的 configuration/system.web 节点设置 <globalization requestEncoding="gb2312" responseEncoding="gb2312" />
-    /// 可以将页面的默认编码设置为GB2312。目前只能使用RMB支付，其他货币支付请阅读相关网关接口文档修改。
+    ///如需支持GB2312编码。 通过在 Web.config 中的 configuration/system.web 节点设置 <globalization requestEncoding="gb2312" responseEncoding="gb2312" />
     /// </remarks>
     public class PaymentSetting
     {
@@ -168,7 +167,7 @@ namespace ICanPay
         /// </remarks>
         public void Payment()
         {
-            HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IPaymentUrl paymentUrl = gateway as IPaymentUrl;
             if (paymentUrl != null)
             {          
@@ -193,14 +192,24 @@ namespace ICanPay
             throw new NotSupportedException(gateway.GatewayType + " 没有实现支付接口");
         }
 
-
-        public void WapPayment(string redirect_url = "")
+        /// <summary>
+        /// 创建WAP支付
+        /// </summary>
+        /// <param name="map"></param>
+        public void WapPayment(Dictionary<string, string> map =null)
         {
-            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding("utf-8");
+            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IWapPaymentUrl paymentUrl = gateway as IWapPaymentUrl;
             if (paymentUrl != null)
             {
-                HttpContext.Current.Response.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(redirect_url)}'</script>");
+                if (gateway.GatewayType == GatewayType.WeChatPayment)
+                {
+                    HttpContext.Current.Response.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(map)}'</script>");
+                }
+                else
+                {
+                    HttpContext.Current.Response.Redirect(paymentUrl.BuildWapPaymentUrl(map));
+                }
                 return;
             }
 
@@ -213,8 +222,6 @@ namespace ICanPay
 
             throw new NotSupportedException(gateway.GatewayType + " 没有实现支付接口");
         }
-
-
 
         /// <summary>
         /// 查询订单，订单的查询通知数据通过跟支付通知一样的形式反回。用处理网关通知一样的方法接受查询订单的数据。
@@ -238,7 +245,6 @@ namespace ICanPay
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryUrl 或 IQueryForm 查询接口");
         }
 
-
         /// <summary>
         /// 查询订单，立即获得订单的查询结果
         /// </summary>
@@ -254,7 +260,11 @@ namespace ICanPay
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryNow 查询接口");
         }
 
-        public Dictionary<string, object> BuildPayParams()
+        /// <summary>
+        /// 创建APP端SDK支付需要的参数
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> BuildPayParams()
         {
             IAppParams appParams = gateway as IAppParams;
             if (appParams != null)
@@ -265,7 +275,6 @@ namespace ICanPay
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IAppParams 查询接口");
         }
 
-
         /// <summary>
         /// 设置网关的数据
         /// </summary>
@@ -275,10 +284,7 @@ namespace ICanPay
         {
             Gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
         }
-
-       
-
-
+    
         /// <summary>
         /// 生成并输出二维码图片
         /// </summary>
@@ -293,13 +299,6 @@ namespace ICanPay
             HttpContext.Current.Response.ContentType = "image/x-png";
             HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
         }
-
-        public void SetGatewayParameterValue(string v, object email)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
-
     }
 }

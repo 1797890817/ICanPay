@@ -30,6 +30,12 @@ namespace Aop.Api.Response
         public List<OrderItem> OrderItems { get; set; }
 
         /// <summary>
+        /// 用于区分同一个服务的不同版本
+        /// </summary>
+        [XmlElement("specifications")]
+        public string Specifications { get; set; }
+
+        /// <summary>
         /// MERCHANT_ORDED（待服务商接单）
         /// </summary>
         [XmlElement("status")]

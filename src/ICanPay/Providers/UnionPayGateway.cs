@@ -1,4 +1,6 @@
 ﻿using com.unionpay.acp.sdk;
+using ICanPay.Enums;
+using ICanPay.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -10,7 +12,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 银联网关
     /// </summary>
-    public class UnionPayGateway : GatewayBase, IPaymentForm, IWapPaymentForm, IQueryNow, IAppParams
+    public class UnionPayGateway : GatewayBase, IPaymentForm, IWapPaymentForm, IAppParams, IQueryNow
     {
         #region 构造函数
 
@@ -45,8 +47,44 @@ namespace ICanPay.Providers
         #endregion
 
         #region 方法
+        public string BuildPaymentForm()
+        {
+            Dictionary<string, string> param = new Dictionary<string, string>();
 
-        public Dictionary<string, object> BuildPayParams()
+            //以下信息非特殊情况不需要改动
+            param["version"] = "5.0.0";//版本号
+            param["encoding"] = "UTF-8";//编码方式
+            param["txnType"] = "01";//交易类型
+            param["txnSubType"] = "01";//交易子类
+            param["bizType"] = "000201";//业务类型
+            param["signMethod"] = "01";//签名方法
+            param["channelType"] = "08";//渠道类型
+            param["accessType"] = "0";//接入类型
+            param["frontUrl"] = Merchant.NotifyUrl.ToString();  //前台通知地址      
+            param["backUrl"] = Merchant.ReturnUrl.ToString();  //后台通知地址
+            param["currencyCode"] = "156";//交易币种
+
+            //TODO 以下信息需要填写
+            param["merId"] = Merchant.Partner;//商户号，请改自己的测试商户号，此处默认取demo演示页面传递的参数
+            param["orderId"] = Order.OrderNo;//商户订单号，8-32位数字字母，不能含“-”或“_”，此处默认取demo演示页面传递的参数，可以自行定制规则
+            param["txnTime"] = Order.PaymentDate.ToString("yyyyMMddHHmmss");//订单发送时间，格式为YYYYMMDDhhmmss，取北京时间，此处默认取demo演示页面传递的参数，参考取法： DateTime.Now.ToString("yyyyMMddHHmmss")
+            param["txnAmt"] = (Order.OrderAmount * 100).ToString();//交易金额，单位分，此处默认取demo演示页面传递的参数
+            //param["reqReserved"] = "透传信息";//请求方保留域，透传字段，查询、通知、对账文件中均会原样出现，如有需要请启用并修改自己希望透传的数据
+
+            //TODO 其他特殊用法请查看 pages/api_01_gateway/special_use_purchase.htm
+
+            AcpService.Sign(param, System.Text.Encoding.UTF8);
+            string html = AcpService.CreateAutoFormHtml(SDKConfig.FrontTransUrl, param, System.Text.Encoding.UTF8);// 将SDKUtil产生的Html文档写入页面，从而引导用户浏览器重定向 
+            System.Web.HttpContext.Current.Response.ContentEncoding = Encoding.UTF8; // 指定输出编码  
+            return html;
+        }
+
+        public string BuildWapPaymentForm()
+        {
+            return BuildPaymentForm();
+        }
+
+        public Dictionary<string, string> BuildPayParams()
         {
             //组装请求报文
             Dictionary<string, string> param = new Dictionary<string, string>();
@@ -88,46 +126,9 @@ namespace ICanPay.Providers
             AcpService.Sign(param, System.Text.Encoding.UTF8);
 
             Dictionary<String, String> resmap = AcpService.Post(param, SDKConfig.AppRequestUrl, System.Text.Encoding.UTF8);
-            Dictionary<string, object> resParam = new Dictionary<string, object>();
+            Dictionary<string, string> resParam = new Dictionary<string, string>();
             resParam.Add("tn", resmap["tn"]);
             return resParam;
-        }
-
-        public string BuildWapPaymentForm()
-        {
-            return BuildPaymentForm();
-        }
-
-        public string BuildPaymentForm()
-        {
-            Dictionary<string, string> param = new Dictionary<string, string>();
-
-            //以下信息非特殊情况不需要改动
-            param["version"] = "5.0.0";//版本号
-            param["encoding"] = "UTF-8";//编码方式
-            param["txnType"] = "01";//交易类型
-            param["txnSubType"] = "01";//交易子类
-            param["bizType"] = "000201";//业务类型
-            param["signMethod"] = "01";//签名方法
-            param["channelType"] = "08";//渠道类型
-            param["accessType"] = "0";//接入类型
-            param["frontUrl"] = Merchant.NotifyUrl.ToString();  //前台通知地址      
-            param["backUrl"] = Merchant.ReturnUrl.ToString();  //后台通知地址
-            param["currencyCode"] = "156";//交易币种
-
-            //TODO 以下信息需要填写
-            param["merId"] = Merchant.Partner;//商户号，请改自己的测试商户号，此处默认取demo演示页面传递的参数
-            param["orderId"] = Order.OrderNo;//商户订单号，8-32位数字字母，不能含“-”或“_”，此处默认取demo演示页面传递的参数，可以自行定制规则
-            param["txnTime"] = Order.PaymentDate.ToString("yyyyMMddHHmmss");//订单发送时间，格式为YYYYMMDDhhmmss，取北京时间，此处默认取demo演示页面传递的参数，参考取法： DateTime.Now.ToString("yyyyMMddHHmmss")
-            param["txnAmt"] = (Order.OrderAmount * 100).ToString();//交易金额，单位分，此处默认取demo演示页面传递的参数
-            //param["reqReserved"] = "透传信息";//请求方保留域，透传字段，查询、通知、对账文件中均会原样出现，如有需要请启用并修改自己希望透传的数据
-
-            //TODO 其他特殊用法请查看 pages/api_01_gateway/special_use_purchase.htm
-
-            AcpService.Sign(param, System.Text.Encoding.UTF8);
-            string html = AcpService.CreateAutoFormHtml(SDKConfig.FrontTransUrl, param, System.Text.Encoding.UTF8);// 将SDKUtil产生的Html文档写入页面，从而引导用户浏览器重定向 
-            System.Web.HttpContext.Current.Response.ContentEncoding = Encoding.UTF8; // 指定输出编码  
-            return html;
         }
 
         public bool QueryNow(ProductSet productSet)
@@ -238,7 +239,7 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("success");
+                HttpContext.Current.Response.Write("ok");
             }
         }
 

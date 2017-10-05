@@ -35,10 +35,22 @@ namespace Aop.Api.Domain
         public string BuyerLogonId { get; set; }
 
         /// <summary>
+        /// 禁用渠道,用户不可用指定渠道支付  注，与enable_pay_channels互斥
+        /// </summary>
+        [XmlElement("disable_pay_channels")]
+        public string DisablePayChannels { get; set; }
+
+        /// <summary>
         /// 可打折金额.  参与优惠计算的金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]  如果该值未传入，但传入了【订单总金额】，【不可打折金额】则该值默认为【订单总金额】-【不可打折金额】
         /// </summary>
         [XmlElement("discountable_amount")]
         public string DiscountableAmount { get; set; }
+
+        /// <summary>
+        /// 可用渠道,用户只能在指定渠道范围内支付  注，与disable_pay_channels互斥
+        /// </summary>
+        [XmlElement("enable_pay_channels")]
+        public string EnablePayChannels { get; set; }
 
         /// <summary>
         /// 业务扩展参数
@@ -52,6 +64,12 @@ namespace Aop.Api.Domain
         [XmlArray("goods_detail")]
         [XmlArrayItem("goods_detail")]
         public List<GoodsDetail> GoodsDetail { get; set; }
+
+        /// <summary>
+        /// 商户原始订单号，最大长度限制32位
+        /// </summary>
+        [XmlElement("merchant_order_no")]
+        public string MerchantOrderNo { get; set; }
 
         /// <summary>
         /// 商户操作员编号

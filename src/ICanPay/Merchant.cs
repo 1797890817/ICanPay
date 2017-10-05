@@ -1,12 +1,11 @@
+using ICanPay.Enums;
 using System;
-using System.Runtime.Serialization;
 
 namespace ICanPay
 {
     /// <summary>
     /// 商户数据
     /// </summary>
-    [DataContract]
     [Serializable]
     public class Merchant
     {
@@ -46,7 +45,6 @@ namespace ICanPay
         /// <summary>
         /// 商户帐号
         /// </summary>
-        [DataMember]
         public string Partner
         {
             get
@@ -71,7 +69,6 @@ namespace ICanPay
         /// <summary>
         /// 商户密钥
         /// </summary>
-        [DataMember]
         public string Key
         {
             get
@@ -95,7 +92,6 @@ namespace ICanPay
         /// <summary>
         /// 商户邮箱
         /// </summary>
-        [DataMember]
         public string Email
         {
             get
@@ -111,7 +107,6 @@ namespace ICanPay
         /// <summary>
         ///  微信支付等需要
         /// </summary>
-        [DataMember]
         public string AppId
         {
             get
@@ -127,7 +122,6 @@ namespace ICanPay
         /// <summary>
         /// 网关回发通知URL
         /// </summary>
-        [DataMember]
         public Uri NotifyUrl
         {
             get
@@ -140,18 +134,13 @@ namespace ICanPay
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("NotifyUrl", "网关通知Url不能为空");
-                }
-                notifyUrl = value;
+                notifyUrl = value ?? throw new ArgumentNullException("NotifyUrl", "网关通知Url不能为空");
             }
         }
 
         /// <summary>
         /// 网关主动跳转通知URL
         /// </summary>
-        [DataMember]
         public Uri ReturnUrl
         {
             get
@@ -167,19 +156,16 @@ namespace ICanPay
         /// <summary>
         /// 私钥地址
         /// </summary>
-        [DataMember]
         public string PrivateKeyPem { get; set; }
 
         /// <summary>
         /// 公钥地址
         /// </summary>
-        [DataMember]
         public string PublicKeyPem { get; set; }
 
         /// <summary>
         /// 网关类型
         /// </summary>
-        [DataMember]
         public GatewayType GatewayType { get; set; }
 
         #endregion

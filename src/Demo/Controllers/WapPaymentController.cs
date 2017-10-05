@@ -1,4 +1,5 @@
 ﻿using ICanPay;
+using ICanPay.Enums;
 using System;
 using System.Web.Mvc;
 
@@ -19,11 +20,9 @@ namespace Demo.Controllers
             paymentSetting.Merchant.ReturnUrl = new Uri("http://yourwebsite.com/Return.aspx");
 
             paymentSetting.Order.OrderAmount = 0.01;
-            paymentSetting.Order.OrderNo = "35";
+            paymentSetting.Order.OrderNo = "yourorderno";
             paymentSetting.Order.Subject = "WapPayment";
             paymentSetting.WapPayment();
         }
-
-   
     }
 }

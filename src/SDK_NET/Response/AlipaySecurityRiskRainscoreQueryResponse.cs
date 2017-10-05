@@ -29,5 +29,11 @@ namespace Aop.Api.Response
         /// </summary>
         [XmlElement("score")]
         public string Score { get; set; }
+
+        /// <summary>
+        /// 调用订单号
+        /// </summary>
+        [XmlElement("unique_id")]
+        public string UniqueId { get; set; }
     }
 }

@@ -11,10 +11,16 @@ namespace Aop.Api.Domain
     public class KoubeiItemModifyModel : AopObject
     {
         /// <summary>
-        /// 服务商、服务商员工、商户员工操作时必填业务，对应为《koubei.member.data.oauth.query》中的auth_code，有效期24小时；商户自己操作的时候，无需传该参数
+        /// 服务商、服务商员工、商户、商户员工等口碑角色操作时必填，对应为《koubei.member.data.oauth.query》中的auth_code，有效期24小时；
         /// </summary>
         [XmlElement("auth_code")]
         public string AuthCode { get; set; }
+
+        /// <summary>
+        /// 口碑商品所属的后台类目id，ISV可通过开放接口koubei.item.category.children.batchquery来获得后台类目树，并选择叶子类目，作为该值传入
+        /// </summary>
+        [XmlElement("category_id")]
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// 商品首图。支持bmp,png,jpeg,jpg,gif格式的图片，建议宽高比16:9，建议宽高：1242*698px 图片大小≤5M。图片大小超过5M,接口会报错。若图片尺寸不对，口碑服务器自身不会做压缩，但是口碑把这些图片放到客户端上展现时，自己会做性能优化(等比缩放，以图片中心为基准裁剪)。
@@ -54,7 +60,13 @@ namespace Aop.Api.Domain
         public string ItemId { get; set; }
 
         /// <summary>
-        /// 操作上下文
+        /// 备注
+        /// </summary>
+        [XmlElement("memo")]
+        public string Memo { get; set; }
+
+        /// <summary>
+        /// 操作上下文。isv角色操作时必填。其他角色不需填写。
         /// </summary>
         [XmlElement("operation_context")]
         public KoubeiOperationContext OperationContext { get; set; }
@@ -72,7 +84,7 @@ namespace Aop.Api.Domain
         public string PictureDetails { get; set; }
 
         /// <summary>
-        /// 标准商品为现价,选填。非标准商品为最小价格（非标商品为xx元起）必填。价格单位为元。如果标准商品现价不填写，则以原价进行售卖；如果现价与原价相等时，则会以原价售卖，并且客户端只展示一个价格（原价）
+        /// 标准商品为现价,必填。非标准商品为最小价格（非标商品为xx元起）必填。价格单位为元。如果标准商品现价不填写，则以原价进行售卖；如果现价与原价相等时，则会以原价售卖，并且客户端只展示一个价格（原价）
         /// </summary>
         [XmlElement("price")]
         public string Price { get; set; }
@@ -90,7 +102,7 @@ namespace Aop.Api.Domain
         public string ShopIds { get; set; }
 
         /// <summary>
-        /// 商品名称，请勿超过20汉字，40个字符
+        /// 商品名称，请勿超过40汉字，80个字符
         /// </summary>
         [XmlElement("subject")]
         public string Subject { get; set; }

@@ -52,6 +52,12 @@ namespace Aop.Api.Domain
         public string IsInsurance { get; set; }
 
         /// <summary>
+        /// 医保机构的编号
+        /// </summary>
+        [XmlElement("medical_card_inst_id")]
+        public string MedicalCardInstId { get; set; }
+
+        /// <summary>
         /// 医疗机构名称
         /// </summary>
         [XmlElement("org_name")]
@@ -76,7 +82,7 @@ namespace Aop.Api.Domain
         public string PatientCardNo { get; set; }
 
         /// <summary>
-        /// 患者证件号码
+        /// 患者证件类型
         /// </summary>
         [XmlElement("patient_card_type")]
         public string PatientCardType { get; set; }
@@ -130,7 +136,7 @@ namespace Aop.Api.Domain
         public string TimeoutExpress { get; set; }
 
         /// <summary>
-        /// 订单总金额，单位为分，不能小于0，取值范围[0,100000000]。
+        /// 订单总金额，单位为元，不能小于0，精确到小数点后2位。
         /// </summary>
         [XmlElement("total_amount")]
         public string TotalAmount { get; set; }

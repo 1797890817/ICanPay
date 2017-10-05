@@ -57,6 +57,7 @@ namespace Aop.Api.Request
 		private string terminalInfo;
         private string prodCode;
 		private string notifyUrl;
+        private string returnUrl;
 		private AopObject bizModel;
 
     	 public void SetNeedEncrypt(bool needEncrypt){
@@ -74,6 +75,14 @@ namespace Aop.Api.Request
 
         public string GetNotifyUrl(){
             return this.notifyUrl;
+        }
+
+        public void SetReturnUrl(string returnUrl){
+            this.returnUrl = returnUrl;
+        }
+
+        public string GetReturnUrl(){
+            return this.returnUrl;
         }
 
 		public void SetTerminalType(String terminalType){

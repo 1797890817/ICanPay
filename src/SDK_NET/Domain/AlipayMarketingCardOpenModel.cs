@@ -34,6 +34,12 @@ namespace Aop.Api.Domain
         public MerchantMenber MemberExtInfo { get; set; }
 
         /// <summary>
+        /// 外部商户的领卡渠道，用于记录外部商户端领卡来源的渠道信息，渠道值可自行定义（仅限数字、字母、下划线）   例如：  线下门店领取:20161534000000000008863（可填门店shopId）  线下扫二维码领取:QR;  线下活动领取:20170522000000000003609（可填商户活动ID）
+        /// </summary>
+        [XmlElement("open_card_channel")]
+        public string OpenCardChannel { get; set; }
+
+        /// <summary>
         /// 外部商户流水号（商户需要确保唯一性控制，类似request_id唯一请求标识）
         /// </summary>
         [XmlElement("out_serial_no")]

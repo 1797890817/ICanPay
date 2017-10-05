@@ -1,4 +1,5 @@
-﻿using ICanPay.Providers;
+﻿using ICanPay.Enums;
+using ICanPay.Providers;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -87,7 +88,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// 是否是中国银联支付网关
+        /// 是否是银联支付网关
         /// </summary>
         /// <param name="gatewayParameterData"></param>
         /// <returns></returns>

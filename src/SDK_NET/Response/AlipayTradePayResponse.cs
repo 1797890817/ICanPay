@@ -11,6 +11,12 @@ namespace Aop.Api.Response
     public class AlipayTradePayResponse : AopResponse
     {
         /// <summary>
+        /// 异步支付模式，先享后付业务会返回该参数，目前有三种值：  ASYNC_DELAY_PAY(异步延时付款);  ASYNC_REALTIME_PAY(异步准实时付款);  SYNC_DIRECT_PAY(同步直接扣款);
+        /// </summary>
+        [XmlElement("async_payment_mode")]
+        public string AsyncPaymentMode { get; set; }
+
+        /// <summary>
         /// 买家支付宝账号
         /// </summary>
         [XmlElement("buyer_logon_id")]
@@ -60,7 +66,7 @@ namespace Aop.Api.Response
         public string InvoiceAmount { get; set; }
 
         /// <summary>
-        /// 买家支付宝用户号,该参数已废弃，请不要使用。
+        /// 买家支付宝用户号,该参数已废弃，请不要使用
         /// </summary>
         [XmlElement("open_id")]
         public string OpenId { get; set; }

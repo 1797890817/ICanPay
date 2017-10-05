@@ -58,6 +58,18 @@ namespace Aop.Api.Domain
         public string ExpireDate { get; set; }
 
         /// <summary>
+        /// 商户名称
+        /// </summary>
+        [XmlElement("merchant_name")]
+        public string MerchantName { get; set; }
+
+        /// <summary>
+        /// 商户PID
+        /// </summary>
+        [XmlElement("merchant_pid")]
+        public string MerchantPid { get; set; }
+
+        /// <summary>
         /// 上架时间
         /// </summary>
         [XmlElement("online_time")]

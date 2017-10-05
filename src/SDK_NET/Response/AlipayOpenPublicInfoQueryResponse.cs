@@ -21,7 +21,7 @@ namespace Aop.Api.Response
         public string AuditDesc { get; set; }
 
         /// <summary>
-        /// 服务窗审核状态，对于系统商而言，只有三个状态，AUDITING：审核中，AUDIT_FAILED：审核驳回，AUDIT_SUCCESS：审核通过
+        /// 服务窗审核状态，对于系统商而言，只有四个状态，AUDITING：审核中，AUDIT_FAILED：审核驳回，AUDIT_SUCCESS：审核通过，AUDIT_NORMAL：无审核状态（当前没有处于审核过程的工单）
         /// </summary>
         [XmlElement("audit_status")]
         public string AuditStatus { get; set; }

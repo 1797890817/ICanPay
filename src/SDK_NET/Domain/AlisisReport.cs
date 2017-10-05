@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -9,6 +10,13 @@ namespace Aop.Api.Domain
     [Serializable]
     public class AlisisReport : AopObject
     {
+        /// <summary>
+        /// ：   报表可过滤字段条件
+        /// </summary>
+        [XmlArray("conditions")]
+        [XmlArrayItem("report_condition")]
+        public List<ReportCondition> Conditions { get; set; }
+
         /// <summary>
         /// 报表描述
         /// </summary>

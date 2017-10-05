@@ -16,7 +16,7 @@ namespace Aop.Api.Request
         public string Columns { get; set; }
 
         /// <summary>
-        /// 二进制字节数组，由文件转出
+        /// 二进制字节数组，由文件转出，最大支持50M文件的上传
         /// </summary>
         public FileItem File { get; set; }
 
@@ -57,6 +57,7 @@ namespace Aop.Api.Request
 		private string terminalInfo;
         private string prodCode;
 		private string notifyUrl;
+        private string returnUrl;
 		private AopObject bizModel;
 
     	 public void SetNeedEncrypt(bool needEncrypt){
@@ -74,6 +75,14 @@ namespace Aop.Api.Request
 
         public string GetNotifyUrl(){
             return this.notifyUrl;
+        }
+
+        public void SetReturnUrl(string returnUrl){
+            this.returnUrl = returnUrl;
+        }
+
+        public string GetReturnUrl(){
+            return this.returnUrl;
         }
 
 		public void SetTerminalType(String terminalType){

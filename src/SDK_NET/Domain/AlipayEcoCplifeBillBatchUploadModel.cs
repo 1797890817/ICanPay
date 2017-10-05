@@ -17,14 +17,14 @@ namespace Aop.Api.Domain
         public string BatchId { get; set; }
 
         /// <summary>
-        /// 账单应收条目明细集合，同一小区内条目明细不允许重复；一次接口请求最多支持50条明细。
+        /// 账单应收条目明细集合，同一小区内条目明细不允许重复；一次接口请求最多支持1000条明细。
         /// </summary>
         [XmlArray("bill_set")]
         [XmlArrayItem("c_p_bill_set")]
         public List<CPBillSet> BillSet { get; set; }
 
         /// <summary>
-        /// 支付宝社区物业平台小区ID，用户通过支付宝社区物业平台物业查询获取。
+        /// 支付宝社区小区统一编号，必须在物业账号名下存在。
         /// </summary>
         [XmlElement("community_id")]
         public string CommunityId { get; set; }

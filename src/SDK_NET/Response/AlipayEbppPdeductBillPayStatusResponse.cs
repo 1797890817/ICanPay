@@ -21,6 +21,18 @@ namespace Aop.Api.Response
         public string OrderNo { get; set; }
 
         /// <summary>
+        /// 订单的结果码
+        /// </summary>
+        [XmlElement("order_result_code")]
+        public string OrderResultCode { get; set; }
+
+        /// <summary>
+        /// 订单的结果描述
+        /// </summary>
+        [XmlElement("order_result_msg")]
+        public string OrderResultMsg { get; set; }
+
+        /// <summary>
         /// 外部订单流水
         /// </summary>
         [XmlElement("out_order_no")]

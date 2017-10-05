@@ -10,12 +10,6 @@ namespace Aop.Api.Domain
     public class ZhimaCreditScoreGetModel : AopObject
     {
         /// <summary>
-        /// alipay_user_id, 支付宝用户的唯一userId, 用户通过蚂蚁开放平台授权给商户系统后，商户系统可以获得该userId
-        /// </summary>
-        [XmlElement("alipay_user_id")]
-        public string AlipayUserId { get; set; }
-
-        /// <summary>
         /// 产品码，直接使用［示例］给出的值
         /// </summary>
         [XmlElement("product_code")]

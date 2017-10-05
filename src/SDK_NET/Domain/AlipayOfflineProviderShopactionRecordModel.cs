@@ -10,19 +10,19 @@ namespace Aop.Api.Domain
     public class AlipayOfflineProviderShopactionRecordModel : AopObject
     {
         /// <summary>
-        /// json格式，操作详情（根据操作类型不同而不同）（太大的话可能会导致内部处理失败）
+        /// 详情设置会根据action_type字段类型不同而格式不同，请详细查看开放平台文案，会详细说明如果设置，整体是json结构。参考文档：https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.u6pJ7Q&treeId=193&articleId=105281&docType=1#s1
         /// </summary>
         [XmlElement("action_detail")]
         public string ActionDetail { get; set; }
 
         /// <summary>
-        /// 本次请求的唯一键（操作实体主键+平台字符串）
+        /// 每次请求的唯一id，需开发者自行保证此参数值每次请求的唯一性。后续可以通过当前唯一id进行问题排查。
         /// </summary>
         [XmlElement("action_outer_id")]
         public string ActionOuterId { get; set; }
 
         /// <summary>
-        /// 操作类型（insert_table/update_table/insert_dish/delete_dish/soldout_dish/modify_dish/modify_shop_status）
+        /// 支持的操作类型    1. insert_table(插入桌位)    2. update_table(更新桌位)    3. insert_dish(插入菜品)    4. delete_dish(删除菜品)    5. soldout_dish(估清菜品)    6. modify_dish(修改菜品)    7. modify_shop_status(店铺状态变更)  每一种操作行为对应的action_detail都不同，action_detail结构都是json串。   8.insert_one_shop_all_table(批量覆盖单个店铺桌位)
         /// </summary>
         [XmlElement("action_type")]
         public string ActionType { get; set; }
@@ -34,19 +34,19 @@ namespace Aop.Api.Domain
         public string DateTime { get; set; }
 
         /// <summary>
-        /// 操作实体（实体+操作类型决定一个真正的操作【店铺+新增、座位+修改、店铺+适时状态等等】）
+        /// 参数值固定为shop，代表店铺行为
         /// </summary>
         [XmlElement("entity")]
         public string Entity { get; set; }
 
         /// <summary>
-        /// 所属行业 (餐饮：REPAST)
+        /// 当action_type的参数值是 insert_table、update_table、insert_dish、delete_dish、soldout_dish、modify_dish、insert_dish、insert_one_shop_all_table时，此参数的值固定为：REPAST
         /// </summary>
         [XmlElement("industry")]
         public string Industry { get; set; }
 
         /// <summary>
-        /// 操作的店铺对象
+        /// 传入店铺关联关系。标记当前接口涉及到的店铺信息，同时如果传入的数据在口碑不存在，口碑会建立一条shop_id+ outer_id+ type的关联数据
         /// </summary>
         [XmlElement("outer_shop_do")]
         public OuterShopDO OuterShopDo { get; set; }

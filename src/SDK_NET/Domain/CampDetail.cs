@@ -11,6 +11,13 @@ namespace Aop.Api.Domain
     public class CampDetail : AopObject
     {
         /// <summary>
+        /// 活动工单列表
+        /// </summary>
+        [XmlArray("activity_orders")]
+        [XmlArrayItem("activity_order_d_t_o")]
+        public List<ActivityOrderDTO> ActivityOrders { get; set; }
+
+        /// <summary>
         /// 活动子状态，如审核中
         /// </summary>
         [XmlElement("audit_status")]

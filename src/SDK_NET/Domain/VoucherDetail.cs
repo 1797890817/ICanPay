@@ -46,6 +46,24 @@ namespace Aop.Api.Domain
         public string OtherContribute { get; set; }
 
         /// <summary>
+        /// 如果使用的这张券是用户购买的，则该字段代表用户在购买这张券时平台优惠的金额
+        /// </summary>
+        [XmlElement("purchase_ant_contribute")]
+        public string PurchaseAntContribute { get; set; }
+
+        /// <summary>
+        /// 如果使用的这张券是用户购买的，则该字段代表用户在购买这张券时用户实际付款的金额
+        /// </summary>
+        [XmlElement("purchase_buyer_contribute")]
+        public string PurchaseBuyerContribute { get; set; }
+
+        /// <summary>
+        /// 如果使用的这张券是用户购买的，则该字段代表用户在购买这张券时商户优惠的金额
+        /// </summary>
+        [XmlElement("purchase_merchant_contribute")]
+        public string PurchaseMerchantContribute { get; set; }
+
+        /// <summary>
         /// 当前有三种类型：  ALIPAY_FIX_VOUCHER - 全场代金券  ALIPAY_DISCOUNT_VOUCHER - 折扣券  ALIPAY_ITEM_VOUCHER - 单品优惠  注：不排除将来新增其他类型的可能，商家接入时注意兼容性避免硬编码
         /// </summary>
         [XmlElement("type")]

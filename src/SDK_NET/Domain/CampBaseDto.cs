@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -9,6 +10,13 @@ namespace Aop.Api.Domain
     [Serializable]
     public class CampBaseDto : AopObject
     {
+        /// <summary>
+        /// 活动工单列表
+        /// </summary>
+        [XmlArray("activity_orders")]
+        [XmlArrayItem("activity_order_d_t_o")]
+        public List<ActivityOrderDTO> ActivityOrders { get; set; }
+
         /// <summary>
         /// 活动审核状态，AUDITING为审核中,REJECT为驳回，不返回为成功
         /// </summary>

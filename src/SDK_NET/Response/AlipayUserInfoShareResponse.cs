@@ -41,7 +41,7 @@ namespace Aop.Api.Response
         public string CertNo { get; set; }
 
         /// <summary>
-        /// 0:身份证  1:护照  2:军官证  3:士兵证  4:回乡证  5:临时身份证  6:户口簿  7:警官证  8:台胞证  9:营业执照  10其它证件
+        /// 0:身份证  1:护照  2:军官证  3:士兵证  4:回乡证  5:临时身份证  6:户口簿  7:警官证  8:台胞证  9:营业执照  10:其它证件  11:港澳居民来往内地通行证  12:台湾居民来往大陆通行证
         /// </summary>
         [XmlElement("cert_type")]
         public string CertType { get; set; }
@@ -51,6 +51,12 @@ namespace Aop.Api.Response
         /// </summary>
         [XmlElement("city")]
         public string City { get; set; }
+
+        /// <summary>
+        /// 国家码
+        /// </summary>
+        [XmlElement("country_code")]
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// 收货地址列表
@@ -170,6 +176,12 @@ namespace Aop.Api.Response
         public string LicenseNo { get; set; }
 
         /// <summary>
+        /// 支付宝会员等级
+        /// </summary>
+        [XmlElement("member_grade")]
+        public string MemberGrade { get; set; }
+
+        /// <summary>
         /// 手机号码。
         /// </summary>
         [XmlElement("mobile")]
@@ -223,6 +235,12 @@ namespace Aop.Api.Response
         /// </summary>
         [XmlElement("province")]
         public string Province { get; set; }
+
+        /// <summary>
+        /// 淘宝id
+        /// </summary>
+        [XmlElement("taobao_id")]
+        public string TaobaoId { get; set; }
 
         /// <summary>
         /// 支付宝用户的userId

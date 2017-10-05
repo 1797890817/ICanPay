@@ -2,6 +2,9 @@ using Aop.Api;
 using Aop.Api.Request;
 using Aop.Api.Response;
 using Aop.Api.Util;
+using ICanPay.Enums;
+using ICanPay.Interfaces;
+using ICanPay.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,10 +19,10 @@ namespace ICanPay.Providers
     /// <summary>
     /// 支付宝网关
     /// </summary>
-    public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl, IWapPaymentUrl, IQueryNow, IAppParams
+    public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl, IWapPaymentUrl, IAppParams, IQueryNow
     {
 
-        #region 私有字段
+        #region 私有字段BuildPayParams
 
         const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";
         const string openapiGatewayUrl = "https://openapi.alipay.com/gateway.do";
@@ -76,39 +79,19 @@ namespace ICanPay.Providers
         }
 
 
-        /// <summary>
-        /// 初始化订单参数
-        /// </summary>
-        private void InitOrderParameter(string sign_type)
-        {
-            SetGatewayParameterValue("seller_email", Merchant.Email);
-            SetGatewayParameterValue("service", "create_direct_pay_by_user");
-            SetGatewayParameterValue("partner", Merchant.Partner);
-            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
-            SetGatewayParameterValue("return_url", Merchant.ReturnUrl.ToString());
-            SetGatewayParameterValue("sign_type", sign_type);
-            SetGatewayParameterValue("subject", Order.Subject);
-            SetGatewayParameterValue("out_trade_no", Order.OrderNo);
-            SetGatewayParameterValue("total_fee", Order.OrderAmount.ToString());
-            SetGatewayParameterValue("payment_type", "1");
-            SetGatewayParameterValue("_input_charset", Charset);
-            SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。
-        }
-
-
         public string BuildPaymentUrl()
-        {         
+        {
             InitOrderParameter("MD5");
             ValidatePaymentOrderParameter();
             return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
         }
 
-        public string BuildWapPaymentUrl(string redirect_url = "")
+
+        public string BuildWapPaymentUrl(Dictionary<string, string> map)
         {
-            DefaultAopClient defaultAopClient = new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, true);
-            defaultAopClient.return_url = Merchant.ReturnUrl.ToString();
-            IAopClient client = defaultAopClient;
+            IAopClient defaultAopClient = new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, true);
             AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+            request.SetReturnUrl(Merchant.ReturnUrl.ToString());
             request.SetNotifyUrl(Merchant.NotifyUrl.ToString());
             request.BizContent = JsonConvert.SerializeObject(new
             {
@@ -118,206 +101,11 @@ namespace ICanPay.Providers
                 total_amount = Order.OrderAmount,
                 product_code = "QUICK_WAP_WAY"
             });
-            AlipayTradeWapPayResponse response = client.pageExecute(request, null, "GET");
+            AlipayTradeWapPayResponse response = defaultAopClient.pageExecute(request, null, "GET");
             return response.Body;
         }
 
-
-        private string GetPaymentQueryString()
-        {
-            StringBuilder urlBuilder = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
-            {
-                urlBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
-            }
-
-            return urlBuilder.ToString().TrimEnd('&');
-        }
-
-
-        /// <summary>
-        /// 获得用于签名的参数字符串
-        /// </summary>
-        private string GetSignParameter()
-        {
-            StringBuilder signBuilder = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
-            {
-                if (string.Compare("sign", item.Key) != 0 && string.Compare("sign_type", item.Key) != 0)
-                {
-                    signBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
-                }
-            }
-
-            return signBuilder.ToString().TrimEnd('&');
-        }
-
-
-
-        /// <summary>
-        /// 验证支付订单的参数设置
-        /// </summary>
-        private void ValidatePaymentOrderParameter()
-        {
-            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentNullException("seller_email", "订单缺少seller_email参数，seller_email是卖家支付宝账号的邮箱。" +
-                                                "你需要使用PaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")方法设置卖家支付宝账号的邮箱。");
-            }
-
-            if (!IsEmail(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentException("Email格式不正确", "seller_email");
-            }
-        }
-
-        protected override bool CheckNotifyData()
-        {
-            if (GetGatewayParameterValue("sign_type").ToUpper() != "RSA")
-            {
-                if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
-                {
-                    return ValidateTrade();
-                }
-            }
-            else
-            {  
-                if (ValidateAlipayNotifyRSASign())
-                {
-                    return ValidateTrade();
-                }
-            }
-            return false;
-        }
-
-        private bool ValidateTrade()
-        {
-            var orderAmount = GetGatewayParameterValue("total_amount");
-            orderAmount = string.IsNullOrEmpty(orderAmount) ? GetGatewayParameterValue("total_fee") : orderAmount;
-            Order.OrderAmount = double.Parse(orderAmount);
-            Order.OrderNo = GetGatewayParameterValue("out_trade_no");
-            Order.TradeNo = GetGatewayParameterValue("trade_no");
-            // 支付状态是否为成功。TRADE_FINISHED（普通即时到账的交易成功状态，TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
-            if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
-                string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
-            {              
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 验证支付宝通知的签名
-        /// </summary>
-        private bool ValidateAlipayNotifyRSASign()
-        {
-            bool checkSign = AlipaySignature.RSACheckV1(GetSortedGatewayParameter(), Merchant.PublicKeyPem, Charset);
-            if (checkSign)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
-        /// <summary>
-        /// 验证支付宝通知的签名
-        /// </summary>
-        private bool ValidateAlipayNotifySign()
-        {
-            // 验证通知的签名
-            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
-        /// <summary>
-        /// 将网关参数的集合排序
-        /// </summary>
-        /// <param name="coll">原网关参数的集合</param>
-        private SortedList<string, string> GatewayParameterDataSort(ICollection<GatewayParameter> coll)
-        {
-            SortedList<string, string> list = new SortedList<string, string>();
-            foreach (GatewayParameter item in coll)
-            {
-                list.Add(item.Name, item.Value);
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// 获得订单的签名。
-        /// </summary>
-        private string GetOrderRSASign()
-        {
-            return AlipaySignature.RSASign(GetSignParameter(), Merchant.PrivateKeyPem, Charset, "RSA");
-        }
-
-        /// <summary>
-        /// 获得订单的签名。
-        /// </summary>
-        private string GetOrderSign()
-        {
-            // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常，并且MD5值必须为小写。
-            return Utility.GetMD5(GetSignParameter() + Merchant.Key, pageEncoding).ToLower();
-        }
-
-
-        public override void WriteSucceedFlag()
-        {
-            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
-            {
-                HttpContext.Current.Response.Write("success");
-            }
-        }
-
-
-        /// <summary>
-        /// 验证网关的通知Id是否有效
-        /// </summary>
-        private bool ValidateAlipayNotify()
-        {
-            // 浏览器自动返回的通知Id会在验证后1分钟失效，
-            // 服务器异步通知的通知Id则会在输出标志成功接收到通知的success字符串后失效。
-            if (string.Compare(Utility.ReadPage(GetValidateAlipayNotifyUrl()), "true") == 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
-        /// <summary>
-        /// 获得验证支付宝通知的Url
-        /// </summary>
-        private string GetValidateAlipayNotifyUrl()
-        {
-            return string.Format("{0}?service=notify_verify&partner={1}&notify_id={2}", payGatewayUrl, Merchant.Partner,
-                                 GetGatewayParameterValue("notify_id"));
-        }
-
-
-        /// <summary>
-        /// 是否是正确格式的Email地址
-        /// </summary>
-        /// <param name="emailAddress">Email地址</param>
-        public bool IsEmail(string emailAddress)
-        {
-            if (string.IsNullOrEmpty(emailAddress))
-            {
-                return false;
-            }
-
-            return Regex.IsMatch(emailAddress, emailRegexString);
-        }
-
-
-        public Dictionary<string, object> BuildPayParams()
+        public Dictionary<string, string> BuildPayParams()
         {
             SetGatewayParameterValue("app_id", Merchant.AppId);
             SetGatewayParameterValue("method", "alipay.trade.app.pay");
@@ -342,7 +130,7 @@ namespace ICanPay.Providers
             {
                 signBuilder.AppendFormat("{0}={1}&", item.Key, HttpUtility.UrlEncode(item.Value, Encoding.UTF8));
             }
-            Dictionary<string, object> resParam = new Dictionary<string, object>();
+            Dictionary<string, string> resParam = new Dictionary<string, string>();
             resParam.Add("body", signBuilder.ToString().TrimEnd('&'));
             return resParam;
         }
@@ -454,8 +242,225 @@ namespace ICanPay.Providers
             return false;
         }
 
-   
+
         #endregion
+
+        protected override bool CheckNotifyData()
+        {
+            if (GetGatewayParameterValue("sign_type").ToUpper() != "RSA")
+            {
+                if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
+                {
+                    return ValidateTrade();
+                }
+            }
+            else
+            {
+                if (ValidateAlipayNotifyRSASign())
+                {
+                    return ValidateTrade();
+                }
+            }
+            return false;
+        }
+
+        public override void WriteSucceedFlag()
+        {
+            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
+            {
+                HttpContext.Current.Response.Write("success");
+            }
+        }
+
+        /// <summary>
+        /// 初始化订单参数
+        /// </summary>
+        private void InitOrderParameter(string sign_type)
+        {
+            SetGatewayParameterValue("seller_email", Merchant.Email);
+            SetGatewayParameterValue("service", "create_direct_pay_by_user");
+            SetGatewayParameterValue("partner", Merchant.Partner);
+            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("return_url", Merchant.ReturnUrl.ToString());
+            SetGatewayParameterValue("sign_type", sign_type);
+            SetGatewayParameterValue("subject", Order.Subject);
+            SetGatewayParameterValue("out_trade_no", Order.OrderNo);
+            SetGatewayParameterValue("total_fee", Order.OrderAmount.ToString());
+            SetGatewayParameterValue("payment_type", "1");
+            SetGatewayParameterValue("_input_charset", Charset);
+            SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。
+        }
+
+
+        private string GetPaymentQueryString()
+        {
+            StringBuilder urlBuilder = new StringBuilder();
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                urlBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+            }
+
+            return urlBuilder.ToString().TrimEnd('&');
+        }
+
+
+        /// <summary>
+        /// 获得用于签名的参数字符串
+        /// </summary>
+        private string GetSignParameter()
+        {
+            StringBuilder signBuilder = new StringBuilder();
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                if (string.Compare("sign", item.Key) != 0 && string.Compare("sign_type", item.Key) != 0)
+                {
+                    signBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+                }
+            }
+
+            return signBuilder.ToString().TrimEnd('&');
+        }
+
+
+
+        /// <summary>
+        /// 验证支付订单的参数设置
+        /// </summary>
+        private void ValidatePaymentOrderParameter()
+        {
+            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
+            {
+                throw new ArgumentNullException("seller_email", "订单缺少seller_email参数，seller_email是卖家支付宝账号的邮箱。" +
+                                                "你需要使用PaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")方法设置卖家支付宝账号的邮箱。");
+            }
+
+            if (!IsEmail(GetGatewayParameterValue("seller_email")))
+            {
+                throw new ArgumentException("Email格式不正确", "seller_email");
+            }
+        }
+
+   
+        private bool ValidateTrade()
+        {
+            var orderAmount = GetGatewayParameterValue("total_amount");
+            orderAmount = string.IsNullOrEmpty(orderAmount) ? GetGatewayParameterValue("total_fee") : orderAmount;
+            Order.OrderAmount = double.Parse(orderAmount);
+            Order.OrderNo = GetGatewayParameterValue("out_trade_no");
+            Order.TradeNo = GetGatewayParameterValue("trade_no");
+            // 支付状态是否为成功。TRADE_FINISHED（普通即时到账的交易成功状态，TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
+            if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
+                string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
+            {              
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 验证支付宝通知的签名
+        /// </summary>
+        private bool ValidateAlipayNotifyRSASign()
+        {
+            bool checkSign = AlipaySignature.RSACheckV1(GetSortedGatewayParameter(), Merchant.PublicKeyPem, Charset);
+            if (checkSign)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// 验证支付宝通知的签名
+        /// </summary>
+        private bool ValidateAlipayNotifySign()
+        {
+            // 验证通知的签名
+            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// 将网关参数的集合排序
+        /// </summary>
+        /// <param name="coll">原网关参数的集合</param>
+        private SortedList<string, string> GatewayParameterDataSort(ICollection<GatewayParameter> coll)
+        {
+            SortedList<string, string> list = new SortedList<string, string>();
+            foreach (GatewayParameter item in coll)
+            {
+                list.Add(item.Name, item.Value);
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 获得订单的签名。
+        /// </summary>
+        private string GetOrderRSASign()
+        {
+            return AlipaySignature.RSASign(GetSignParameter(), Merchant.PrivateKeyPem, Charset, "RSA");
+        }
+
+        /// <summary>
+        /// 获得订单的签名。
+        /// </summary>
+        private string GetOrderSign()
+        {
+            // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常，并且MD5值必须为小写。
+            return Utility.GetMD5(GetSignParameter() + Merchant.Key, pageEncoding).ToLower();
+        }
+
+
+        /// <summary>
+        /// 验证网关的通知Id是否有效
+        /// </summary>
+        private bool ValidateAlipayNotify()
+        {
+            // 浏览器自动返回的通知Id会在验证后1分钟失效，
+            // 服务器异步通知的通知Id则会在输出标志成功接收到通知的success字符串后失效。
+            if (string.Compare(Utility.ReadPage(GetValidateAlipayNotifyUrl()), "true") == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 获得验证支付宝通知的Url
+        /// </summary>
+        private string GetValidateAlipayNotifyUrl()
+        {
+            return string.Format("{0}?service=notify_verify&partner={1}&notify_id={2}", payGatewayUrl, Merchant.Partner,
+                                 GetGatewayParameterValue("notify_id"));
+        }
+
+
+        /// <summary>
+        /// 是否是正确格式的Email地址
+        /// </summary>
+        /// <param name="emailAddress">Email地址</param>
+        public bool IsEmail(string emailAddress)
+        {
+            if (string.IsNullOrEmpty(emailAddress))
+            {
+                return false;
+            }
+
+            return Regex.IsMatch(emailAddress, emailRegexString);
+        }
+
+
+    
+
+   
 
         #endregion
 

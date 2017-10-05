@@ -11,6 +11,12 @@ namespace Aop.Api.Domain
     public class ItemQueryResponse : AopObject
     {
         /// <summary>
+        /// 口碑商品所属的后台类目id，后台类目数据来源：开放接口koubei.item.category.children.batchquery（查询后台类目树接口）
+        /// </summary>
+        [XmlElement("category_id")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
         /// 首图
         /// </summary>
         [XmlElement("cover")]
@@ -52,6 +58,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("item_type")]
         public string ItemType { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [XmlElement("memo")]
+        public string Memo { get; set; }
 
         /// <summary>
         /// 标准商品为原价，必填。非标准商品请勿填写，填写无效。价格单位为元
@@ -99,9 +111,8 @@ namespace Aop.Api.Domain
         /// <summary>
         /// 交易凭证类商品模板信息
         /// </summary>
-        [XmlArray("trade_voucher_item_template")]
-        [XmlArrayItem("koubei_trade_voucher_item_templete")]
-        public List<KoubeiTradeVoucherItemTemplete> TradeVoucherItemTemplate { get; set; }
+        [XmlElement("trade_voucher_item_template")]
+        public KoubeiTradeVoucherItemTemplete TradeVoucherItemTemplate { get; set; }
 
         /// <summary>
         /// 商品顺序权重

@@ -16,6 +16,12 @@ namespace Aop.Api.Domain
         public string EndTime { get; set; }
 
         /// <summary>
+        /// 是否参与门店参与了招商
+        /// </summary>
+        [XmlElement("exclude_constraint_shops")]
+        public bool ExcludeConstraintShops { get; set; }
+
+        /// <summary>
         /// 招商方案id
         /// </summary>
         [XmlElement("plan_id")]

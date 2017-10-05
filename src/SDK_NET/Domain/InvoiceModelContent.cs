@@ -17,13 +17,19 @@ namespace Aop.Api.Domain
         public string ExtendFields { get; set; }
 
         /// <summary>
-        /// 文件下载地址，当以链接的方式同步发票文件时，必传
+        /// 下载的发票文件类型  可选值：  pdf（发票原文件）  jpg（发票原文件缩略图）
+        /// </summary>
+        [XmlElement("file_download_type")]
+        public string FileDownloadType { get; set; }
+
+        /// <summary>
+        /// 文件下载地址，当同步发票tax_type=PLAIN时，必传；  此处的链接请务必传入可下载PDF的链接
         /// </summary>
         [XmlElement("file_download_url")]
         public string FileDownloadUrl { get; set; }
 
         /// <summary>
-        /// 发票金额，大于0且精确到小数点两位，以元为单位
+        /// 发票金额，大于0且精确到小数点两位，以元为单位  需要传入税价合计金额
         /// </summary>
         [XmlElement("invoice_amount")]
         public string InvoiceAmount { get; set; }
@@ -66,7 +72,7 @@ namespace Aop.Api.Domain
         public string InvoiceImgUrl { get; set; }
 
         /// <summary>
-        /// 发票号码，国税局生成的唯一号码，不可为空串
+        /// 发票号码，国税局生成的唯一号码，不可为空串；  使用时请注意，invoice_no+invoice_code唯一，不能重复
         /// </summary>
         [XmlElement("invoice_no")]
         public string InvoiceNo { get; set; }
@@ -84,7 +90,7 @@ namespace Aop.Api.Domain
         public InvoiceTitleModel InvoiceTitle { get; set; }
 
         /// <summary>
-        /// 发票类型，蓝票/红票
+        /// 发票类型，按照可选值只传入英文部分，该字段严格要求大小写  可选值:  blue（蓝票）  red（红票）
         /// </summary>
         [XmlElement("invoice_type")]
         public string InvoiceType { get; set; }
@@ -102,13 +108,13 @@ namespace Aop.Api.Domain
         public string OriginalBlueInvoiceNo { get; set; }
 
         /// <summary>
-        /// 商户交易流水号，不可为空串
+        /// 商户交易流水号，不可为空串;  传入红票时请注意，此字段的值要和蓝票保持一致
         /// </summary>
         [XmlElement("out_biz_no")]
         public string OutBizNo { get; set; }
 
         /// <summary>
-        /// 外部针对某一发票的商户唯一id
+        /// 商户唯一开票申请业务流水号，同一个isv下不能重复
         /// </summary>
         [XmlElement("out_invoice_id")]
         public string OutInvoiceId { get; set; }
@@ -144,7 +150,7 @@ namespace Aop.Api.Domain
         public string RegisterNo { get; set; }
 
         /// <summary>
-        /// 开票单位手机号
+        /// 开票人电话，支持座机和手机两种格式
         /// </summary>
         [XmlElement("register_phone_no")]
         public string RegisterPhoneNo { get; set; }
@@ -162,7 +168,7 @@ namespace Aop.Api.Domain
         public string TaxAmount { get; set; }
 
         /// <summary>
-        /// 税种
+        /// 税种  可选值：  PLAIN（普票的情况）  SPECIAL（专票的情况）
         /// </summary>
         [XmlElement("tax_type")]
         public string TaxType { get; set; }

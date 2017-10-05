@@ -66,6 +66,18 @@ namespace Aop.Api.Domain
         public string IsShow { get; set; }
 
         /// <summary>
+        /// 纬度，只有在query_type=KB_PROMOTER非空
+        /// </summary>
+        [XmlElement("latitude")]
+        public string Latitude { get; set; }
+
+        /// <summary>
+        /// 经度，只有在query_type=KB_PROMOTER非空
+        /// </summary>
+        [XmlElement("longitude")]
+        public string Longitude { get; set; }
+
+        /// <summary>
         /// 门店首图
         /// </summary>
         [XmlElement("main_image")]

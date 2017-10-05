@@ -40,6 +40,12 @@ namespace Aop.Api.Domain
         public string GoodsType { get; set; }
 
         /// <summary>
+        /// 开票信息
+        /// </summary>
+        [XmlElement("invoice_info")]
+        public InvoiceInfo InvoiceInfo { get; set; }
+
+        /// <summary>
         /// 商户网站唯一订单号
         /// </summary>
         [XmlElement("out_trade_no")]
@@ -64,16 +70,46 @@ namespace Aop.Api.Domain
         public string PromoParams { get; set; }
 
         /// <summary>
+        /// 描述分账信息，Json格式，详见分账参数说明
+        /// </summary>
+        [XmlElement("royalty_info")]
+        public RoyaltyInfo RoyaltyInfo { get; set; }
+
+        /// <summary>
         /// 收款支付宝用户ID。 如果该值为空，则默认为商户签约账号对应的支付宝用户ID
         /// </summary>
         [XmlElement("seller_id")]
         public string SellerId { get; set; }
 
         /// <summary>
+        /// 指定渠道，目前仅支持传入pcredit  若由于用户原因渠道不可用，用户可选择是否用其他渠道支付。  注：该参数不可与花呗分期参数同时传入
+        /// </summary>
+        [XmlElement("specified_channel")]
+        public string SpecifiedChannel { get; set; }
+
+        /// <summary>
+        /// 商户门店编号
+        /// </summary>
+        [XmlElement("store_id")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// 间连受理商户信息体，当前只对特殊银行机构特定场景下使用此字段
+        /// </summary>
+        [XmlElement("sub_merchant")]
+        public SubMerchant SubMerchant { get; set; }
+
+        /// <summary>
         /// 商品的标题/交易标题/订单标题/订单关键字等。
         /// </summary>
         [XmlElement("subject")]
         public string Subject { get; set; }
+
+        /// <summary>
+        /// 绝对超时时间，格式为yyyy-MM-dd HH:mm。
+        /// </summary>
+        [XmlElement("time_expire")]
+        public string TimeExpire { get; set; }
 
         /// <summary>
         /// 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。

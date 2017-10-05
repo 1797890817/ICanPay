@@ -16,7 +16,7 @@ namespace Aop.Api.Domain
         public string ChannelId { get; set; }
 
         /// <summary>
-        /// 商户指定卡券唯一值
+        /// 商户指定卡券唯一值，卡券JSON模板中fileInfo->serialNumber字段对应的值
         /// </summary>
         [XmlElement("serial_number")]
         public string SerialNumber { get; set; }
@@ -28,7 +28,7 @@ namespace Aop.Api.Domain
         public string Status { get; set; }
 
         /// <summary>
-        /// 模版动态参数信息【支付宝pass模版参数键值对JSON字符串】
+        /// 模版动态参数信息：对应模板中$变量名$的动态参数，见模板创建接口返回值中的tpl_params字段
         /// </summary>
         [XmlElement("tpl_params")]
         public string TplParams { get; set; }
@@ -40,7 +40,7 @@ namespace Aop.Api.Domain
         public string VerifyCode { get; set; }
 
         /// <summary>
-        /// 核销方式，目前支持：wave（声波方式）、qrcode（二维码方式）、barcode（条码方式）、input（文本方式，即手工输入方式）。pass和verify_type不能同时为空
+        /// 核销方式，目前支持：wave（声波方式）、qrcode（二维码方式）、barcode（条码方式）、input（文本方式，即手工输入方式）。verify_code和verify_type需同时传入
         /// </summary>
         [XmlElement("verify_type")]
         public string VerifyType { get; set; }
