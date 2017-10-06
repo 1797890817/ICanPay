@@ -264,7 +264,7 @@ namespace ICanPay.Providers
                 {
                     Order.OrderNo = resData.ContainsKey("orderId") ? resData["orderId"] : "";
                     Order.OrderAmount = resData.ContainsKey("txnAmt") ? Convert.ToDouble(GetGatewayParameterValue("txnAmt")) * 0.01 : 0.0;
-                    Order.TradeNo = resData.ContainsKey("orderId") ? resData["orderId"] : "";
+                    Order.TradeNo = resData.ContainsKey("queryId") ? resData["queryId"] : "";
                     if (resData["respMsg"].ToLower().Contains("success"))
                     {                     
                         return true;

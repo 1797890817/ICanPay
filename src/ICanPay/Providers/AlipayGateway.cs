@@ -1,11 +1,11 @@
 using Aop.Api;
+using Aop.Api.Domain;
 using Aop.Api.Request;
 using Aop.Api.Response;
 using Aop.Api.Util;
 using ICanPay.Enums;
 using ICanPay.Interfaces;
 using ICanPay.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +19,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 支付宝网关
     /// </summary>
-    public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl, IWapPaymentUrl, IAppParams, IQueryNow
+    public sealed class AlipayGateway : GatewayBase, IPaymentForm,  IWapPaymentUrl, IAppParams, IQueryNow
     {
 
         #region 私有字段BuildPayParams
@@ -72,194 +72,138 @@ namespace ICanPay.Providers
         #region 方法
 
         public string BuildPaymentForm()
-        {        
-            InitOrderParameter("MD5");
-            ValidatePaymentOrderParameter();
-            return GetFormHtml(payGatewayUrl);
-        }
-
-
-        public string BuildPaymentUrl()
         {
-            InitOrderParameter("MD5");
-            ValidatePaymentOrderParameter();
-            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+            IAopClient alipayClient = new DefaultAopClient(openapiGatewayUrl,
+               Merchant.AppId, Merchant.PrivateKeyPem,
+                "json", Charset, Merchant.PublicKeyPem, "RSA"); // 获得初始化的AlipayClient
+
+            AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();// 创建API对应的request
+            alipayRequest.SetReturnUrl(Merchant.ReturnUrl.ToString());
+            alipayRequest.SetNotifyUrl(Merchant.NotifyUrl.ToString());
+
+            AlipayTradePagePayModel model = new AlipayTradePagePayModel();
+            model.Subject = Order.Subject;
+            model.OutTradeNo = Order.OrderNo;
+            model.TimeoutExpress = "30m";
+            model.TotalAmount = Order.OrderAmount.ToString();
+            model.ProductCode = "FAST_INSTANT_TRADE_PAY";
+            alipayRequest.SetBizModel(model);
+
+            return alipayClient.pageExecute(alipayRequest).Body; // 调用SDK生成表单
         }
+
+        //public string BuildPaymentForm()
+        //{        
+        //    InitOrderParameter("MD5");
+        //    ValidatePaymentOrderParameter();
+        //    return GetFormHtml(payGatewayUrl);
+        //}
 
 
         public string BuildWapPaymentUrl(Dictionary<string, string> map)
         {
-            IAopClient defaultAopClient = new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, true);
-            AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
-            request.SetReturnUrl(Merchant.ReturnUrl.ToString());
-            request.SetNotifyUrl(Merchant.NotifyUrl.ToString());
-            request.BizContent = JsonConvert.SerializeObject(new
-            {
-                subject = Order.Subject,
-                out_trade_no = Order.OrderNo,
-                timeout_express = "90m",
-                total_amount = Order.OrderAmount,
-                product_code = "QUICK_WAP_WAY"
-            });
-            AlipayTradeWapPayResponse response = defaultAopClient.pageExecute(request, null, "GET");
-            return response.Body;
+            IAopClient alipayClient = new DefaultAopClient(openapiGatewayUrl,
+             Merchant.AppId, Merchant.PrivateKeyPem,
+              "json", Charset, Merchant.PublicKeyPem, "RSA"); // 获得初始化的AlipayClient
+
+            AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();
+            alipayRequest.SetReturnUrl(Merchant.ReturnUrl.ToString());
+            alipayRequest.SetNotifyUrl(Merchant.NotifyUrl.ToString());
+
+            AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
+            model.Subject = Order.Subject;
+            model.OutTradeNo = Order.OrderNo;
+            model.TimeoutExpress = "30m";
+            model.TotalAmount = Order.OrderAmount.ToString();
+            model.ProductCode = "QUICK_WAP_PAY";
+            alipayRequest.SetBizModel(model);
+
+            return alipayClient.pageExecute(alipayRequest).Body;
         }
 
         public Dictionary<string, string> BuildPayParams()
         {
-            SetGatewayParameterValue("app_id", Merchant.AppId);
-            SetGatewayParameterValue("method", "alipay.trade.app.pay");
-            SetGatewayParameterValue("charset", Charset);
-            SetGatewayParameterValue("sign_type", "RSA");
-            SetGatewayParameterValue("timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            SetGatewayParameterValue("version", "1.0");
-            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
-            SetGatewayParameterValue("biz_content",
-                JsonConvert.SerializeObject(new
-                {
-                    subject = Order.Subject,
-                    out_trade_no = Order.OrderNo,
-                    total_amount = Order.OrderAmount,
-                    product_code = "QUICK_MSECURITY_PAY"
-                }));
+            IAopClient alipayClient = new DefaultAopClient(openapiGatewayUrl,
+            Merchant.AppId, Merchant.PrivateKeyPem,
+             "json", Charset, Merchant.PublicKeyPem, "RSA"); // 获得初始化的AlipayClient
 
-            SetGatewayParameterValue("sign", AopUtils.SignAopRequest(GetSortedGatewayParameter(), Merchant.PrivateKeyPem, Charset, true, "RSA"));
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            alipayRequest.SetReturnUrl(Merchant.ReturnUrl.ToString());
+            alipayRequest.SetNotifyUrl(Merchant.NotifyUrl.ToString());
 
-            StringBuilder signBuilder = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
-            {
-                signBuilder.AppendFormat("{0}={1}&", item.Key, HttpUtility.UrlEncode(item.Value, Encoding.UTF8));
-            }
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.Subject = Order.Subject;
+            model.OutTradeNo = Order.OrderNo;
+            model.TimeoutExpress = "30m";
+            model.TotalAmount = Order.OrderAmount.ToString();
+            model.ProductCode = "QUICK_MSECURITY_PAY";
+            alipayRequest.SetBizModel(model);
+
             Dictionary<string, string> resParam = new Dictionary<string, string>();
-            resParam.Add("body", signBuilder.ToString().TrimEnd('&'));
+            resParam.Add("body", alipayClient.pageExecute(alipayRequest).Body);
             return resParam;
         }
 
-        #region QueryNow
+        //public Dictionary<string, string> BuildPayParams()
+        //{
+        //    SetGatewayParameterValue("app_id", Merchant.AppId);
+        //    SetGatewayParameterValue("method", "alipay.trade.app.pay");
+        //    SetGatewayParameterValue("charset", Charset);
+        //    SetGatewayParameterValue("sign_type", "RSA");
+        //    SetGatewayParameterValue("timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        //    SetGatewayParameterValue("version", "1.0");
+        //    SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
+        //    SetGatewayParameterValue("biz_content",
+        //        JsonConvert.SerializeObject(new
+        //        {
+        //            subject = Order.Subject,
+        //            out_trade_no = Order.OrderNo,
+        //            total_amount = Order.OrderAmount,
+        //            product_code = "QUICK_MSECURITY_PAY"
+        //        }));
+
+        //    SetGatewayParameterValue("sign", AopUtils.SignAopRequest(GetSortedGatewayParameter(), Merchant.PrivateKeyPem, Charset, true, "RSA"));
+
+        //    StringBuilder signBuilder = new StringBuilder();
+        //    foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+        //    {
+        //        signBuilder.AppendFormat("{0}={1}&", item.Key, HttpUtility.UrlEncode(item.Value, Encoding.UTF8));
+        //    }
+        //    Dictionary<string, string> resParam = new Dictionary<string, string>();
+        //    resParam.Add("body", signBuilder.ToString().TrimEnd('&'));
+        //    return resParam;
+        //}
+
         public bool QueryNow(ProductSet productSet)
         {
-            if (productSet == ProductSet.Web)
-            {
-                //InitQueryParameter();
-                //ReadResultXml(Utility.ReadPage(string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString()), pageEncoding));
-                //if (ValidateNotifyParameter() && ValidateOrder())
-                //{
-                //    return true;
-                //}
-                return false;
-            }
-            else
-            {
-                IAopClient client = new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, true);
-                AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
-                request.BizContent = JsonConvert.SerializeObject(
-                    new
-                    {
-                        out_trade_no = Order.OrderNo
-                    });
-                AlipayTradeQueryResponse response = client.Execute(request);
-                if (((string.Compare(response.TradeStatus, "TRADE_FINISHED") == 0 || string.Compare(response.TradeStatus, "TRADE_SUCCESS") == 0)))
-                {
-                    var orderAmount = double.Parse(response.TotalAmount);
-                    if (Order.OrderAmount == orderAmount && string.Compare(Order.OrderNo, response.OutTradeNo) == 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            }
-        }
+            IAopClient alipayClient = new DefaultAopClient(openapiGatewayUrl,
+            Merchant.AppId, Merchant.PrivateKeyPem,
+             "json", Charset, Merchant.PublicKeyPem, "RSA"); // 获得初始化的AlipayClient
 
-        /// <summary>
-        /// 读取结果的XML
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns></returns>
-        private void ReadResultXml(string xml)
-        {
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-            var node = xmlDocument.ChildNodes[1].ChildNodes[0];
-            SetGatewayParameterValue(node.Name, node.InnerText);
-            foreach (XmlNode rootNode in xmlDocument.ChildNodes)
+            AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
+
+            AlipayTradeQueryModel model = new AlipayTradeQueryModel();
+            model.OutTradeNo = Order.OrderNo;
+            alipayRequest.SetBizModel(model);
+
+            AlipayTradeQueryResponse response = alipayClient.Execute(alipayRequest);
+
+            if (((string.Compare(response.TradeStatus, "TRADE_FINISHED") == 0 || string.Compare(response.TradeStatus, "TRADE_SUCCESS") == 0)))
             {
-                foreach (XmlNode item in rootNode.ChildNodes)
+                var orderAmount = double.Parse(response.TotalAmount);
+                if (Order.OrderAmount == orderAmount && string.Compare(Order.OrderNo, response.OutTradeNo) == 0)
                 {
-                    SetGatewayParameterValue(item.Name, item.InnerText);
+                    return true;
                 }
             }
-        }
-
-        /// <summary>
-        /// 初始化查询订单参数
-        /// </summary>
-        private void InitQueryParameter(string sign_type)
-        {
-            SetGatewayParameterValue("service", "single_trade_query");
-            SetGatewayParameterValue("partner", Merchant.Partner);
-            SetGatewayParameterValue("_input_charset", Charset);
-            SetGatewayParameterValue("sign_type", sign_type);
-            SetGatewayParameterValue("out_trade_no", Order.OrderNo);
-            if (!string.IsNullOrEmpty(Order.TradeNo))
-            {
-                SetGatewayParameterValue("trade_no", Order.TradeNo);
-            }
-            SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。
-        }
-
-
-        /// <summary>
-        /// 检查通知签名是否正确、货币类型是否为RMB、是否支付成功。
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidateNotifyParameter()
-        {
-            //string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0 
-            if (string.Compare(GetGatewayParameterValue("is_success"), "T") == 0
-               && ((string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
-                    string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0))
-                )
-            {
-                return true;
-            }
-
             return false;
         }
-
-        /// <summary>
-        /// 验证订单金额、订单号是否与之前的通知的金额、订单号相符
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidateOrder()
-        {
-            if (Order.OrderAmount == Convert.ToDouble(GetGatewayParameterValue("total_fee")) &&
-               string.Compare(Order.OrderNo, GetGatewayParameterValue("out_trade_no")) == 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
-        #endregion
 
         protected override bool CheckNotifyData()
         {
-            if (GetGatewayParameterValue("sign_type").ToUpper() != "RSA")
+            if (ValidateAlipayNotifyRSASign())
             {
-                if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
-                {
-                    return ValidateTrade();
-                }
-            }
-            else
-            {
-                if (ValidateAlipayNotifyRSASign())
-                {
-                    return ValidateTrade();
-                }
+                return ValidateTrade();
             }
             return false;
         }
@@ -320,8 +264,6 @@ namespace ICanPay.Providers
 
             return signBuilder.ToString().TrimEnd('&');
         }
-
-
 
         /// <summary>
         /// 验证支付订单的参数设置
@@ -457,12 +399,6 @@ namespace ICanPay.Providers
             return Regex.IsMatch(emailAddress, emailRegexString);
         }
 
-
-    
-
-   
-
         #endregion
-
     }
 }

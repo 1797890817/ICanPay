@@ -106,10 +106,10 @@ namespace ICanPay.Providers
         }
 
         protected override bool CheckNotifyData()
-        {
-            ReadNotifyOrderParameter();
+        {       
             if (IsSuccessResult())
             {
+                ReadNotifyOrderParameter();
                 return true;
             }
             return false;
