@@ -2,35 +2,22 @@
 
 namespace ICanPay
 {
-    /// <summary>
-    /// 订单的金额、编号
-    /// </summary>
-    public class Order
+    public class Refund
     {
-
         #region 私有字段
         double orderAmount;
+        double refundAmount;
         string orderNo;
         string tradeNo;
-        string subject;
+        string refoundNo;
         DateTime paymentDate;
-
         #endregion
 
 
         #region 构造函数
 
-        public Order()
+        public Refund()
         {
-        }
-
-
-        public Order(string orderNo, double orderAmount, string subject, DateTime paymentDate)
-        {
-            this.orderNo = orderNo;
-            this.orderAmount = orderAmount;
-            this.subject = subject;
-            this.paymentDate = paymentDate;
         }
 
         #endregion
@@ -49,18 +36,38 @@ namespace ICanPay
                 {
                     throw new ArgumentOutOfRangeException("OrderAmount", "订单金额没有设置");
                 }
-
                 return orderAmount;
             }
-
             set
             {
                 if (value < (double)0.01)
                 {
                     throw new ArgumentOutOfRangeException("OrderAmount", "订单金额必须大于或等于0.01");
                 }
-
                 orderAmount = value;
+            }
+        }
+
+        /// <summary>
+        ///退款金额，以元为单位。例如：1.00，1元人民币。0.01，1角人民币。因为支付网关要求的最低支付金额为0.01元，所以RefundAmount最低为0.01。
+        /// </summary>
+        public double RefundAmount
+        {
+            get
+            {
+                if (refundAmount < 0.01)
+                {
+                    throw new ArgumentOutOfRangeException("RefundAmount", "退款金额没有设置");
+                }
+                return refundAmount;
+            }
+            set
+            {
+                if (value < (double)0.01)
+                {
+                    throw new ArgumentOutOfRangeException("RefundAmount", "退款金额必须大于或等于0.01");
+                }
+                refundAmount = value;
             }
         }
 
@@ -74,19 +81,16 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(orderNo))
                 {
-                    throw new ArgumentNullException("OrderNo", "订单单号没有设置");
+                    throw new ArgumentNullException("OrderNo", "订单订单编号没有设置");
                 }
-
                 return orderNo;
             }
-
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException("OrderNo", "订单订单编号不能为空");
                 }
-
                 orderNo = value;
             }
         }
@@ -97,45 +101,27 @@ namespace ICanPay
         public string TradeNo
         {
             get
-            {
-                if (string.IsNullOrEmpty(tradeNo))
-                {
-                    throw new ArgumentNullException("TradeNo", "交易流水号不能为空");
-                }
-
+            { 
                 return tradeNo;
             }
-
             set
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException("TradeNo", "交易流水号不能为空");
-                }
-
                 tradeNo = value;
             }
         }
 
-
         /// <summary>
-        /// 订单主题，订单主题为空时将使用订单orderNo作为主题
+        ///商户退款单号
         /// </summary>
-        public string Subject
+        public string RefoundNo
         {
             get
             {
-                if(string.IsNullOrEmpty(subject))
-                {
-                    return orderNo;
-                }
-
-                return subject;
+                return refoundNo;
             }
-
             set
             {
-                subject = value;
+                refoundNo = value;
             }
         }
 
@@ -164,7 +150,21 @@ namespace ICanPay
             }
         }
 
-      
+        /// <summary>
+        /// 退款的原因说明
+        /// </summary>
+        public string RefundDes { set; get; }
+
+        /// <summary>
+        /// 支付渠道退款单号
+        /// </summary>
+        public string RefoundId { set; get; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public bool Status { set; get; } = false;
+   
         #endregion
     }
 }

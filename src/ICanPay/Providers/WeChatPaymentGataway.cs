@@ -15,13 +15,15 @@ namespace ICanPay.Providers
     /// <summary>
     /// 微信支付网关
     /// </summary>
-    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow
+    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefund
     {
 
         #region 私有字段
 
         const string payGatewayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         const string queryGatewayUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+        const string refundGatewayUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+        const string refundqueryGatewayUrl = "https://api.mch.weixin.qq.com/pay/refundquery";
 
         #endregion
 
@@ -97,19 +99,79 @@ namespace ICanPay.Providers
             resParam.Add("partnerid", GetGatewayParameterValue("partnerid"));
             return resParam;
         }
-
-   
+ 
         public bool QueryNow(ProductSet productSet)
         {
             InitQueryOrderParameter();
             return CheckQueryResult(PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl));
         }
 
+        public Refund BuildRefund(Refund refund)
+        {
+            if (string.IsNullOrEmpty(refund.RefoundNo))
+            {
+                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
+            }
+            SetGatewayParameterValue("appid", Merchant.AppId);
+            SetGatewayParameterValue("mch_id", Merchant.Partner);
+            SetGatewayParameterValue("nonce_str", GenerateNonceString());
+            SetGatewayParameterValue("sign_type", "MD5");
+            if (!string.IsNullOrEmpty(refund.TradeNo))
+            {
+                SetGatewayParameterValue("transaction_id", refund.TradeNo);
+            }
+            else
+            {
+                SetGatewayParameterValue("out_trade_no", refund.OrderNo);
+            }
+            SetGatewayParameterValue("out_refund_no", refund.RefoundNo);
+            SetGatewayParameterValue("total_fee", (refund.OrderAmount * 100).ToString());
+            SetGatewayParameterValue("refund_fee", (refund.RefundAmount * 100).ToString());
+            if (!string.IsNullOrEmpty(refund.RefundDes))
+            {
+                SetGatewayParameterValue("refund_desc", refund.RefundDes);
+            }
+            SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
+            GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), refundGatewayUrl));
+            if (GetGatewayParameterValue("result_code")== "SUCCESS")
+            {           
+                refund.TradeNo = GetGatewayParameterValue("transaction_id");
+                refund.RefoundId = GetGatewayParameterValue("refund_id");
+                refund.Status = true;
+            }
+            return refund;
+        }
+
+        public Refund BuildRefundQuery(Refund refund)
+        {
+            if (string.IsNullOrEmpty(refund.RefoundNo))
+            {
+                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
+            }
+            SetGatewayParameterValue("appid", Merchant.AppId);
+            SetGatewayParameterValue("mch_id", Merchant.Partner);
+            SetGatewayParameterValue("nonce_str", GenerateNonceString());
+            SetGatewayParameterValue("sign_type", "MD5");
+            SetGatewayParameterValue("out_refund_no", refund.RefoundNo);
+            SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
+            GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), refundqueryGatewayUrl));
+            if (GetGatewayParameterValue("result_code") == "SUCCESS")
+            {
+                refund.TradeNo = GetGatewayParameterValue("transaction_id");
+                refund.RefoundId = GetGatewayParameterValue("refund_id");
+                refund.RefoundNo = GetGatewayParameterValue("out_refund_no");
+                refund.OrderAmount = double.Parse(GetGatewayParameterValue("total_fee")) * 0.01;
+                refund.RefundAmount = double.Parse(GetGatewayParameterValue("refund_fee")) * 0.01;
+                refund.Status = true;
+            }
+            return refund;
+        }
+
         protected override bool CheckNotifyData()
-        {       
+        {
+            ReadNotifyOrderParameter();
             if (IsSuccessResult())
             {
-                ReadNotifyOrderParameter();
                 return true;
             }
             return false;
@@ -122,8 +184,6 @@ namespace ICanPay.Providers
             InitProcessSuccessParameter();
             HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
         }
-
-
 
         /// <summary>
         /// 初始化支付订单的参数
@@ -142,14 +202,12 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
         }
 
-
         private void ReadNotifyOrderParameter()
         {
             Order.OrderNo = GetGatewayParameterValue("out_trade_no");
-            Order.OrderAmount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
+            Order.OrderAmount = double.Parse(GetGatewayParameterValue("total_fee")) * 0.01;
             Order.TradeNo = GetGatewayParameterValue("transaction_id");
         }
-
 
         /// <summary>
         /// 生成随机字符串
@@ -159,7 +217,6 @@ namespace ICanPay.Providers
         {
             return Guid.NewGuid().ToString().Replace("-", "");
         }
-
 
         /// <summary>
         /// 将网关数据转换成XML
@@ -186,7 +243,6 @@ namespace ICanPay.Providers
             return xmlBuilder.ToString();
         }
 
-
         /// <summary>
         /// 获得签名
         /// </summary>
@@ -206,7 +262,6 @@ namespace ICanPay.Providers
             signBuilder.Append("key=" + Merchant.Key);
             return Utility.GetMD5(signBuilder.ToString()).ToUpper();
         }
-
 
         /// <summary>
         /// 提交订单
@@ -252,7 +307,6 @@ namespace ICanPay.Providers
             return string.Empty;
         }
 
-
         /// <summary>
         /// 获得微信支付的URL
         /// </summary>
@@ -290,7 +344,6 @@ namespace ICanPay.Providers
             }
         }
 
-
         /// <summary>
         /// 是否是成功的结果
         /// </summary>
@@ -305,7 +358,6 @@ namespace ICanPay.Providers
 
             return false;
         }
-
 
         /// <summary>
         /// 验证返回的结果
@@ -323,7 +375,6 @@ namespace ICanPay.Providers
 
         }
 
-
         /// <summary>
         /// 验证签名
         /// </summary>
@@ -337,7 +388,6 @@ namespace ICanPay.Providers
 
             return false;
         }
-
 
         /// <summary>
         /// 检查查询结果
@@ -375,7 +425,6 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
         }
 
-
         /// <summary>
         /// 清除网关的数据
         /// </summary>
@@ -384,13 +433,13 @@ namespace ICanPay.Providers
             GatewayParameterData.Clear();
         }
 
-
         /// <summary>
         /// 初始化表示已成功接收到支付通知的数据
         /// </summary>
         private void InitProcessSuccessParameter()
         {
             SetGatewayParameterValue("return_code", "SUCCESS");
-        }    
+        }
+
     }
 }

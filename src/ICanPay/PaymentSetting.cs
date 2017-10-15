@@ -107,7 +107,6 @@ namespace ICanPay
             }
         }
 
-
         public bool CanQueryNow
         {
             get
@@ -124,7 +123,13 @@ namespace ICanPay
             }
         }
 
-
+        public bool CanRefund
+        {
+            get
+            {
+                return gateway is IRefund;
+            }
+        }
         #endregion
 
 
@@ -271,8 +276,37 @@ namespace ICanPay
             {
                 return appParams.BuildPayParams();
             }
-
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IAppParams 查询接口");
+        }
+
+        /// <summary>
+        /// 创建退款
+        /// </summary>
+        /// <param name="refund"></param>
+        /// <returns></returns>
+        public Refund BuildRefund(Refund refund)
+        {
+            IRefund iRefund = gateway as IRefund;
+            if (iRefund != null)
+            {
+                return iRefund.BuildRefund(refund);
+            }
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IRefund 查询接口");
+        }
+
+        /// <summary>
+        /// 查询退款结果
+        /// </summary>
+        /// <param name="refund"></param>
+        /// <returns></returns>
+        public Refund BuildRefundQuery(Refund refund)
+        {
+            IRefund iRefund = gateway as IRefund;
+            if (iRefund != null)
+            {
+                return iRefund.BuildRefundQuery(refund);
+            }
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IRefund 查询接口");
         }
 
         /// <summary>

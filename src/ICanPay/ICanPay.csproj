@@ -84,12 +84,14 @@
     <Compile Include="Enums\GatewayParameterRequestMethod.cs" />
     <Compile Include="Enums\GatewayType.cs" />
     <Compile Include="Interfaces\IAppParams.cs" />
+    <Compile Include="Interfaces\IBatchRefund.cs" />
     <Compile Include="Interfaces\IPaymentForm.cs" />
     <Compile Include="Interfaces\IPaymentQRCode.cs" />
     <Compile Include="Interfaces\IPaymentUrl.cs" />
     <Compile Include="Interfaces\IQueryForm.cs" />
     <Compile Include="Interfaces\IQueryNow.cs" />
     <Compile Include="Interfaces\IQueryUrl.cs" />
+    <Compile Include="Interfaces\IRefund.cs" />
     <Compile Include="Interfaces\IWapPaymentForm.cs" />
     <Compile Include="Interfaces\IWapPaymentUrl.cs" />
     <Compile Include="Merchant.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Providers\TenpayGateway.cs" />
     <Compile Include="Providers\WeChatPaymentGataway.cs" />
     <Compile Include="Events\UnknownGatewayEventArgs.cs" />
+    <Compile Include="Refund.cs" />
     <Compile Include="Utils\Utility.cs" />
   </ItemGroup>
   <ItemGroup>

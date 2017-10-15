@@ -96,6 +96,7 @@
     <Compile Include="Controllers\AppPaymentController.cs" />
     <Compile Include="Controllers\NotifyController.cs" />
     <Compile Include="Controllers\QueryPaymentController.cs" />
+    <Compile Include="Controllers\RefundController.cs" />
     <Compile Include="Controllers\WapPaymentController.cs" />
     <Compile Include="Controllers\WebPaymentController.cs" />
     <Compile Include="Global.asax.cs">
