@@ -15,7 +15,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 支付宝网关
     /// </summary>
-    public sealed class AlipayGateway : GatewayBase, IPaymentForm,  IWapPaymentUrl, IAppParams, IQueryNow, IRefund
+    public sealed class AlipayGateway : GatewayBase, IPaymentForm,  IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
     {
 
         #region 私有字段BuildPayParams
@@ -83,7 +83,6 @@ namespace ICanPay.Providers
             return alipayClient.pageExecute(alipayRequest).Body; // 调用SDK生成表单
         }
 
-
         public string BuildWapPaymentUrl(Dictionary<string, string> map)
         {
             IAopClient alipayClient = GetAopClient();
@@ -139,7 +138,7 @@ namespace ICanPay.Providers
 
         public Refund BuildRefund(Refund refund)
         {
-            IAopClient alipayClient = GetAopClient(); 
+            IAopClient alipayClient = GetAopClient();
             AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
             AlipayTradeRefundModel model = new AlipayTradeRefundModel();
             model.OutTradeNo = refund.OrderNo;
@@ -147,10 +146,7 @@ namespace ICanPay.Providers
             {
                 model.TradeNo = refund.TradeNo;
             }
-            if (!string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                model.OutRequestNo = refund.RefoundNo;
-            }
+            model.OutRequestNo = refund.RefoundNo;
             model.RefundAmount = refund.RefundAmount.ToString();
             model.RefundReason = refund.RefundDes;
             alipayRequest.SetBizModel(model);
@@ -165,7 +161,7 @@ namespace ICanPay.Providers
 
         public Refund BuildRefundQuery(Refund refund)
         {
-            IAopClient alipayClient = GetAopClient(); 
+            IAopClient alipayClient = GetAopClient();
             AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
             AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
             model.OutTradeNo = refund.OrderNo;
@@ -173,10 +169,7 @@ namespace ICanPay.Providers
             {
                 model.TradeNo = refund.TradeNo;
             }
-            if (!string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                model.OutRequestNo = refund.RefoundNo;
-            }
+            model.OutRequestNo = refund.RefoundNo;
             request.SetBizModel(model);
             AlipayTradeFastpayRefundQueryResponse response = alipayClient.Execute(request);
             if (response.Code == "10000" && !string.IsNullOrEmpty(response.RefundAmount))

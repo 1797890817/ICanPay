@@ -127,7 +127,7 @@ namespace ICanPay
         {
             get
             {
-                return gateway is IRefund;
+                return gateway is IRefundReq;
             }
         }
         #endregion
@@ -286,7 +286,7 @@ namespace ICanPay
         /// <returns></returns>
         public Refund BuildRefund(Refund refund)
         {
-            IRefund iRefund = gateway as IRefund;
+            IRefundReq iRefund = gateway as IRefundReq;
             if (iRefund != null)
             {
                 return iRefund.BuildRefund(refund);
@@ -301,7 +301,7 @@ namespace ICanPay
         /// <returns></returns>
         public Refund BuildRefundQuery(Refund refund)
         {
-            IRefund iRefund = gateway as IRefund;
+            IRefundReq iRefund = gateway as IRefundReq;
             if (iRefund != null)
             {
                 return iRefund.BuildRefundQuery(refund);

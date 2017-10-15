@@ -15,7 +15,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 微信支付网关
     /// </summary>
-    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefund
+    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
     {
 
         #region 私有字段
@@ -108,10 +108,6 @@ namespace ICanPay.Providers
 
         public Refund BuildRefund(Refund refund)
         {
-            if (string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
-            }
             SetGatewayParameterValue("appid", Merchant.AppId);
             SetGatewayParameterValue("mch_id", Merchant.Partner);
             SetGatewayParameterValue("nonce_str", GenerateNonceString());
@@ -144,10 +140,6 @@ namespace ICanPay.Providers
 
         public Refund BuildRefundQuery(Refund refund)
         {
-            if (string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
-            }
             SetGatewayParameterValue("appid", Merchant.AppId);
             SetGatewayParameterValue("mch_id", Merchant.Partner);
             SetGatewayParameterValue("nonce_str", GenerateNonceString());

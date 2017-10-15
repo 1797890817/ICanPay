@@ -91,7 +91,7 @@
     <Compile Include="Interfaces\IQueryForm.cs" />
     <Compile Include="Interfaces\IQueryNow.cs" />
     <Compile Include="Interfaces\IQueryUrl.cs" />
-    <Compile Include="Interfaces\IRefund.cs" />
+    <Compile Include="Interfaces\IRefundReq.cs" />
     <Compile Include="Interfaces\IWapPaymentForm.cs" />
     <Compile Include="Interfaces\IWapPaymentUrl.cs" />
     <Compile Include="Merchant.cs" />

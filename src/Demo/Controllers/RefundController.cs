@@ -12,9 +12,11 @@ namespace Demo.Controllers
             querySetting.Merchant.Partner = "000000000000000";
             querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
             if (querySetting.CanRefund)
-            {
-                querySetting.BuildRefund(new Refund());
-                querySetting.BuildRefundQuery(new Refund());
+            { 
+                var refund = new Refund();
+                refund.RefoundNo = "000000000000000";
+                querySetting.BuildRefund(refund);
+                querySetting.BuildRefundQuery(refund);
             }
         }
     }

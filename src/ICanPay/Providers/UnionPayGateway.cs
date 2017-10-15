@@ -12,7 +12,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 银联网关
     /// </summary>
-    public class UnionPayGateway : GatewayBase, IPaymentForm, IWapPaymentForm, IAppParams, IQueryNow, IRefund
+    public class UnionPayGateway : GatewayBase, IPaymentForm, IWapPaymentForm, IAppParams, IQueryNow, IRefundReq
     {
         #region 构造函数
 
@@ -133,11 +133,6 @@ namespace ICanPay.Providers
 
         public Refund BuildRefund(Refund refund)
         {
-            if (string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
-            }
-
             Dictionary<string, string> param = new Dictionary<string, string>();
 
             //以下信息非特殊情况不需要改动
@@ -221,10 +216,6 @@ namespace ICanPay.Providers
 
         public Refund BuildRefundQuery(Refund refund)
         {
-            if (string.IsNullOrEmpty(refund.RefoundNo))
-            {
-                throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
-            }
             Dictionary<string, string> param = new Dictionary<string, string>();
 
             //以下信息非特殊情况不需要改动

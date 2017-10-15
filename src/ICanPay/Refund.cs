@@ -81,7 +81,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(orderNo))
                 {
-                    throw new ArgumentNullException("OrderNo", "订单订单编号没有设置");
+                    throw new ArgumentNullException("OrderNo", "订单单号没有设置");
                 }
                 return orderNo;
             }
@@ -89,7 +89,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("OrderNo", "订单订单编号不能为空");
+                    throw new ArgumentNullException("OrderNo", "订单单号不能为空");
                 }
                 orderNo = value;
             }
@@ -117,10 +117,18 @@ namespace ICanPay
         {
             get
             {
+                if (string.IsNullOrEmpty(refoundNo))
+                {
+                    throw new ArgumentNullException("RefoundNo", "商户退款单号没有设置");
+                }
                 return refoundNo;
             }
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
+                }
                 refoundNo = value;
             }
         }

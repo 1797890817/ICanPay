@@ -1,6 +1,6 @@
 ﻿namespace ICanPay.Interfaces
 {
-    internal interface IRefund
+    internal interface IRefundReq
     {
         /// <summary>
         /// 创建退款
