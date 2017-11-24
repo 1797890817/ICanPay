@@ -148,10 +148,6 @@ namespace ICanPay
                     {
                         return new WeChatPaymentGataway();
                     }
-                case GatewayType.Tenpay:
-                    {
-                        return new TenpayGateway();
-                    }
                 case GatewayType.UnionPay:
                     {
                         return new UnionPayGateway();
@@ -254,12 +250,12 @@ namespace ICanPay
         /// 查询订单，立即获得订单的查询结果
         /// </summary>
         /// <returns></returns>
-        public bool QueryNow(ProductSet productSet = ProductSet.APP)
+        public bool QueryNow()
         {
             IQueryNow queryNow = gateway as IQueryNow;
             if (queryNow != null)
             {
-                return queryNow.QueryNow(productSet);
+                return queryNow.QueryNow();
             }
 
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryNow 查询接口");

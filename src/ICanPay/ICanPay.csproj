@@ -105,12 +105,11 @@
     <Compile Include="PaymentSetting.cs" />
     <Compile Include="Events\PaymentNotify.cs" />
     <Compile Include="Events\PaymentSucceedEventArgs.cs" />
-    <Compile Include="Enums\ProductSet.cs" />
+    <Compile Include="Enums\GatewayTradeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AlipayGateway.cs" />
     <Compile Include="Providers\UnionPayGateway.cs" />
     <Compile Include="Providers\NullGateway.cs" />
-    <Compile Include="Providers\TenpayGateway.cs" />
     <Compile Include="Providers\WeChatPaymentGataway.cs" />
     <Compile Include="Events\UnknownGatewayEventArgs.cs" />
     <Compile Include="Refund.cs" />

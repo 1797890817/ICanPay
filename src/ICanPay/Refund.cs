@@ -9,7 +9,7 @@ namespace ICanPay
         double refundAmount;
         string orderNo;
         string tradeNo;
-        string refoundNo;
+        string outRefoundNo;
         DateTime paymentDate;
         #endregion
 
@@ -113,23 +113,23 @@ namespace ICanPay
         /// <summary>
         ///商户退款单号
         /// </summary>
-        public string RefoundNo
+        public string OutRefundNo
         {
             get
             {
-                if (string.IsNullOrEmpty(refoundNo))
+                if (string.IsNullOrEmpty(outRefoundNo))
                 {
-                    throw new ArgumentNullException("RefoundNo", "商户退款单号没有设置");
+                    throw new ArgumentNullException("OutRefundNo", "商户退款单号没有设置");
                 }
-                return refoundNo;
+                return outRefoundNo;
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("RefoundNo", "商户退款单号不能为空");
+                    throw new ArgumentNullException("OutRefundNo", "商户退款单号不能为空");
                 }
-                refoundNo = value;
+                outRefoundNo = value;
             }
         }
 
@@ -161,17 +161,17 @@ namespace ICanPay
         /// <summary>
         /// 退款的原因说明
         /// </summary>
-        public string RefundDes { set; get; }
+        public string RefundDesc { set; get; }
 
         /// <summary>
         /// 支付渠道退款单号
         /// </summary>
-        public string RefoundId { set; get; }
+        public string RefundNo { set; get; }
 
         /// <summary>
-        /// 状态
+        /// 退款状态
         /// </summary>
-        public bool Status { set; get; } = false;
+        public bool RefundStatus { set; get; } = false;
    
         #endregion
     }

@@ -13,6 +13,6 @@ namespace ICanPay.Interfaces
         /// <remarks>
         /// 服务器在查询url页面输出返回查询数据
         /// </remarks>
-        bool QueryNow(ProductSet productSet);
+        bool QueryNow();
     }
 }

@@ -14,7 +14,7 @@ namespace Demo.Controllers
             if (querySetting.CanRefund)
             { 
                 var refund = new Refund();
-                refund.RefoundNo = "000000000000000";
+                refund.OutRefundNo = "000000000000000";
                 querySetting.BuildRefund(refund);
                 querySetting.BuildRefundQuery(refund);
             }

@@ -48,7 +48,7 @@ namespace ICanPay
         /// <summary>
         ///  支付类型 0Web 1WAP 2 APP
         /// </summary>
-        public ProductSet productSet { set; get; }
+        public GatewayTradeType productSet { set; get; }
 
         /// <summary>
         /// 商家数据

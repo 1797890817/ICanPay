@@ -27,7 +27,6 @@ namespace ICanPay.Providers
 
         #endregion
 
-
         #region 构造函数
 
         /// <summary>
@@ -51,7 +50,6 @@ namespace ICanPay.Providers
 
         #endregion
 
-
         #region 属性
 
         public override GatewayType GatewayType
@@ -63,7 +61,6 @@ namespace ICanPay.Providers
         }
 
         #endregion
-
 
         #region 方法
 
@@ -117,7 +114,7 @@ namespace ICanPay.Providers
             return resParam;
         }
 
-        public bool QueryNow(ProductSet productSet)
+        public bool QueryNow()
         {
             IAopClient alipayClient = GetAopClient(); 
             AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
@@ -146,15 +143,15 @@ namespace ICanPay.Providers
             {
                 model.TradeNo = refund.TradeNo;
             }
-            model.OutRequestNo = refund.RefoundNo;
+            model.OutRequestNo = refund.OutRefundNo;
             model.RefundAmount = refund.RefundAmount.ToString();
-            model.RefundReason = refund.RefundDes;
+            model.RefundReason = refund.RefundDesc;
             alipayRequest.SetBizModel(model);
             AlipayTradeRefundResponse response = alipayClient.Execute(alipayRequest);
             if (response.Code == "10000")
             {
                 refund.TradeNo = response.TradeNo;
-                refund.Status = true;
+                refund.RefundStatus = true;
             }
             return refund;
         }
@@ -169,7 +166,7 @@ namespace ICanPay.Providers
             {
                 model.TradeNo = refund.TradeNo;
             }
-            model.OutRequestNo = refund.RefoundNo;
+            model.OutRequestNo = refund.OutRefundNo;
             request.SetBizModel(model);
             AlipayTradeFastpayRefundQueryResponse response = alipayClient.Execute(request);
             if (response.Code == "10000" && !string.IsNullOrEmpty(response.RefundAmount))
@@ -181,7 +178,7 @@ namespace ICanPay.Providers
                     {
                         refund.TradeNo = response.TradeNo;
                         refund.RefundAmount = refundAmount;
-                        refund.Status = true;
+                        refund.RefundStatus = true;
                     }
                 }
             }

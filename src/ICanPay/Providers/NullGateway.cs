@@ -30,7 +30,6 @@ namespace ICanPay.Providers
 
         #endregion
 
-
         #region 属性
 
         public override GatewayType GatewayType
@@ -40,7 +39,6 @@ namespace ICanPay.Providers
 
 
         #endregion
-
 
         #region 方法
 

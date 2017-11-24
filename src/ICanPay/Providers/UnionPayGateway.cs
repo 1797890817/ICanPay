@@ -147,7 +147,7 @@ namespace ICanPay.Providers
             param["backUrl"] = "";  //后台通知地址
 
             //TODO 以下信息需要填写
-            param["orderId"] = refund.RefoundNo;//商户订单号，8-32位数字字母，不能含“-”或“_”，可以自行定制规则，重新产生，不同于原消费，此处默认取demo演示页面传递的参数
+            param["orderId"] = refund.OutRefundNo;//商户订单号，8-32位数字字母，不能含“-”或“_”，可以自行定制规则，重新产生，不同于原消费，此处默认取demo演示页面传递的参数
             param["merId"] =Merchant.Partner;//商户代码，请改成自己的测试商户号，此处默认取demo演示页面传递的参数
             param["origQryId"] = refund.TradeNo;//原消费的queryId，可以从查询接口或者通知接口中获取，此处默认取demo演示页面传递的参数
             param["txnTime"] = refund.PaymentDate.ToString("yyyyMMddHHmmss");//订单发送时间，格式为YYYYMMDDhhmmss，重新产生，不同于原消费，此处默认取demo演示页面传递的参数，参考取法： DateTime.Now.ToString("yyyyMMddHHmmss")
@@ -184,8 +184,8 @@ namespace ICanPay.Providers
                         //交易已受理，等待接收后台通知更新订单状态，如果通知长时间未收到也可发起交易状态查询
                         //TODO
                         refund.TradeNo = rspData["origQryId"];
-                        refund.RefoundId = rspData["queryId"];
-                        refund.Status = true;
+                        refund.RefundNo = rspData["queryId"];
+                        refund.RefundStatus = true;
                     }
                     else if ("03" == respcode ||
                             "04" == respcode ||
@@ -229,7 +229,7 @@ namespace ICanPay.Providers
             param["channelType"] = "07";//渠道类型
 
             //TODO 以下信息需要填写
-            param["orderId"] = refund.RefoundNo;	//请修改被查询的交易的订单号，8-32位数字字母，不能含“-”或“_”，此处默认取demo演示页面传递的参数
+            param["orderId"] = refund.OutRefundNo;	//请修改被查询的交易的订单号，8-32位数字字母，不能含“-”或“_”，此处默认取demo演示页面传递的参数
             param["merId"] = Merchant.Partner;//商户代码，请改成自己的测试商户号，此处默认取demo演示页面传递的参数
             param["txnTime"] = refund.PaymentDate.ToString("yyyyMMddHHmmss"); ;//请修改被查询的交易的订单发送时间，格式为YYYYMMDDhhmmss，此处默认取demo演示页面传递的参数
 
@@ -252,8 +252,8 @@ namespace ICanPay.Providers
                         {
                             //交易成功，更新商户订单状态
                             //TODO
-                            refund.RefoundId = rspData["queryId"]; 
-                            refund.Status = true;
+                            refund.RefundNo = rspData["queryId"]; 
+                            refund.RefundStatus = true;
                         }
                         else if ("03" == origRespCode ||
                             "04" == origRespCode ||
@@ -291,7 +291,7 @@ namespace ICanPay.Providers
         }
 
 
-        public bool QueryNow(ProductSet productSet)
+        public bool QueryNow()
         {           
             Dictionary<string, string> param = new Dictionary<string, string>();
 

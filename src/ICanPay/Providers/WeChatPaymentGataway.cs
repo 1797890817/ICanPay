@@ -9,7 +9,6 @@ using System.Text;
 using System.Web;
 using System.Xml;
 
-
 namespace ICanPay.Providers
 {
     /// <summary>
@@ -26,7 +25,6 @@ namespace ICanPay.Providers
         const string refundqueryGatewayUrl = "https://api.mch.weixin.qq.com/pay/refundquery";
 
         #endregion
-
 
         #region 构造函数
 
@@ -49,19 +47,17 @@ namespace ICanPay.Providers
 
         #endregion
 
-
+        #region 方法
         public override GatewayType GatewayType
         {
             get { return GatewayType.WeChatPayment; }
         }
-
 
         public string GetPaymentQRCodeContent()
         {
             InitPaymentOrderParameter();
             return GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl));
         }
-
 
         /// <summary>
         /// https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4
@@ -100,7 +96,7 @@ namespace ICanPay.Providers
             return resParam;
         }
  
-        public bool QueryNow(ProductSet productSet)
+        public bool QueryNow()
         {
             InitQueryOrderParameter();
             return CheckQueryResult(PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl));
@@ -120,20 +116,20 @@ namespace ICanPay.Providers
             {
                 SetGatewayParameterValue("out_trade_no", refund.OrderNo);
             }
-            SetGatewayParameterValue("out_refund_no", refund.RefoundNo);
+            SetGatewayParameterValue("out_refund_no", refund.OutRefundNo);
             SetGatewayParameterValue("total_fee", (refund.OrderAmount * 100).ToString());
             SetGatewayParameterValue("refund_fee", (refund.RefundAmount * 100).ToString());
-            if (!string.IsNullOrEmpty(refund.RefundDes))
+            if (!string.IsNullOrEmpty(refund.RefundDesc))
             {
-                SetGatewayParameterValue("refund_desc", refund.RefundDes);
+                SetGatewayParameterValue("refund_desc", refund.RefundDesc);
             }
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
             GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), refundGatewayUrl));
             if (GetGatewayParameterValue("result_code")== "SUCCESS")
             {           
                 refund.TradeNo = GetGatewayParameterValue("transaction_id");
-                refund.RefoundId = GetGatewayParameterValue("refund_id");
-                refund.Status = true;
+                refund.RefundNo = GetGatewayParameterValue("refund_id");
+                refund.RefundStatus = true;
             }
             return refund;
         }
@@ -144,17 +140,17 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("mch_id", Merchant.Partner);
             SetGatewayParameterValue("nonce_str", GenerateNonceString());
             SetGatewayParameterValue("sign_type", "MD5");
-            SetGatewayParameterValue("out_refund_no", refund.RefoundNo);
+            SetGatewayParameterValue("out_refund_no", refund.OutRefundNo);
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
             GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), refundqueryGatewayUrl));
             if (GetGatewayParameterValue("result_code") == "SUCCESS")
             {
                 refund.TradeNo = GetGatewayParameterValue("transaction_id");
-                refund.RefoundId = GetGatewayParameterValue("refund_id");
-                refund.RefoundNo = GetGatewayParameterValue("out_refund_no");
+                refund.RefundNo = GetGatewayParameterValue("refund_id");
+                refund.OutRefundNo = GetGatewayParameterValue("out_refund_no");
                 refund.OrderAmount = double.Parse(GetGatewayParameterValue("total_fee")) * 0.01;
                 refund.RefundAmount = double.Parse(GetGatewayParameterValue("refund_fee")) * 0.01;
-                refund.Status = true;
+                refund.RefundStatus = true;
             }
             return refund;
         }
@@ -432,6 +428,6 @@ namespace ICanPay.Providers
         {
             SetGatewayParameterValue("return_code", "SUCCESS");
         }
-
+        #endregion
     }
 }

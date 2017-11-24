@@ -47,26 +47,12 @@ namespace ICanPay
                 return new WeChatPaymentGataway(gatewayParameterData);
             }
 
-            if (IsTenpayGateway(gatewayParameterData))
-            {
-                return new TenpayGateway(gatewayParameterData);
-            }
-
             if (IsUnionPayGateway(gatewayParameterData))
             {
                 return new UnionPayGateway(gatewayParameterData);
             }
 
             return new NullGateway(gatewayParameterData);
-        }
-
-
-        /// <summary>
-        /// 是否是财付通网关
-        /// </summary>
-        private static bool IsTenpayGateway(List<GatewayParameter> gatewayParameterData)
-        {
-            return ExistParameter(tenpayGatewayVerifyParmaNames, gatewayParameterData);
         }
 
 
