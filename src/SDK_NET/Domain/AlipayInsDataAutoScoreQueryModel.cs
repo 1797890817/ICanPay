@@ -70,6 +70,12 @@ namespace Aop.Api.Domain
         public string RoleType { get; set; }
 
         /// <summary>
+        /// 枚举定义如下，默认不传该参数为标准分查询    STANDARD：标准分   EXCLUSIVE：专属分
+        /// </summary>
+        [XmlElement("score_type")]
+        public string ScoreType { get; set; }
+
+        /// <summary>
         /// 请求发起时通过程序生成标准UUID，每一次请求都需要变化。JAVA：UUID.randomUUID().toString()
         /// </summary>
         [XmlElement("uuid")]

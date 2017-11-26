@@ -34,6 +34,12 @@ namespace Aop.Api.Domain
         public string OutBizNo { get; set; }
 
         /// <summary>
+        /// 扣减积分时，该字段用于补充描述积分扣减的场景，将会拼在积分扣减记录的标题中进行展示，若无特殊需求则不要传该参数。明文长度不要超过32个中文汉字。
+        /// </summary>
+        [XmlElement("prod_title")]
+        public string ProdTitle { get; set; }
+
+        /// <summary>
         /// 业务子类型，表明业务来源实际操作的业务分类，若无需要则不传。
         /// </summary>
         [XmlElement("sub_biz_type")]

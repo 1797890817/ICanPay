@@ -21,6 +21,12 @@ namespace Aop.Api.Response
         public string AlipayUserId { get; set; }
 
         /// <summary>
+        /// 令牌类型，permanent表示返回的access_token和refresh_token永久有效，非永久令牌不返回该字段
+        /// </summary>
+        [XmlElement("auth_token_type")]
+        public string AuthTokenType { get; set; }
+
+        /// <summary>
         /// 访问令牌的有效时间，单位是秒。
         /// </summary>
         [XmlElement("expires_in")]

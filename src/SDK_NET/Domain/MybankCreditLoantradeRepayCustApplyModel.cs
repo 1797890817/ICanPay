@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -34,6 +35,12 @@ namespace Aop.Api.Domain
         public string ApplyRepayPrin { get; set; }
 
         /// <summary>
+        /// 优惠金额，单位元
+        /// </summary>
+        [XmlElement("discount_amt")]
+        public string DiscountAmt { get; set; }
+
+        /// <summary>
         /// 扩展字段
         /// </summary>
         [XmlElement("ext_data")]
@@ -56,6 +63,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("loan_ar_no")]
         public string LoanArNo { get; set; }
+
+        /// <summary>
+        /// 营销工具ID列表，例如红包，打折卡等营销工具ID列表
+        /// </summary>
+        [XmlArray("prom_tools")]
+        [XmlArrayItem("string")]
+        public List<string> PromTools { get; set; }
 
         /// <summary>
         /// 请求流水号，用于幂等控制.以"ipRoleId_"开头

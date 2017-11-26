@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class TemplateCardLevelConfDTO : AopObject
     {
         /// <summary>
-        /// 会员级别 该级别和开卡接口中的levle要一致
+        /// 会员级别 该级别和开卡接口中的level要一致
         /// </summary>
         [XmlElement("level")]
         public string Level { get; set; }

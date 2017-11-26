@@ -9,7 +9,6 @@ namespace ICanPay
     [Serializable]
     public class Merchant
     {
-
         #region 私有字段
 
         string partner;
@@ -20,7 +19,6 @@ namespace ICanPay
         Uri returnUrl;
 
         #endregion
-
 
         #region 构造函数
 
@@ -38,7 +36,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 
@@ -169,6 +166,5 @@ namespace ICanPay
         public GatewayType GatewayType { get; set; }
 
         #endregion
-
     }
 }

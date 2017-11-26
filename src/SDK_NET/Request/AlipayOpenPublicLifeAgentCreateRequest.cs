@@ -26,12 +26,12 @@ namespace Aop.Api.Request
         public FileItem BusinessLicenseAuthPic { get; set; }
 
         /// <summary>
-        /// 营业执照号码
+        /// 营业执照号码。被代创建商户运营主体为个人账户必填，企业账户无需填写
         /// </summary>
         public string BusinessLicenseNo { get; set; }
 
         /// <summary>
-        /// 营业执照图片
+        /// 营业执照图片。被代创建商户运营主体为个人账户必填，企业账户无需填写
         /// </summary>
         public FileItem BusinessLicensePic { get; set; }
 
@@ -46,7 +46,7 @@ namespace Aop.Api.Request
         public string ContactMobile { get; set; }
 
         /// <summary>
-        /// 企业联系人名称
+        /// 联系人名称
         /// </summary>
         public string ContactName { get; set; }
 
@@ -56,7 +56,7 @@ namespace Aop.Api.Request
         public FileItem LogoPic { get; set; }
 
         /// <summary>
-        /// 所属MCCCode，详情可参考  <a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.INIZWb&articleId=105364&docType=1  ">商家经营类目</a> 中的“经营类目编码”
+        /// 所属MCCCode，详情可参考  <a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.INIZWb&articleId=105364&docType=1">商家经营类目</a> 中的“经营类目编码”
         /// </summary>
         public string MccCode { get; set; }
 
@@ -81,12 +81,12 @@ namespace Aop.Api.Request
         public string PublicName { get; set; }
 
         /// <summary>
-        /// 店铺内景图片，个人账户必填 ，企业账户选填
+        /// 店铺内景图片，被代创建商户运营主体为个人账户必填，企业账户选填
         /// </summary>
         public FileItem ShopScenePic { get; set; }
 
         /// <summary>
-        /// 店铺门头照图片，个人账户必填，企业账户选填
+        /// 店铺门头照图片，被代创建商户运营主体为个人账户必填，企业账户选填
         /// </summary>
         public FileItem ShopSignBoardPic { get; set; }
 

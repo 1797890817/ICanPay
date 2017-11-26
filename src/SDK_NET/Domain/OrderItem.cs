@@ -34,6 +34,12 @@ namespace Aop.Api.Domain
         public string City { get; set; }
 
         /// <summary>
+        /// 城市编码
+        /// </summary>
+        [XmlElement("city_code")]
+        public string CityCode { get; set; }
+
+        /// <summary>
         /// 订购的服务商品ID
         /// </summary>
         [XmlElement("commodity_id")]

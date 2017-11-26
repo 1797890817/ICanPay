@@ -23,6 +23,12 @@ namespace Aop.Api.Domain
         public string Amount { get; set; }
 
         /// <summary>
+        /// 交易对应的卡类型。
+        /// </summary>
+        [XmlElement("card_type")]
+        public string CardType { get; set; }
+
+        /// <summary>
         /// 交易扩展信息,json格式字符串。
         /// </summary>
         [XmlElement("order_biz_context")]

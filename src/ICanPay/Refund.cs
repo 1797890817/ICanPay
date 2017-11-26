@@ -13,7 +13,6 @@ namespace ICanPay
         DateTime paymentDate;
         #endregion
 
-
         #region 构造函数
 
         public Refund()
@@ -21,7 +20,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 

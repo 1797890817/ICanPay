@@ -35,6 +35,12 @@ namespace Aop.Api.Response
         public string BuyerUserId { get; set; }
 
         /// <summary>
+        /// 买家用户类型。CORPORATE:企业用户；PRIVATE:个人用户。
+        /// </summary>
+        [XmlElement("buyer_user_type")]
+        public string BuyerUserType { get; set; }
+
+        /// <summary>
         /// 本次交易支付所使用的单品券优惠的商品优惠信息
         /// </summary>
         [XmlElement("discount_goods_detail")]

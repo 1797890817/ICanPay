@@ -9,25 +9,25 @@ namespace Aop.Api.Response
     public class KoubeiTradeTicketTicketcodeUseResponse : AopResponse
     {
         /// <summary>
-        /// 用户购买券的时候实际支付的金额
+        /// 用户购买券的时候实际支付的金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("buyer_pay_amount")]
         public string BuyerPayAmount { get; set; }
 
         /// <summary>
-        /// 用户购买时商品的现价
+        /// 用户购买时商品的现价，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("current_price")]
         public string CurrentPrice { get; set; }
 
         /// <summary>
-        /// 优惠金额，含商家补贴金额和口碑补贴金额
+        /// 优惠金额，含商家补贴金额和口碑补贴金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("discount_amount")]
         public string DiscountAmount { get; set; }
 
         /// <summary>
-        /// 交易中可给用户开具发票的金额
+        /// 交易中可给用户开具发票的金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("invoice_amount")]
         public string InvoiceAmount { get; set; }
@@ -45,7 +45,7 @@ namespace Aop.Api.Response
         public string ItemName { get; set; }
 
         /// <summary>
-        /// 口碑补贴金额
+        /// 口碑补贴金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("koubei_subsidy_amount")]
         public string KoubeiSubsidyAmount { get; set; }
@@ -57,13 +57,13 @@ namespace Aop.Api.Response
         public string OrderNo { get; set; }
 
         /// <summary>
-        /// 用户购买时商品的原价
+        /// 用户购买时商品的原价，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("original_price")]
         public string OriginalPrice { get; set; }
 
         /// <summary>
-        /// 商家实收金额
+        /// 商家实收金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("receipt_amount")]
         public string ReceiptAmount { get; set; }

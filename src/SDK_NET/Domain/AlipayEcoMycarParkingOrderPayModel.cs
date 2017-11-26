@@ -10,10 +10,22 @@ namespace Aop.Api.Domain
     public class AlipayEcoMycarParkingOrderPayModel : AopObject
     {
         /// <summary>
+        /// 代扣返佣的支付宝用户号。  以2088开头的纯16位数。
+        /// </summary>
+        [XmlElement("agent_id")]
+        public string AgentId { get; set; }
+
+        /// <summary>
         /// 车牌，需要进行停车缴费代扣的车辆牌照
         /// </summary>
         [XmlElement("car_number")]
         public string CarNumber { get; set; }
+
+        /// <summary>
+        /// 车牌颜色
+        /// </summary>
+        [XmlElement("car_number_color")]
+        public string CarNumberColor { get; set; }
 
         /// <summary>
         /// ISV停车场ID，由ISV定义的停车场标识，系统唯一，parking_id和out_parking_id不能同时为空

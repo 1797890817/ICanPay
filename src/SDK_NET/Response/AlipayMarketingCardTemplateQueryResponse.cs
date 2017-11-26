@@ -37,6 +37,12 @@ namespace Aop.Api.Response
         public List<TemplateCardLevelConfDTO> CardLevelConfs { get; set; }
 
         /// <summary>
+        /// 卡特定标签，只供特定业务使用，通常接入无需关注
+        /// </summary>
+        [XmlElement("card_spec_tag")]
+        public string CardSpecTag { get; set; }
+
+        /// <summary>
         /// 会员卡类型：  OUT_MEMBER_CARD：外部权益卡
         /// </summary>
         [XmlElement("card_type")]

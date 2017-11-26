@@ -35,6 +35,12 @@ namespace Aop.Api.Domain
         public string Manufacturer { get; set; }
 
         /// <summary>
+        /// 车主平台车型id
+        /// </summary>
+        [XmlElement("model_id")]
+        public string ModelId { get; set; }
+
+        /// <summary>
         /// 生产年份
         /// </summary>
         [XmlElement("production_year")]
@@ -114,10 +120,16 @@ namespace Aop.Api.Domain
         public string ViStyleName { get; set; }
 
         /// <summary>
-        /// 行驶里程
+        /// 车架号
         /// </summary>
         [XmlArray("vi_vin")]
         [XmlArrayItem("string")]
         public List<string> ViVin { get; set; }
+
+        /// <summary>
+        /// 行驶证注册时间
+        /// </summary>
+        [XmlElement("vl_start_time")]
+        public string VlStartTime { get; set; }
     }
 }

@@ -40,6 +40,12 @@ namespace Aop.Api.Domain
         public string ConfirmType { get; set; }
 
         /// <summary>
+        /// 设备信息参数，在使用设备维度签约代扣协议时，可以传这些信息
+        /// </summary>
+        [XmlElement("device_params")]
+        public DeviceParams DeviceParams { get; set; }
+
+        /// <summary>
         /// 商户签约号，代扣协议中标示用户的唯一签约号（确保在商户系统中唯一）。  格式规则：支持大写小写字母和数字，最长32位。  商户系统按需传入，如果同一用户在同一产品码、同一签约场景下，签订了多份代扣协议，那么需要指定并传入该值。
         /// </summary>
         [XmlElement("external_agreement_no")]
@@ -86,6 +92,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("sign_validity_period")]
         public string SignValidityPeriod { get; set; }
+
+        /// <summary>
+        /// 此参数用于传递子商户信息，目前商户代扣、海外代扣、淘旅行信用住产品支持传入该参数(销售方案中是否允许自定义子商户信息选是)；  目前支持四个key值：  sub_merchant_id (子商户id)  sub_merchant_name (子商户名称)  sub_merchant_service_name (子商户服务名称)  sub_merchant_service_description (子商户服务描述)
+        /// </summary>
+        [XmlElement("sub_merchant")]
+        public string SubMerchant { get; set; }
 
         /// <summary>
         /// 签约第三方主体类型。对于三方协议，表示当前用户和哪一类的第三方主体进行签约。  取值范围：  1. PARTNER（平台商户）  2. MERCHANT（集团商户），集团下子商户可共享用户签约内容  默认为PARTNER。

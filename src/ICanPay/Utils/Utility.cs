@@ -12,7 +12,6 @@ namespace ICanPay.Utils
     /// </summary>
     public static class Utility
     {
-
         #region 方法
 
         /// <summary>
@@ -140,6 +139,9 @@ namespace ICanPay.Utils
             return ip;
         }
         #endregion
-
     }
+
+
 }
+
+

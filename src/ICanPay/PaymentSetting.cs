@@ -20,13 +20,11 @@ namespace ICanPay
     /// </remarks>
     public class PaymentSetting
     {
-
         #region 字段
 
         GatewayBase gateway;
 
         #endregion
-
 
         #region 构造函数
 
@@ -44,7 +42,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 
@@ -131,7 +128,6 @@ namespace ICanPay
             }
         }
         #endregion
-
 
         #region 方法
 

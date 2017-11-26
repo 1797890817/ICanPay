@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class KoubeiMarketingMallTradeSubscribeModel : AopObject
     {
         /// <summary>
-        /// 卡模版id
+        /// 会员卡模版id
         /// </summary>
         [XmlElement("card_template_id")]
         public string CardTemplateId { get; set; }

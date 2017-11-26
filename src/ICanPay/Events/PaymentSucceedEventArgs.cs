@@ -7,7 +7,6 @@ namespace ICanPay.Events
     /// </summary>
     public class PaymentSucceedEventArgs : PaymentEventArgs
     {
-
         #region 构造函数
 
         /// <summary>
@@ -20,7 +19,6 @@ namespace ICanPay.Events
         }
 
         #endregion
-
 
         #region 属性
 
@@ -67,6 +65,5 @@ namespace ICanPay.Events
         }
 
         #endregion
-
     }
 }

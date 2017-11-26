@@ -10,7 +10,7 @@ namespace Aop.Api.Domain
     public class ZhimaCustomerCertificationCertifyModel : AopObject
     {
         /// <summary>
-        /// 一次认证的唯一标识,在完成芝麻认证初始化后可以获取
+        /// 一次认证的唯一标识，在完成芝麻认证初始化后可以获取
         /// </summary>
         [XmlElement("biz_no")]
         public string BizNo { get; set; }

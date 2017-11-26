@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 
-
 namespace ICanPay.Providers
 {
     /// <summary>
@@ -17,7 +16,6 @@ namespace ICanPay.Providers
     /// </summary>
     public sealed class AlipayGateway : GatewayBase, IPaymentForm,  IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
     {
-
         #region Ë½ÓÐ×Ö¶ÎBuildPayParams
 
         const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";

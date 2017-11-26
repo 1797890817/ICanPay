@@ -22,5 +22,11 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("interface_version")]
         public string InterfaceVersion { get; set; }
+
+        /// <summary>
+        /// 监控产品码,用来区分当前接口调用传递数据属于哪种类型的产品.  商户可自定义.
+        /// </summary>
+        [XmlElement("product_code")]
+        public string ProductCode { get; set; }
     }
 }

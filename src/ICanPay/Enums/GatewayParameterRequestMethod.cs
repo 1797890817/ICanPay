@@ -8,23 +8,19 @@ namespace ICanPay.Enums
     [Flags]
     public enum GatewayParameterRequestMethod
     {
-
         /// <summary>
         /// Get
         /// </summary>
         Get = 1,
-
 
         /// <summary>
         /// Post
         /// </summary>
         Post = 2,
 
-
         /// <summary>
         /// Get 和 Post
         /// </summary>
         Both = GatewayParameterRequestMethod.Get | GatewayParameterRequestMethod.Post
-
     }
 }

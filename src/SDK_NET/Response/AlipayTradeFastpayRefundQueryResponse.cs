@@ -9,6 +9,12 @@ namespace Aop.Api.Response
     public class AlipayTradeFastpayRefundQueryResponse : AopResponse
     {
         /// <summary>
+        /// 行业特殊信息（例如在医保卡支付退款中，医保局向商户返回医疗信息）。
+        /// </summary>
+        [XmlElement("industry_sepc_detail")]
+        public string IndustrySepcDetail { get; set; }
+
+        /// <summary>
         /// 本笔退款对应的退款请求号
         /// </summary>
         [XmlElement("out_request_no")]

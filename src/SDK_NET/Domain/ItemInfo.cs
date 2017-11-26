@@ -43,13 +43,13 @@ namespace Aop.Api.Domain
         public string ItemText { get; set; }
 
         /// <summary>
-        /// 最高优惠商品件数
+        /// 单品券适用的商品列表中，每一个商品最高可享受优惠的件数；    如：券适用于A,B两种商品，该字段设置为1，则用券A,B两种商品每种最多只有一件可享受优惠；
         /// </summary>
         [XmlElement("max_discount_num")]
         public string MaxDiscountNum { get; set; }
 
         /// <summary>
-        /// 最低购买商品件数
+        /// 单品券适用商品列表中，每种商品享受优惠最低购买件数的门槛；  如：券适用于A,B两种商品，该字段设置为3，则A,B两种商品每种最少需要购买3件才可享受优惠；
         /// </summary>
         [XmlElement("min_consume_num")]
         public string MinConsumeNum { get; set; }
@@ -65,5 +65,11 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("sku_min_consume")]
         public string SkuMinConsume { get; set; }
+
+        /// <summary>
+        /// 如果一个单品券适用A，B，C三个单品，若设置了该字段为2，则在一笔交易中，A，B，C三个单品加起来最多只有俩件能够享受优惠
+        /// </summary>
+        [XmlElement("total_max_discount_num")]
+        public string TotalMaxDiscountNum { get; set; }
     }
 }

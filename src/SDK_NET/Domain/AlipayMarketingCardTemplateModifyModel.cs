@@ -31,6 +31,12 @@ namespace Aop.Api.Domain
         public List<TemplateCardLevelConfDTO> CardLevelConf { get; set; }
 
         /// <summary>
+        /// 卡特定标签，只供特定业务使用，通常接入无需关注
+        /// </summary>
+        [XmlElement("card_spec_tag")]
+        public string CardSpecTag { get; set; }
+
+        /// <summary>
         /// 栏位信息（卡包详情页面展现的栏位）
         /// </summary>
         [XmlArray("column_info_list")]

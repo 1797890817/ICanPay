@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web;
 using System.Xml;
 
-
 namespace ICanPay
 {
     /// <summary>
@@ -15,7 +14,6 @@ namespace ICanPay
     /// </summary>
     internal static class NotifyProcess
     {
-
         #region 私有字段
 
         // 需要验证的参数名称数组，用于识别不同的网关类型。
@@ -27,7 +25,6 @@ namespace ICanPay
         static string[] weixinpayGatewayVerifyParmaNames = { "return_code", "appid", "mch_id", "nonce_str", "result_code" };
         static string[] unionpayGatewayVerifyParmaNames = { "respMsg", "merId", "respCode", "orderId", "queryId" };
         #endregion
-
 
         #region 方法
 
@@ -222,6 +219,5 @@ namespace ICanPay
         }
 
         #endregion
-
     }
 }

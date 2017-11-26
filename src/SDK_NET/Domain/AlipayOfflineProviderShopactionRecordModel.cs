@@ -22,7 +22,7 @@ namespace Aop.Api.Domain
         public string ActionOuterId { get; set; }
 
         /// <summary>
-        /// 支持的操作类型    1. insert_table(插入桌位)    2. update_table(更新桌位)    3. insert_dish(插入菜品)    4. delete_dish(删除菜品)    5. soldout_dish(估清菜品)    6. modify_dish(修改菜品)    7. modify_shop_status(店铺状态变更)  每一种操作行为对应的action_detail都不同，action_detail结构都是json串。   8.insert_one_shop_all_table(批量覆盖单个店铺桌位)
+        /// 支持的操作类型    1. insert_table(插入桌位)    2. update_table(更新桌位)    3. insert_dish(插入菜品)    4. delete_dish(删除菜品)    5. soldout_dish(估清菜品)    6. modify_dish(修改菜品)    7. modify_shop_status(店铺状态变更)  每一种操作行为对应的action_detail都不同，action_detail结构都是json串。   8.insert_one_shop_all_table(批量覆盖单个店铺桌位)  9.service_card_config(定制服务卡配置数据)
         /// </summary>
         [XmlElement("action_type")]
         public string ActionType { get; set; }
@@ -50,5 +50,17 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("outer_shop_do")]
         public OuterShopDO OuterShopDo { get; set; }
+
+        /// <summary>
+        /// 从第三方平台进入开发者应用后产生的数据，传入第三方平台域名。比如是支付宝扫码后产生的，传入支付宝域名alipay.com，是微信打开后产生的，传入微信域名weixin.qq.com，如果数据不是从第三方平台进入后产生的，设置自己的域名即可，该字段内容不做强制校验。
+        /// </summary>
+        [XmlElement("source")]
+        public string Source { get; set; }
+
+        /// <summary>
+        /// 支付宝账户ID，这里传入门店的商户id。如果获取不到支付宝账户ID，一定不能设置。如何获取支付宝账户ID,获取用户uid的接口调用文档：https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.jokL1V&treeId=193&articleId=105656&docType=1#s3
+        /// </summary>
+        [XmlElement("user_id")]
+        public string UserId { get; set; }
     }
 }

@@ -11,6 +11,18 @@ namespace Aop.Api.Domain
     public class Voucher : AopObject
     {
         /// <summary>
+        /// 是否允许拆分，券在核销的时候是否允许券的面额拆分使用。(仅限渠道类型为ISV企业福利：ISV_ENTERPRISE_BENIFIT的场景使用)
+        /// </summary>
+        [XmlElement("allow_split")]
+        public bool AllowSplit { get; set; }
+
+        /// <summary>
+        /// 券剩余面额，单位元  券详情查询接口返回，可拆分券中的券详情展示用
+        /// </summary>
+        [XmlElement("available_amount")]
+        public string AvailableAmount { get; set; }
+
+        /// <summary>
         /// 券副标题
         /// </summary>
         [XmlElement("brand_name")]
@@ -85,19 +97,13 @@ namespace Aop.Api.Domain
         public string Logo { get; set; }
 
         /// <summary>
-        /// 最高优惠金额，单位元  必须为合法金额类型字符串  仅当券类型为DISOUNT有效
+        /// 最高优惠金额，单位元  指用券最高可以优惠的金额  必须为合法金额类型字符串仅当券类型为折扣券（DISOUNT），每满减券（PER_FULL_CUT）有效
         /// </summary>
         [XmlElement("max_amount")]
         public string MaxAmount { get; set; }
 
         /// <summary>
-        /// 券核销叠加标识
-        /// </summary>
-        [XmlElement("merge_verify_config")]
-        public MergeVerifyConfig MergeVerifyConfig { get; set; }
-
-        /// <summary>
-        /// 券叠加的属性，NO_MULTI:不可叠加;MULTI_USE_WITH_SINGLE:全场优惠和单品优惠的叠加；MULTI_USE_WITH_OTHERS:全场和其他所有优惠都可以叠加
+        /// 券叠加的属性，  仅全场券可设置该选项；  NO_MULTI:不可与其他全场券和单品券叠加;  MULTI_USE_WITH_SINGLE:  该全场优惠和单品优惠的叠加  ；MULTI_USE_WITH_OTHE  RS:该全场优惠和其他所有优惠都可以叠加
         /// </summary>
         [XmlElement("multi_use_mode")]
         public string MultiUseMode { get; set; }
@@ -121,13 +127,19 @@ namespace Aop.Api.Domain
         public string RelativeTime { get; set; }
 
         /// <summary>
+        /// 券核销时，抹零方式，目前支持： NOT_AUTO_ROUNDING:不自动抹零 AUTO_ROUNDING_YUAN:自动抹零到元 AUTO_ROUNDING_JIAO:自动抹零到角 ROUNDING_UP_YUAN:四舍五入到元 ROUNDING_UP_JIAO:四舍五入到角
+        /// </summary>
+        [XmlElement("rounding_rule")]
+        public string RoundingRule { get; set; }
+
+        /// <summary>
         /// 券有效期的开始时间  仅在券有效期类型为绝对有效期时生效
         /// </summary>
         [XmlElement("start_time")]
         public string StartTime { get; set; }
 
         /// <summary>
-        /// 券类型，目前支持以下类型：  EXCHANGE：兑换券  MONEY：代金券  REDUCETO：减至券  RATE：折扣券
+        /// 券类型，目前支持以下类型：  EXCHANGE：兑换券；  MONEY：代金券；  REDUCETO：减至券；  RATE：折扣券；  PER_FULL_CUT：每满减券
         /// </summary>
         [XmlElement("type")]
         public string Type { get; set; }
@@ -164,13 +176,13 @@ namespace Aop.Api.Domain
         public string VoucherImg { get; set; }
 
         /// <summary>
-        /// 券的备注
+        /// 券的备注    用于收银系统识别指定券使用；如备注中传入“123”，券发出后核销时将在当面付接口将该值传回，供收银系统识别
         /// </summary>
         [XmlElement("voucher_note")]
         public string VoucherNote { get; set; }
 
         /// <summary>
-        /// 券面额，单位元  必须为合法金额类型字符串  券类型为代金券、减至券时，券面额必须设置  单品减至券的券面额必须低于单品原价
+        /// 券面额，单位元必须为合法金额类型字符串券类型为代金券（MONEY）、减至券（REDUCETO）、每满减券（PER_FULL_CUT）时必填  如：  代金券：10元代金券中的10为券面额；  每满减券：毎满100减10元，其中的10为券面额；  减至券：单品原价100，现价10元，其中10为券面额，单品减至券的券面额必须低于单品原价
         /// </summary>
         [XmlElement("worth_value")]
         public string WorthValue { get; set; }

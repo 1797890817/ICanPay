@@ -11,6 +11,12 @@ namespace Aop.Api.Domain
     public class AlipayInsSceneApplicationApplyModel : AopObject
     {
         /// <summary>
+        /// 用户参与的活动ID
+        /// </summary>
+        [XmlElement("activity_id")]
+        public string ActivityId { get; set; }
+
+        /// <summary>
         /// 投保人
         /// </summary>
         [XmlElement("applicant")]
@@ -33,6 +39,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("effect_start_time")]
         public string EffectStartTime { get; set; }
+
+        /// <summary>
+        /// 标的信息， 保险标的物，产品责任信息
+        /// </summary>
+        [XmlArray("ins_objects")]
+        [XmlArrayItem("ins_object")]
+        public List<InsObject> InsObjects { get; set; }
 
         /// <summary>
         /// 被保险人

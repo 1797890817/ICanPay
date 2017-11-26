@@ -22,7 +22,7 @@ namespace Aop.Api.Domain
         public string ShopName { get; set; }
 
         /// <summary>
-        /// 外部门店ID
+        /// 00007
         /// </summary>
         [XmlElement("store_id")]
         public string StoreId { get; set; }

@@ -103,7 +103,7 @@ namespace Aop.Api.Response
         public string TransNo { get; set; }
 
         /// <summary>
-        /// 凭证列表，每笔订单会根据购买商品种类数量生成凭证信息，具体字段如下：  voucher_id：商品凭证ID;  item_id:商品ID;  shop_id:门店ID;   store_id:外部门店ID,即ISV系统中的门店ID，用于与口碑的对应;  funds_voucher_no:凭证对应资金凭证ID，发货凭证列表,根据funds_voucher_no可从funds_vouchers获取订单资金流;  status:凭证状态，参照凭证状态对照表  refund_type：退款类型，ROLE_DAEMON（超期未使用），ROLE_USER（消费者主动）；  refund_reason：退款理由，由消费者选择或填写内容，系统退款可以为空。
+        /// 凭证列表，每笔订单会根据购买商品种类数量生成凭证信息；如果交易未成功（比如交易超时关闭等），则不会返回该字段。  具体字段如下：  voucher_id：商品凭证ID;  item_id:商品ID;  shop_id:门店ID;   store_id:外部门店ID,即ISV系统中的门店ID，用于与口碑的对应;  funds_voucher_no:凭证对应资金凭证ID，发货凭证列表,根据funds_voucher_no可从funds_vouchers获取订单资金流;  status:凭证状态，参照凭证状态对照表  refund_type：退款类型，ROLE_DAEMON（超期未使用），ROLE_USER（消费者主动）；  refund_reason：退款理由，由消费者选择或填写内容，系统退款可以为空。
         /// </summary>
         [XmlArray("vouchers")]
         [XmlArrayItem("kb_order_voucher_model")]

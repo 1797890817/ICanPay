@@ -22,7 +22,7 @@ namespace Aop.Api.Domain
         public string LabelValue { get; set; }
 
         /// <summary>
-        /// 目前支持EQ（等于）、BETWEEN（范围）、IN（包含）三种操作符；每个标签支持的运算符可以通过查询接口获得。该字段允许为空，默认运算符为IN
+        /// 目前支持EQ（等于）、BETWEEN（范围）、IN（包含）三种操作符；每个标签支持的运算符可以通过<a href="https://docs.open.alipay.com/api_6/alipay.open.public.life.label.batchquery#sintq">标签列表查询接口</a>获得。该字段允许为空，默认运算符为IN
         /// </summary>
         [XmlElement("operator")]
         public string Operator { get; set; }

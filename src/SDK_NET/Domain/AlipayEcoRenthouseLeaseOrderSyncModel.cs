@@ -23,6 +23,12 @@ namespace Aop.Api.Domain
         public string BeginDate { get; set; }
 
         /// <summary>
+        /// 定金信息
+        /// </summary>
+        [XmlElement("book_info")]
+        public AlipayEcoRenthouseBookInfo BookInfo { get; set; }
+
+        /// <summary>
         /// 证件编号
         /// </summary>
         [XmlElement("card_no")]
@@ -65,6 +71,12 @@ namespace Aop.Api.Domain
         public string FurnitureItems { get; set; }
 
         /// <summary>
+        /// 通过"文件上传"接口返回的租约相关图片url路径。租约照片可录入0~10张,目前仅支持jpg、png、jpeg格式
+        /// </summary>
+        [XmlElement("images")]
+        public string Images { get; set; }
+
+        /// <summary>
         /// KA租约业务号
         /// </summary>
         [XmlElement("lease_code")]
@@ -83,6 +95,18 @@ namespace Aop.Api.Domain
         public long LeaseStatus { get; set; }
 
         /// <summary>
+        /// 1-电子合约(默认)  2-纸质合约
+        /// </summary>
+        [XmlElement("lease_type")]
+        public long LeaseType { get; set; }
+
+        /// <summary>
+        /// 续租原KA租约业务号（也就是第一期的lease_code）
+        /// </summary>
+        [XmlElement("original_lease_code")]
+        public string OriginalLeaseCode { get; set; }
+
+        /// <summary>
         /// 其他费用描述
         /// </summary>
         [XmlElement("other_fee_desc")]
@@ -95,10 +119,28 @@ namespace Aop.Api.Domain
         public long PayType { get; set; }
 
         /// <summary>
+        /// 信用减免金额
+        /// </summary>
+        [XmlElement("rebate_amount")]
+        public string RebateAmount { get; set; }
+
+        /// <summary>
         /// 描述
         /// </summary>
         [XmlElement("remark")]
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 0-不是续租(默认值)  1-是续租
+        /// </summary>
+        [XmlElement("renew_lease")]
+        public long RenewLease { get; set; }
+
+        /// <summary>
+        /// 第几期续租
+        /// </summary>
+        [XmlElement("renew_num")]
+        public long RenewNum { get; set; }
 
         /// <summary>
         /// 收租日描述
@@ -112,6 +154,12 @@ namespace Aop.Api.Domain
         [XmlArray("rent_include_fee_desc")]
         [XmlArrayItem("string")]
         public List<string> RentIncludeFeeDesc { get; set; }
+
+        /// <summary>
+        /// 1-男   2-女
+        /// </summary>
+        [XmlElement("renter_gender")]
+        public string RenterGender { get; set; }
 
         /// <summary>
         /// 用户姓名

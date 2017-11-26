@@ -11,6 +11,12 @@ namespace Aop.Api.Domain
     public class KoubeiTradeOrderConsultModel : AopObject
     {
         /// <summary>
+        /// 用户设备信息,通过钱包容器提供的JSAPI接口获取，  一、接口使用方法：  AlipayJSBridge.call('getO2ODeviceToken', {                  appName: 'kb_isv_110229',                  appKey:'98y6VvdaDLpoqWZw'              },              function (result) {                   }          );      });  二、result数据结构：   1、调用失败： {"error":xxx,"errorMessage":"xxx"}     2、调用成功： {'appToken':'xxxssajkjkjkxdkwqkqwb'}
+        /// </summary>
+        [XmlElement("apdid_token")]
+        public string ApdidToken { get; set; }
+
+        /// <summary>
         /// 商品明细列表。注意：单品总金额不能大于订单金额
         /// </summary>
         [XmlArray("goods_info")]
@@ -36,7 +42,7 @@ namespace Aop.Api.Domain
         public string TotalAmount { get; set; }
 
         /// <summary>
-        /// 不参与优惠计算的金额，单位为元，精确到小数点后两位，取值范围[0,999999999]  如果同时传入了【不可打折金额】、【订单总金额】，则必须满足【不可打折金额】<=【订单总金额】
+        /// 不可打折金额，单位为元，精确到小数点后两位，取值范围[0,999999999]  如果同时传入了【不可打折金额】、【订单总金额】，则必须满足【不可打折金额】<=【订单总金额】
         /// </summary>
         [XmlElement("undiscountable_amount")]
         public string UndiscountableAmount { get; set; }

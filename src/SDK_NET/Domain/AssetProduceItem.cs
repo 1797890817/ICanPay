@@ -28,10 +28,22 @@ namespace Aop.Api.Domain
         public string AssetPicUrl { get; set; }
 
         /// <summary>
+        /// 目前只有空码生产的码图片url从这里获取
+        /// </summary>
+        [XmlElement("asset_resource")]
+        public string AssetResource { get; set; }
+
+        /// <summary>
         /// 订单明细ID
         /// </summary>
         [XmlElement("assign_item_id")]
         public string AssignItemId { get; set; }
+
+        /// <summary>
+        /// 业务渠道
+        /// </summary>
+        [XmlElement("biz_tag")]
+        public string BizTag { get; set; }
 
         /// <summary>
         /// city
@@ -52,7 +64,7 @@ namespace Aop.Api.Domain
         public string CreateDate { get; set; }
 
         /// <summary>
-        /// 1 - 旧模式, 需要在生产完成后反馈运单号 ; 2 - 新模式, 不需要在生产完成后反馈运单号
+        /// 1 - 旧模式, 需要在生产完成时反馈运单号 ; 2 - 新模式, 不需要在生产完成时反馈运单号
         /// </summary>
         [XmlElement("data_version")]
         public string DataVersion { get; set; }
@@ -62,6 +74,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("district")]
         public string District { get; set; }
+
+        /// <summary>
+        /// 物流公司代码
+        /// </summary>
+        [XmlElement("logistics_code")]
+        public string LogisticsCode { get; set; }
 
         /// <summary>
         /// 收钱码吊牌和贴纸类型不为空
@@ -76,10 +94,22 @@ namespace Aop.Api.Domain
         public string LogisticsNo { get; set; }
 
         /// <summary>
+        /// 生产指令描述
+        /// </summary>
+        [XmlElement("memo")]
+        public string Memo { get; set; }
+
+        /// <summary>
         /// 收件人地址邮编; 收钱码吊牌和贴纸类型不为空
         /// </summary>
         [XmlElement("postcode")]
         public string Postcode { get; set; }
+
+        /// <summary>
+        /// 生产单号
+        /// </summary>
+        [XmlElement("produce_order")]
+        public string ProduceOrder { get; set; }
 
         /// <summary>
         /// 省

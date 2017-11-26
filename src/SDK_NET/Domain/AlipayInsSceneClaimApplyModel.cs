@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -50,6 +51,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("claim_fee")]
         public long ClaimFee { get; set; }
+
+        /// <summary>
+        /// 报案时相关的保单信息
+        /// </summary>
+        [XmlArray("claim_policy_list")]
+        [XmlArrayItem("ins_claim_policy")]
+        public List<InsClaimPolicy> ClaimPolicyList { get; set; }
 
         /// <summary>
         /// 商户生成的外部投保业务单号

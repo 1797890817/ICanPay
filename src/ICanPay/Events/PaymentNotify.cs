@@ -9,13 +9,11 @@ namespace ICanPay.Events
     /// </summary>
     public class PaymentNotify
     {
-
         #region 私有字段
 
         ICollection<Merchant> merchantList;
 
         #endregion
-
 
         #region 构造函数
 
@@ -49,7 +47,6 @@ namespace ICanPay.Events
 
         #endregion
 
-
         #region 事件
 
         /// <summary>
@@ -70,7 +67,6 @@ namespace ICanPay.Events
         public event UnknownGatewayEventHandler UnknownGateway;
 
         #endregion
-
 
         #region 方法
 
@@ -156,7 +152,6 @@ namespace ICanPay.Events
         }
 
         #endregion
-
     }
 
     #region 委托
@@ -185,5 +180,4 @@ namespace ICanPay.Events
     public delegate void UnknownGatewayEventHandler(object sender, UnknownGatewayEventArgs e);
 
     #endregion
-
 }

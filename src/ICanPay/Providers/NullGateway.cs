@@ -8,7 +8,6 @@ namespace ICanPay.Providers
     /// </summary>
     public class NullGateway : GatewayBase
     {
-
         #region 构造函数
 
         /// <summary>
@@ -52,6 +51,5 @@ namespace ICanPay.Providers
         }
 
         #endregion
-
     }
 }

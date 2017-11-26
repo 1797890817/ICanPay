@@ -37,8 +37,9 @@ namespace Aop.Api.Domain
         /// <summary>
         /// 发票内容项明细
         /// </summary>
-        [XmlElement("invoice_content")]
-        public InvoiceItemQueryOpenModel InvoiceContent { get; set; }
+        [XmlArray("invoice_content")]
+        [XmlArrayItem("invoice_item_query_open_model")]
+        public List<InvoiceItemQueryOpenModel> InvoiceContent { get; set; }
 
         /// <summary>
         /// 品牌全称，由商户在发票管家配置

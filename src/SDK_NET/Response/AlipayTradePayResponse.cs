@@ -17,6 +17,12 @@ namespace Aop.Api.Response
         public string AsyncPaymentMode { get; set; }
 
         /// <summary>
+        /// 商户传入业务信息，具体值要和支付宝约定  将商户传入信息分发给相应系统，应用于安全，营销等参数直传场景  格式为json格式
+        /// </summary>
+        [XmlElement("business_params")]
+        public string BusinessParams { get; set; }
+
+        /// <summary>
         /// 买家支付宝账号
         /// </summary>
         [XmlElement("buyer_logon_id")]
@@ -33,6 +39,12 @@ namespace Aop.Api.Response
         /// </summary>
         [XmlElement("buyer_user_id")]
         public string BuyerUserId { get; set; }
+
+        /// <summary>
+        /// 买家用户类型。CORPORATE:企业用户；PRIVATE:个人用户。
+        /// </summary>
+        [XmlElement("buyer_user_type")]
+        public string BuyerUserType { get; set; }
 
         /// <summary>
         /// 支付宝卡余额

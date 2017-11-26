@@ -5,7 +5,6 @@
     /// </summary>
     public class UnknownGatewayEventArgs : PaymentEventArgs
     {
-
         #region 构造函数
 
         /// <summary>
@@ -18,6 +17,5 @@
         }
 
         #endregion
-
     }
 }

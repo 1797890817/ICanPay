@@ -16,7 +16,6 @@ namespace ICanPay.Providers
     /// </summary>
     public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
     {
-
         #region Ë½ÓÐ×Ö¶Î
 
         const string payGatewayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";

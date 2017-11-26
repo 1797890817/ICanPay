@@ -13,7 +13,7 @@ namespace Aop.Api.Domain
         /// 购买可能性/商品热度得分
         /// </summary>
         [XmlElement("buy_posibility")]
-        public long BuyPosibility { get; set; }
+        public string BuyPosibility { get; set; }
 
         /// <summary>
         /// 菜品ID

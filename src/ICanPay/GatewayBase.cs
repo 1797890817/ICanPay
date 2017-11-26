@@ -10,7 +10,6 @@ namespace ICanPay
     /// </summary>
     public abstract class GatewayBase
     {
-
         #region 私有字段
 
         Merchant merchant;
@@ -19,7 +18,6 @@ namespace ICanPay
         const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         #endregion
-
 
         #region 构造函数
 
@@ -35,7 +33,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 
@@ -134,7 +131,6 @@ namespace ICanPay
 
 
         #endregion
-
 
         #region 方法
 
@@ -310,6 +306,5 @@ namespace ICanPay
         public abstract void WriteSucceedFlag();
 
         #endregion
-
     }
 }

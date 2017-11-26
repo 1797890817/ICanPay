@@ -7,7 +7,6 @@ namespace ICanPay
     /// </summary>
     public class Order
     {
-
         #region 私有字段
         double orderAmount;
         string orderNo;
@@ -16,7 +15,6 @@ namespace ICanPay
         DateTime paymentDate;
 
         #endregion
-
 
         #region 构造函数
 
@@ -34,7 +32,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 

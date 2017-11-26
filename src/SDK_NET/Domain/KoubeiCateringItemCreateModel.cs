@@ -68,11 +68,10 @@ namespace Aop.Api.Domain
         public List<ItemPackageInfo> ItemPackages { get; set; }
 
         /// <summary>
-        /// 商家公告，最多不超过100个汉字，200个字符
+        /// 商家公告，最多不超过200个字符
         /// </summary>
-        [XmlArray("latest_notice")]
-        [XmlArrayItem("string")]
-        public List<string> LatestNotice { get; set; }
+        [XmlElement("latest_notice")]
+        public string LatestNotice { get; set; }
 
         /// <summary>
         /// 商品备注信息。用于商户内部管理，用户页面不露出。
@@ -132,16 +131,22 @@ namespace Aop.Api.Domain
         public List<string> ShopIds { get; set; }
 
         /// <summary>
-        /// 商品编码，由商家自定义，不可重复，用于商品核销
+        /// 商品编码，由商家自定义，不可重复，用于商品核销。如果ticket_display_mode选择付款码核销方式(USER_PAY_CODE)，则sku_id必填。如果ticket_display_mode选择券码核销方式(TICKET_CODE)，则sku_id必须为空
         /// </summary>
         [XmlElement("sku_id")]
         public string SkuId { get; set; }
 
         /// <summary>
-        /// 商品名称，请勿超过40汉字，80个字符
+        /// 商品名称，请勿超过60个字符
         /// </summary>
         [XmlElement("subject")]
         public string Subject { get; set; }
+
+        /// <summary>
+        /// 商品购买凭证核销方式。枚举值为：USER_PAY_CODE代表付款码核销方式，如果选择付款码核销，则sku_id必填。TICKET_CODE代表券码核销方式，如果选择券码核销，则sku_id必须为空
+        /// </summary>
+        [XmlElement("ticket_display_mode")]
+        public string TicketDisplayMode { get; set; }
 
         /// <summary>
         /// 商品不可用日期区间。该内容仅用于展示，不影响实际核销。

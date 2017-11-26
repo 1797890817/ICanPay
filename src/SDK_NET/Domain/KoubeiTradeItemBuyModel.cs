@@ -22,6 +22,12 @@ namespace Aop.Api.Domain
         public string BuyerUserName { get; set; }
 
         /// <summary>
+        /// 手艺人ID，为非必填字段。
+        /// </summary>
+        [XmlElement("craftsman_id")]
+        public string CraftsmanId { get; set; }
+
+        /// <summary>
         /// 若无现价则此值传商品原价，交易创建将根据此价格进行售卖。  传入的价格最多可有两位小数，最大值不可超过5000，超过则会报错。
         /// </summary>
         [XmlElement("current_price")]

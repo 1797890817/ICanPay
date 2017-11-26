@@ -75,6 +75,12 @@ namespace Aop.Api.Domain
         public string MerchantName { get; set; }
 
         /// <summary>
+        /// 外部保单号
+        /// </summary>
+        [XmlElement("out_policy_no")]
+        public string OutPolicyNo { get; set; }
+
+        /// <summary>
         /// 保单凭证号;蚂蚁保险平台生成的保单凭证号,用户可以通过此单号去保险公司查询保单信息.
         /// </summary>
         [XmlElement("policy_no")]

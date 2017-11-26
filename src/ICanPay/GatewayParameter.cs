@@ -8,13 +8,11 @@ namespace ICanPay
     /// </summary>
     public class GatewayParameter
     {
-
         #region 私有字段
 
         string name;
 
         #endregion
-
 
         #region 构造函数
 
@@ -31,7 +29,6 @@ namespace ICanPay
         }
 
         #endregion
-
 
         #region 属性
 
@@ -69,6 +66,5 @@ namespace ICanPay
         public GatewayParameterRequestMethod RequestMethod { get; set; }
 
         #endregion
-
     }
 }

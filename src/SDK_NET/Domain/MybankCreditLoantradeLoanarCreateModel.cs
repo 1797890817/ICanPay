@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -134,6 +135,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("pd_version")]
         public string PdVersion { get; set; }
+
+        /// <summary>
+        /// 放款用的营销工具ID列表，例如打折卡ID列表
+        /// </summary>
+        [XmlArray("promo_tools")]
+        [XmlArrayItem("string")]
+        public List<string> PromoTools { get; set; }
 
         /// <summary>
         /// 还款方式，枚举值如下：  1：等额本息  2：等额本金  3：按期付息到期还本  4：组合还款  6：一次性到期还本付息  7：固定利息等额分期

@@ -9,14 +9,12 @@ namespace ICanPay.Events
     /// </summary>
     public abstract class PaymentEventArgs : EventArgs
     {
-
         #region 私有字段
 
         protected GatewayBase gateway;
         string notifyServerHostAddress;
 
         #endregion
-
 
         #region 构造函数
 
@@ -32,7 +30,6 @@ namespace ICanPay.Events
 
 
         #endregion
-
 
         #region 属性
 
@@ -60,7 +57,6 @@ namespace ICanPay.Events
         }
 
         #endregion
-
 
         #region 方法
 
@@ -93,6 +89,5 @@ namespace ICanPay.Events
         }
 
         #endregion
-
     }
 }
