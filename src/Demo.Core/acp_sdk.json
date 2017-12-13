@@ -1,0 +1,40 @@
+﻿{
+  "sdk.frontTransUrl": "https://gateway.test.95516.com/gateway/api/frontTransReq.do",
+  "sdk.backTransUrl": "https://gateway.test.95516.com/gateway/api/backTransReq.do",
+  "sdk.singleQueryUrl": "https://gateway.test.95516.com/gateway/api/queryTrans.do",
+  "sdk.batchTransUrl": "https://gateway.test.95516.com/gateway/api/batchTrans.do",
+  "sdk.fileTransUrl": "https://filedownload.test.95516.com/",
+  "sdk.appRequestUrl": "https://gateway.test.95516.com/gateway/api/appTransReq.do",
+  "sdk.cardRequestUrl": "https://gateway.test.95516.com/gateway/api/cardTransReq.do",
+
+  "sdk.jf.FrontTransUrl": "https://gateway.test.95516.com/jiaofei/api/frontTransReq.do",
+  "sdk.jf.BackTransUrl": "https://gateway.test.95516.com/jiaofei/api/backTransReq.do",
+  "sdk.jf.SingleQueryUrl": "https://gateway.test.95516.com/jiaofei/api/queryTrans.do",
+  "sdk.jf.CardTransUrl": "https://gateway.test.95516.com/jiaofei/api/cardTransReq.do",
+  "sdk.jf.AppTransUrl": "https://gateway.test.95516.com/jiaofei/api/appTransReq.do",
+
+  "sdk.version": "1.0",
+
+  "sdk.signMethod": "01",
+
+  "sdk.ifValidateCNName": "false",
+
+  "ifValidateRemoteCert": "false",
+
+  "sdk.backUrl": "http://222.222.222.222:8080/ACPSample_B2C/backRcvResponse",
+  "sdk.frontUrl": "http://222.222.222.222:8080/ACPSample_B2C/frontRcvResponse",
+
+  "sdk.signCert.path": "D:/certs/acp_test_sign.pfx",
+
+  "sdk.signCert.pwd": "000000",
+
+  "sdk.signCert.type": "PKCS12",
+
+  "sdk.encryptCert.path": "d:/certs/acp_test_enc.cer",
+
+  "sdk.validateCert.dir": "d:/certs/",
+
+  "sdk.middleCert.path": "D:/certs/acp_test_middle.cer",
+
+  "sdk.rootCert.path": "D:/certs/acp_test_root.cer"
+}

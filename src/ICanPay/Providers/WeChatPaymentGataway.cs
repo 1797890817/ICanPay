@@ -169,7 +169,7 @@ namespace ICanPay.Providers
             // 需要先清除之前接收到的通知的参数，否则会对生成标志成功接收到通知的XML造成干扰。
             ClearGatewayParameterData();
             InitProcessSuccessParameter();
-            HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
+            HttpUtil.Write(ConvertGatewayParameterDataToXml());
         }
 
         /// <summary>

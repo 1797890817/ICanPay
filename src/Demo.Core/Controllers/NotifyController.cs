@@ -1,9 +1,9 @@
 ﻿using ICanPay;
 using ICanPay.Enums;
 using ICanPay.Events;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Demo.Controllers
+namespace Demo.Core.Controllers
 {
     public class NotifyController : Controller
     {

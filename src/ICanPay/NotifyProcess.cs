@@ -1,5 +1,10 @@
 ﻿using ICanPay.Enums;
 using ICanPay.Providers;
+using ICanPay.Utils;
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+#endif
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -156,8 +161,14 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadQueryString(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection queryString = HttpContext.Current.Request.QueryString;
-            string[] allKeys = queryString.AllKeys;
+#if NETSTANDARD2_0
+            QueryCollection queryString = (QueryCollection)HttpUtil.Query;
+            string[] allKeys = queryString.Keys.ToArray();
+#elif NET46
+                NameValueCollection queryString = HttpUtil.Query;
+                string[] allKeys = queryString.AllKeys;
+#endif
+
             for (int i = 0; i < allKeys.Length; i++)
             {
                 SetGatewayParameterValue(gatewayParameterList, allKeys[i], queryString[allKeys[i]], GatewayParameterRequestMethod.Get);
@@ -171,8 +182,13 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadForm(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection form = HttpContext.Current.Request.Form;
-            string[] allKeys = form.AllKeys;
+#if NETSTANDARD2_0
+            FormCollection form = (FormCollection)HttpUtil.Form;
+            string[] allKeys = form.Keys.ToArray();
+#elif NET46
+                NameValueCollection form = HttpUtil.Form;
+                string[] allKeys = form.AllKeys;
+#endif
             for (int i = 0; i < allKeys.Length; i++)
             {
                 SetGatewayParameterValue(gatewayParameterList, allKeys[i], form[allKeys[i]], GatewayParameterRequestMethod.Post);
@@ -189,7 +205,7 @@ namespace ICanPay
             if (IsWeixinpayNotify())
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                StreamReader reader = new StreamReader(HttpContext.Current.Request.InputStream);
+                StreamReader reader = new StreamReader(HttpUtil.Body);
                 xmlDocument.LoadXml(reader.ReadToEnd());
                 if (xmlDocument.FirstChild != null && xmlDocument.FirstChild.ChildNodes != null)
                 {
@@ -208,9 +224,9 @@ namespace ICanPay
         /// <returns></returns>
         private static bool IsWeixinpayNotify()
         {
-            if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
-                string.Compare(HttpContext.Current.Request.ContentType, "text/xml") == 0 &&
-                string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
+            if (string.Compare(HttpUtil.RequestType, "POST") == 0 &&
+                string.Compare(HttpUtil.ContentType, "text/xml") == 0 &&
+                string.Compare(HttpUtil.UserAgent, "Mozilla/4.0") == 0)
             {
                 return true;
             }

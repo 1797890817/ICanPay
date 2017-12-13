@@ -7,24 +7,25 @@ namespace Demo.Controllers
 {
     public class AppPaymentController : Controller
     {
-        public JsonResult CreateOrder(GatewayType gatewayType)
-        {
-            PaymentSetting paymentSetting = new PaymentSetting(gatewayType);
-            paymentSetting.Merchant.AppId = "appid000000000000000";
-            paymentSetting.Merchant.Email = "yourname@address.com";
-            paymentSetting.Merchant.Partner = "000000000000000";
-            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
-            paymentSetting.Merchant.PrivateKeyPem = "yourrsa_private_key.pem";
-            paymentSetting.Merchant.PublicKeyPem = "yourrsa_public_key.pem";
-            paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");
+        private readonly IGateways gateways;
 
-            paymentSetting.Order.OrderAmount = 0.01;
-            paymentSetting.Order.OrderNo = "35";
-            paymentSetting.Order.Subject = "AppPayment";
-            return Json(paymentSetting.BuildPayParams()) ;
+        public AppPaymentController(IGateways gateways)
+        {
+            this.gateways = gateways;
         }
 
-
-
+        public JsonResult CreateOrder(GatewayType gatewayType)
+        {
+            var gateway = gateways.Get(gatewayType);
+            var paymentSetting = new PaymentSetting(gateway);
+            paymentSetting.Order = new Order()
+            {
+                OrderAmount = 0.01,
+                OrderNo = DateTime.Now.ToString("yyyyMMddhhmmss"),
+                Subject = "AppPayment",
+                PaymentDate = DateTime.Now
+            };
+            return Json(paymentSetting.BuildPayParams());
+        }
     }
 }

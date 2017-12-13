@@ -1,4 +1,5 @@
 using ICanPay.Enums;
+using ICanPay.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -25,7 +26,11 @@ namespace ICanPay.Events
         public PaymentEventArgs(GatewayBase gateway)
         {
             this.gateway = gateway;
-            notifyServerHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
+#if NETSTANDARD2_0
+            notifyServerHostAddress = HttpUtil.Current.Request.Host.Host;
+#elif NET46
+                notifyServerHostAddress = HttpUtil.Current.Request.UserHostAddress;
+#endif
         }
 
 

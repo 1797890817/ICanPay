@@ -1,9 +1,9 @@
 ﻿using ICanPay;
 using ICanPay.Enums;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Web.Mvc;
 
-namespace Demo.Controllers
+namespace Demo.Core.Controllers
 {
     public class WapPaymentController : Controller
     {

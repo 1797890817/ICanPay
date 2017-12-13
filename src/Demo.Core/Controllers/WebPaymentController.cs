@@ -1,15 +1,15 @@
-﻿using ICanPay;
+﻿using Microsoft.AspNetCore.Mvc;
 using ICanPay.Enums;
+using ICanPay;
 using System;
-using System.Web.Mvc;
 
-namespace Demo.Controllers
+namespace Demo.Core.Controllers
 {
-    public class WapPaymentController : Controller
+    public class WebPaymentController : Controller
     {
         private readonly IGateways gateways;
 
-        public WapPaymentController(IGateways gateways)
+        public WebPaymentController(IGateways gateways)
         {
             this.gateways = gateways;
         }
@@ -22,7 +22,7 @@ namespace Demo.Controllers
             {
                 OrderAmount = 0.01,
                 OrderNo = DateTime.Now.ToString("yyyyMMddhhmmss"),
-                Subject = "WapPayment",
+                Subject = "WebPayment",
                 PaymentDate = DateTime.Now
             };
             paymentSetting.Payment();

@@ -5,6 +5,7 @@ using Aop.Api.Response;
 using Aop.Api.Util;
 using ICanPay.Enums;
 using ICanPay.Interfaces;
+using ICanPay.Utils;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -196,7 +197,7 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("success");
+                HttpUtil.Write("success");
             }
         }
 

@@ -1,14 +1,22 @@
 using ICanPay.Enums;
 using ICanPay.Interfaces;
 using ICanPay.Providers;
-using System;
-using System.Collections.Generic;
+using ICanPay.Utils;
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+using QRCoder;
+using System.DrawingCore;
+using System.DrawingCore.Imaging;
+#elif NET46
+using ThoughtWorks.QRCode.Codec;
 using System.Drawing;
 using System.Drawing.Imaging;
+#endif
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Web;
-using ThoughtWorks.QRCode.Codec;
+
 
 namespace ICanPay
 {
@@ -20,13 +28,18 @@ namespace ICanPay
     /// </remarks>
     public class PaymentSetting
     {
-        #region 字段
+#region 字段
 
         GatewayBase gateway;
 
         #endregion
 
         #region 构造函数
+
+        public PaymentSetting(GatewayBase gateway)
+        {
+            this.gateway = gateway;
+        }
 
         public PaymentSetting(GatewayType gatewayType)
         {
@@ -41,9 +54,9 @@ namespace ICanPay
             gateway.Order = order;
         }
 
-        #endregion
+#endregion
 
-        #region 属性
+#region 属性
 
         /// <summary>
         /// 网关
@@ -127,9 +140,9 @@ namespace ICanPay
                 return gateway is IRefundReq;
             }
         }
-        #endregion
+#endregion
 
-        #region 方法
+#region 方法
 
 
         private GatewayBase CreateGateway(GatewayType gatewayType)
@@ -164,18 +177,18 @@ namespace ICanPay
         /// </remarks>
         public void Payment()
         {
-            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
+            //HttpUtil.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IPaymentUrl paymentUrl = gateway as IPaymentUrl;
             if (paymentUrl != null)
             {          
-                HttpContext.Current.Response.Redirect(paymentUrl.BuildPaymentUrl());
+                HttpUtil.Redirect(paymentUrl.BuildPaymentUrl());
                 return;
             }
 
             IPaymentForm paymentForm = gateway as IPaymentForm;
             if (paymentForm != null)
             {
-                HttpContext.Current.Response.Write(paymentForm.BuildPaymentForm());
+                HttpUtil.Write(paymentForm.BuildPaymentForm());
                 return;
             }
 
@@ -195,17 +208,17 @@ namespace ICanPay
         /// <param name="map"></param>
         public void WapPayment(Dictionary<string, string> map =null)
         {
-            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
+           // HttpUtil.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IWapPaymentUrl paymentUrl = gateway as IWapPaymentUrl;
             if (paymentUrl != null)
             {
                 if (gateway.GatewayType == GatewayType.WeChatPayment)
                 {
-                    HttpContext.Current.Response.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(map)}'</script>");
+                    HttpUtil.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(map)}'</script>");
                 }
                 else
                 {
-                    HttpContext.Current.Response.Redirect(paymentUrl.BuildWapPaymentUrl(map));
+                    HttpUtil.Redirect(paymentUrl.BuildWapPaymentUrl(map));
                 }
                 return;
             }
@@ -213,7 +226,7 @@ namespace ICanPay
             IWapPaymentForm paymentForm = gateway as IWapPaymentForm;
             if (paymentForm != null)
             {
-                HttpContext.Current.Response.Write(paymentForm.BuildWapPaymentForm());
+                HttpUtil.Write(paymentForm.BuildWapPaymentForm());
                 return;
             }
 
@@ -228,14 +241,14 @@ namespace ICanPay
             IQueryUrl queryUrl = gateway as IQueryUrl;
             if (queryUrl != null)
             {
-                HttpContext.Current.Response.Redirect(queryUrl.BuildQueryUrl());
+                HttpUtil.Redirect(queryUrl.BuildQueryUrl());
                 return;
             }
 
             IQueryForm queryForm = gateway as IQueryForm;
             if (queryForm != null)
             {
-                HttpContext.Current.Response.Write(queryForm.BuildQueryForm());
+                HttpUtil.Write(queryForm.BuildQueryForm());
                 return;
             }
 
@@ -317,13 +330,28 @@ namespace ICanPay
         /// <param name="qrCodeContent">二维码内容</param>
         private void BuildQRCodeImage(string qrCodeContent)
         {
+#if NETSTANDARD2_0
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrCodeContent, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            MemoryStream ms = new MemoryStream();
+            qrCodeImage.Save(ms, ImageFormat.Png);
+            byte[] buffer = ms.GetBuffer();
+#elif NET46
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             qrCodeEncoder.QRCodeScale = 4;  // 二维码大小
-            Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
+            Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.GetEncoding(gateway.Charset));
             MemoryStream ms = new MemoryStream();
-            image.Save(ms, ImageFormat.Png);
-            HttpContext.Current.Response.ContentType = "image/x-png";
-            HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+            image.Save(ms, ImageFormat.Png);   
+            byte[] buffer = ms.GetBuffer();
+#endif
+            HttpUtil.Current.Response.ContentType = "image/x-png";
+#if NETSTANDARD2_0
+            HttpUtil.Current.Response.Body.WriteAsync(buffer, 0, (int)buffer.Length).GetAwaiter().GetResult();
+#elif NET46
+            HttpUtil.Current.Response.BinaryWrite(buffer);
+#endif
         }
         #endregion
     }

@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Test\**" />
+    <EmbeddedResource Remove="Test\**" />
+    <None Remove="Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Request\AlipayAssetAccountGetRequest.cs" />
+    <Compile Remove="Request\AlipayAssetAccountUnbindRequest.cs" />
+    <Compile Remove="Request\AlipayCommerceMedicalCardQueryRequest.cs" />
+    <Compile Remove="Request\AlipayCommerceMedicalInstcardBindRequest.cs" />
+    <Compile Remove="Request\AlipayCommerceMedicalInstcardCreateandpayRequest.cs" />
+    <Compile Remove="Request\AlipayEbppBillBatchPayurlGetRequest.cs" />
+    <Compile Remove="Request\AlipayEbppBillPayRequest.cs" />
+    <Compile Remove="Request\AlipayEbppBillPayurlGetRequest.cs" />
+    <Compile Remove="Request\AlipayEcoMycarDataserviceMaintainvehicleShareRequest.cs" />
+    <Compile Remove="Request\AlipayEcoMycarOrderRefundRequest.cs" />
+    <Compile Remove="Request\AlipayInsSceneApplicationQueryRequest.cs" />
+    <Compile Remove="Request\AlipayMappprodAccountBindingSyncRequest.cs" />
+    <Compile Remove="Request\AlipayMarketingCampaignDrawcampTriggerRequest.cs" />
+    <Compile Remove="Request\AlipayMemberCardDeletecardRequest.cs" />
+    <Compile Remove="Request\AlipayMemberCardOpenRequest.cs" />
+    <Compile Remove="Request\AlipayMemberCardQueryRequest.cs" />
+    <Compile Remove="Request\AlipayMemberConsumeNotifyRequest.cs" />
+    <Compile Remove="Request\AlipayMobileDeviceinfoDynamicinfoAddRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketLeadsBatchqueryRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketProductUsedetailRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumBindRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumCreateRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumDeleteRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumModifyRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumQueryRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineMarketShopAlbumUnbindRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineSaleleadsInfoAddRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineSaleleadsInfoQuerybypageRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineSaleleadsMerchantEquipmentQueryRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineSaleleadsModifyRequest.cs" />
+    <Compile Remove="Request\AlipayOfflineSaleleadsQuerybyidsRequest.cs" />
+    <Compile Remove="Request\AlipayTrustUserRiskSummaryGetRequest.cs" />
+    <Compile Remove="Request\AlipayTrustUserStandardVerifyGetRequest.cs" />
+    <Compile Remove="Request\AlipayTrustUserZminfoPairGetRequest.cs" />
+    <Compile Remove="Request\AlipayUserMemberCardUpdateRequest.cs" />
+    <Compile Remove="Request\KoubeiMarketingDataCustomtagBatchqueryRequest.cs" />
+    <Compile Remove="Request\KoubeiMarketingDataCustomtagDeleteRequest.cs" />
+    <Compile Remove="Request\KoubeiMarketingDataCustomtagDetailQueryRequest.cs" />
+    <Compile Remove="Request\KoubeiMarketingDataCustomtagSaveRequest.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Configuration.ConfigurationManager">
+      <Version>4.4.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+
+</Project>

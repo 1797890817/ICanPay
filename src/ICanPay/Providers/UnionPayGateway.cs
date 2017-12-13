@@ -1,9 +1,14 @@
 ﻿using com.unionpay.acp.sdk;
 using ICanPay.Enums;
 using ICanPay.Interfaces;
+using ICanPay.Utils;
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using System.Web;
 
@@ -74,8 +79,7 @@ namespace ICanPay.Providers
             //TODO 其他特殊用法请查看 pages/api_01_gateway/special_use_purchase.htm
 
             AcpService.Sign(param, System.Text.Encoding.UTF8);
-            string html = AcpService.CreateAutoFormHtml(SDKConfig.FrontTransUrl, param, System.Text.Encoding.UTF8);// 将SDKUtil产生的Html文档写入页面，从而引导用户浏览器重定向 
-            System.Web.HttpContext.Current.Response.ContentEncoding = Encoding.UTF8; // 指定输出编码  
+            string html = AcpService.CreateAutoFormHtml(SDKConfig.FrontTransUrl, param, System.Text.Encoding.UTF8);// 将SDKUtil产生的Html文档写入页面，从而引导
             return html;
         }
 
@@ -379,24 +383,28 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("ok");
+                HttpUtil.Write("ok");
             }
         }
 
         protected override bool CheckNotifyData()
         {
-            if (HttpContext.Current.Request.HttpMethod == "POST")
+            if (HttpUtil.RequestType == "POST")
             {
                 // 使用Dictionary保存参数
                 Dictionary<string, string> resData = new Dictionary<string, string>();
 
-                NameValueCollection coll = HttpContext.Current.Request.Form;
-
+#if NETSTANDARD2_0
+                FormCollection coll = (FormCollection)HttpUtil.Form;
+                string[] requestItem = coll.Keys.ToArray(); 
+#elif NET46
+                NameValueCollection coll = HttpUtil.Form;
                 string[] requestItem = coll.AllKeys;
+#endif
 
                 for (int i = 0; i < requestItem.Length; i++)
                 {
-                    resData.Add(requestItem[i], HttpContext.Current.Request.Form[requestItem[i]]);
+                    resData.Add(requestItem[i], HttpUtil.Form[requestItem[i]]);
                 }
 
                 // 返回报文中不包含UPOG,表示Server端正确接收交易请求,则需要验证Server端返回报文的签名
@@ -414,6 +422,6 @@ namespace ICanPay.Providers
             return false;
         }
 
-        #endregion
+#endregion
     }
 }

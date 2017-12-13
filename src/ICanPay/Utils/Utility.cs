@@ -106,22 +106,26 @@ namespace ICanPay.Utils
         /// </summary>
         public static string GetClientIP()
         {
-            string ip = HttpContext.Current.Request.Headers["X-Real-IP"];
+            string ip = HttpUtil.Current.Request.Headers["X-Real-IP"];
             if (string.IsNullOrEmpty(ip) || ip.Length == 0)
             {
-                ip = HttpContext.Current.Request.Headers["X-Forwarded-For"];
+                ip = HttpUtil.Current.Request.Headers["X-Forwarded-For"];
             }
             if (string.IsNullOrEmpty(ip) || ip.Length == 0)
             {
-                ip = HttpContext.Current.Request.Headers["Proxy-Client-IP"];
+                ip = HttpUtil.Current.Request.Headers["Proxy-Client-IP"];
             }
             if (string.IsNullOrEmpty(ip) || ip.Length == 0)
             {
-                ip = HttpContext.Current.Request.Headers["WL-Proxy-Client-IP"];
+                ip = HttpUtil.Current.Request.Headers["WL-Proxy-Client-IP"];
             }
             if (string.IsNullOrEmpty(ip) || ip.Length == 0)
             {
-                ip = HttpContext.Current.Request.UserHostAddress;
+#if NETSTANDARD2_0
+                ip = HttpUtil.Current.Request.Host.Host;
+#elif NET46
+                ip = HttpUtil.Current.Request.UserHostAddress;
+#endif
             }
             if (!string.IsNullOrEmpty(ip))
             {
@@ -138,10 +142,7 @@ namespace ICanPay.Utils
             }
             return ip;
         }
+
         #endregion
     }
-
-
 }
-
-

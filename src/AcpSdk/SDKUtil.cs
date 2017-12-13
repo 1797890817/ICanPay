@@ -5,8 +5,7 @@ using System.Web;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Web.Script.Serialization;
-
+using Newtonsoft.Json;
 
 namespace com.unionpay.acp.sdk
 {
@@ -242,7 +241,7 @@ namespace com.unionpay.acp.sdk
         /// <returns></returns>
         public static Dictionary<string, object> JsonToDictionary(string jsonData)
         {
-            return new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(jsonData);
+            return  JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonData);
         }
 
         /// <summary>
@@ -252,7 +251,7 @@ namespace com.unionpay.acp.sdk
         /// <returns>json数据</returns>
         public static string DictionaryToJson(Dictionary<string, object> dic)
         {
-            return new JavaScriptSerializer().Serialize(dic);
+            return JsonConvert.SerializeObject(dic);
         }
     }
 }
