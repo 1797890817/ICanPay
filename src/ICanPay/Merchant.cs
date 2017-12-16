@@ -153,12 +153,12 @@ namespace ICanPay
         /// <summary>
         /// 私钥地址
         /// </summary>
-        public string PrivateKeyPem { get; set; }
+        public string PrivateKey { get; set; }
 
         /// <summary>
         /// 公钥地址
         /// </summary>
-        public string PublicKeyPem { get; set; }
+        public string PublicKey { get; set; }
 
         /// <summary>
         /// 网关类型

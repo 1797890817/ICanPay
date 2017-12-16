@@ -28,6 +28,14 @@ namespace ICanPay
         GatewayBase Get<T>(GatewayTradeType gatewayTradeType);
 
         /// <summary>
+        ///  通过网关类型,交易类型获取网关
+        /// </summary>
+        /// <param name="gatewayType">网关类型</param>
+        /// <param name="gatewayTradeType">交易类型</param>
+        /// <returns></returns>
+        GatewayBase Get(GatewayType gatewayType, GatewayTradeType gatewayTradeType);
+
+        /// <summary>
         /// 通过网关类型获取网关
         /// </summary>
         /// <param name="gatewayType">网关类型</param>

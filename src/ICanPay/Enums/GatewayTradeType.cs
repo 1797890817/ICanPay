@@ -6,6 +6,11 @@
     public enum GatewayTradeType
     {
         /// <summary>
+        ///未知交易类型
+        /// </summary>
+        None = -1,
+
+        /// <summary>
         /// 电脑网站支付
         /// </summary>
         Web = 0,
@@ -21,9 +26,9 @@
         APP = 2,
 
         /// <summary>
-        /// 扫码支付
+        /// 二维码支付
         /// </summary>
-        Scan = 3,
+        QRCode = 3,
 
         /// <summary>
         /// 公众号支付
@@ -33,7 +38,7 @@
         /// <summary>
         /// 条码支付
         /// </summary>
-        Barcode = 5,
+        BarCode = 5,
 
         /// <summary>
         /// 小程序支付

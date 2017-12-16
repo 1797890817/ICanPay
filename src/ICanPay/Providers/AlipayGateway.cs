@@ -203,7 +203,7 @@ namespace ICanPay.Providers
 
         public IAopClient GetAopClient()
         {
-            return new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKeyPem, "json", Charset, Merchant.PublicKeyPem, "RSA"); 
+            return new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKey, "json", Charset, Merchant.PublicKey, "RSA"); 
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace ICanPay.Providers
         /// </summary>
         private bool ValidateAlipayNotifyRSASign()
         {
-            bool checkSign = AlipaySignature.RSACheckV2(GetSortedGatewayParameter(), Merchant.PublicKeyPem, Charset);
+            bool checkSign = AlipaySignature.RSACheckV2(GetSortedGatewayParameter(), Merchant.PublicKey, Charset);
             if (checkSign)
             {
                 return true;

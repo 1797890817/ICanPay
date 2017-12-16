@@ -70,7 +70,7 @@ namespace com.unionpay.acp.sdk
         private static string ifValidateRemoteCert = ""; //功能：是否验证后台https证书
 
 #elif NET46
-       private static Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+       private static Configuration config = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
 
         private static string signCertPath = config.AppSettings.Settings["sdk.signCert.path"].Value;  //功能：读取配置文件获取签名证书路径
         private static string signCertPwd = config.AppSettings.Settings["sdk.signCert.pwd"].Value;//功能：读取配置文件获取签名证书密码

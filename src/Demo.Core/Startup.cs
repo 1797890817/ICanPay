@@ -41,8 +41,8 @@ namespace Demo.Core
                         Partner = Configuration["alipay:partner"],
                         Email = Configuration["alipay:seller_email"],
                         Key = Configuration["alipay:key"],
-                        PublicKeyPem = Configuration["alipay:publicKeypem"],
-                        PrivateKeyPem = Configuration["alipay:privateKeypem"],
+                        PublicKey = Configuration["alipay:publicKey"],
+                        PrivateKey = Configuration["alipay:privateKey"],
                         NotifyUrl = new Uri(Configuration["alipay:notifyurl"]),
                         ReturnUrl = new Uri(Configuration["alipay:returnurl"]),
                     }

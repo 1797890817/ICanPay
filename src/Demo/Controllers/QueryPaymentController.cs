@@ -23,7 +23,7 @@ namespace Demo.Controllers
             querySetting.Order.OrderNo = "20";
             querySetting.Order.OrderAmount = 0.01;
 
-            if (querySetting.CanQueryNow && querySetting.QueryNow())
+            if (querySetting.QueryNow())
             {
                 // 订单已支付
             }

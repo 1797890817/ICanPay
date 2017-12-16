@@ -18,13 +18,10 @@ namespace Demo.Core.Controllers
             var gateway = gateways.Get(gatewayType);
             var paymentSetting = new PaymentSetting(gateway);
 
-            if (paymentSetting.CanRefund)
-            {
-                var refund = new Refund();
-                refund.OutRefundNo = "000000000000000";
-                paymentSetting.BuildRefund(refund);
-                paymentSetting.BuildRefundQuery(refund);
-            }
+            var refund = new Refund();
+            refund.OutRefundNo = "000000000000000";
+            paymentSetting.BuildRefund(refund);
+            paymentSetting.BuildRefundQuery(refund);
         }
 
     }

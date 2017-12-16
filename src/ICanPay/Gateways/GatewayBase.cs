@@ -45,7 +45,7 @@ namespace ICanPay
         /// <summary>
         /// 网关的交易类型 
         /// </summary>
-        public GatewayTradeType GatewayTradeType { set; get; }
+        public GatewayTradeType GatewayTradeType { set; get; } = GatewayTradeType.None;
 
         /// <summary>
         /// 商家数据

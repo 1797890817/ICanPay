@@ -97,6 +97,24 @@ namespace ICanPay
         }
 
         /// <summary>
+        ///  通过网关类型,交易类型获取网关
+        /// </summary>
+        /// <param name="gatewayType">网关类型</param>
+        /// <param name="gatewayTradeType">交易类型</param>
+        /// <returns></returns>
+        public GatewayBase Get(GatewayType gatewayType, GatewayTradeType gatewayTradeType)
+        {
+            var gatewayList = _list
+           .Where(a => a.GatewayType == gatewayType && a.GatewayTradeType == gatewayTradeType)
+           .ToList();
+
+            var gateway = gatewayList.Count > 0 ? gatewayList[0] : Get(gatewayType);
+            gateway.GatewayTradeType = gatewayTradeType;
+
+            return gateway;
+        }
+
+        /// <summary>
         /// 通过网关类型获取网关
         /// </summary>
         /// <param name="gatewayType">网关类型</param>

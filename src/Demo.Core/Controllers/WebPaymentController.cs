@@ -16,7 +16,7 @@ namespace Demo.Core.Controllers
 
         public void CreateOrder(GatewayType gatewayType)
         {
-            var gateway = gateways.Get(gatewayType);
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.Web);
             var paymentSetting = new PaymentSetting(gateway);
             paymentSetting.Order = new Order()
             {

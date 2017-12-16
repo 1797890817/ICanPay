@@ -3,7 +3,6 @@ using ICanPay.Interfaces;
 using ICanPay.Providers;
 using ICanPay.Utils;
 #if NETSTANDARD2_0
-using Microsoft.AspNetCore.Http;
 using QRCoder;
 using System.DrawingCore;
 using System.DrawingCore.Imaging;
@@ -28,7 +27,7 @@ namespace ICanPay
     /// </remarks>
     public class PaymentSetting
     {
-#region 字段
+        #region 字段
 
         GatewayBase gateway;
 
@@ -54,9 +53,9 @@ namespace ICanPay
             gateway.Order = order;
         }
 
-#endregion
+        #endregion
 
-#region 属性
+        #region 属性
 
         /// <summary>
         /// 网关
@@ -103,46 +102,9 @@ namespace ICanPay
             }
         }
 
+        #endregion
 
-        public bool CanQueryNotify
-        {
-            get
-            {
-                if (gateway is IQueryUrl || gateway is IQueryForm)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public bool CanQueryNow
-        {
-            get
-            {
-                return gateway is IQueryNow;
-            }
-        }
-
-        public bool CanBuildAppParams
-        {
-            get
-            {
-                return gateway is IAppParams;
-            }
-        }
-
-        public bool CanRefund
-        {
-            get
-            {
-                return gateway is IRefundReq;
-            }
-        }
-#endregion
-
-#region 方法
+        #region 方法
 
 
         private GatewayBase CreateGateway(GatewayType gatewayType)
@@ -168,19 +130,63 @@ namespace ICanPay
             }
         }
 
+        public Dictionary<string, string> Payment(GatewayTradeType gatewayTradeType, Dictionary<string, string> map = null)
+        {
+            gateway.GatewayTradeType = gatewayTradeType;
+            return Payment(gatewayTradeType);
+        }
+
+        public Dictionary<string, string> Payment(Dictionary<string, string> map = null)
+        {
+            switch (gateway.GatewayTradeType)
+            {
+                case GatewayTradeType.APP:
+                    {
+                        return BuildPayParams();
+                    }               
+                case GatewayTradeType.Wap:
+                    {
+                        WapPayment(map);
+                    }
+                    break;
+                case GatewayTradeType.Web:
+                    {
+                        WebPayment();
+                    }
+                    break;
+                case GatewayTradeType.QRCode:
+                    {
+                        QRCodePayment();
+                    }
+                    break;
+                case GatewayTradeType.Public:
+                    break;
+                case GatewayTradeType.BarCode:
+                    break;
+                case GatewayTradeType.Applet:
+                    break;
+                case GatewayTradeType.None:
+                    {
+                        throw new NotSupportedException($"{gateway.GatewayType} 没有实现 {gateway.GatewayTradeType} 接口");
+                    }
+                default:
+                    break;
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// 创建订单的支付Url、Form表单、二维码。
         /// </summary>
         /// <remarks>
-        /// 如果创建的是订单的Url或Form表单将跳转到相应网关支付，如果是二维码将输出二维码图片。
+        /// 如果创建的是订单的Url或Form表单将跳转到相应网关支付
         /// </remarks>
-        public void Payment()
+        private void WebPayment()
         {
-            //HttpUtil.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IPaymentUrl paymentUrl = gateway as IPaymentUrl;
             if (paymentUrl != null)
-            {          
+            {
                 HttpUtil.Redirect(paymentUrl.BuildPaymentUrl());
                 return;
             }
@@ -191,14 +197,6 @@ namespace ICanPay
                 HttpUtil.Write(paymentForm.BuildPaymentForm());
                 return;
             }
-
-            IPaymentQRCode paymentQRCode = gateway as IPaymentQRCode;
-            if (paymentQRCode != null)
-            {
-                BuildQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
-                return;
-            }
-
             throw new NotSupportedException(gateway.GatewayType + " 没有实现支付接口");
         }
 
@@ -206,9 +204,8 @@ namespace ICanPay
         /// 创建WAP支付
         /// </summary>
         /// <param name="map"></param>
-        public void WapPayment(Dictionary<string, string> map =null)
+        private void WapPayment(Dictionary<string, string> map = null)
         {
-           // HttpUtil.Current.Response.ContentEncoding = Encoding.GetEncoding(Gateway.Charset);
             IWapPaymentUrl paymentUrl = gateway as IWapPaymentUrl;
             if (paymentUrl != null)
             {
@@ -231,6 +228,34 @@ namespace ICanPay
             }
 
             throw new NotSupportedException(gateway.GatewayType + " 没有实现支付接口");
+        }
+
+        /// <summary>
+        //二维码支付
+        /// </summary>
+        private void QRCodePayment()
+        {          
+            IPaymentQRCode paymentQRCode = gateway as IPaymentQRCode;
+            if (paymentQRCode != null)
+            {
+                BuildQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
+                return;
+            }
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现支付接口");
+        }
+
+        /// <summary>
+        /// 创建APP端SDK支付需要的参数
+        /// </summary>
+        /// <returns></returns>
+        private Dictionary<string, string> BuildPayParams()
+        {
+            IAppParams appParams = gateway as IAppParams;
+            if (appParams != null)
+            {
+                return appParams.BuildPayParams();
+            }
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IAppParams 查询接口");
         }
 
         /// <summary>
@@ -270,19 +295,7 @@ namespace ICanPay
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryNow 查询接口");
         }
 
-        /// <summary>
-        /// 创建APP端SDK支付需要的参数
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<string, string> BuildPayParams()
-        {
-            IAppParams appParams = gateway as IAppParams;
-            if (appParams != null)
-            {
-                return appParams.BuildPayParams();
-            }
-            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IAppParams 查询接口");
-        }
+     
 
         /// <summary>
         /// 创建退款
@@ -323,7 +336,7 @@ namespace ICanPay
         {
             Gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
         }
-    
+
         /// <summary>
         /// 生成并输出二维码图片
         /// </summary>

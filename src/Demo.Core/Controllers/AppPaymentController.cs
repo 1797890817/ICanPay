@@ -16,7 +16,7 @@ namespace Demo.Core.Controllers
 
         public JsonResult CreateOrder(GatewayType gatewayType)
         {
-            var gateway = gateways.Get(gatewayType);
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.APP);
             var paymentSetting = new PaymentSetting(gateway);
             paymentSetting.Order = new Order()
             {
@@ -25,7 +25,7 @@ namespace Demo.Core.Controllers
                 Subject = "AppPayment",
                 PaymentDate = DateTime.Now
             };
-            return Json(paymentSetting.BuildPayParams());
+            return Json(paymentSetting.Payment());
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿## ICanPay
-https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化。支持支付宝，微信，银联支付渠道通过Web，App，Wap方式支付。简化订单的创建、查询、退款跟接收网关返回的支付通知等功能
-
+https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化。支持NET46和NETSTANDARD2_0。支持支付宝，微信，银联支付渠道通过Web，App，Wap，QRCode方式支付。简化订单的创建、查询、退款跟接收网关返回的支付通知等功能
 
 ## WebPayment（网站支付）
 ```
- public void CreateOrder(GatewayType gatewayType)
+   public void CreateOrder(GatewayType gatewayType)
         {
-            var gateway = gateways.Get(gatewayType);
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.Web);
             var paymentSetting = new PaymentSetting(gateway);
             paymentSetting.Order = new Order()
             {
@@ -22,9 +21,9 @@ https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化�
 
 ## WapPayment（手机网站支付）
 ```
- public void CreateOrder(GatewayType gatewayType)
+    public void CreateOrder(GatewayType gatewayType)
         {
-            var gateway = gateways.Get(gatewayType);
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.Wap);
             var paymentSetting = new PaymentSetting(gateway);
             paymentSetting.Order = new Order()
             {
@@ -33,16 +32,33 @@ https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化�
                 Subject = "WapPayment",
                 PaymentDate = DateTime.Now
             };
-            paymentSetting.WapPayment();
+            paymentSetting.Payment();
+        }
+```
+
+## QRCodePayment（二维码支付）
+```
+        public void CreateOrder(GatewayType gatewayType)
+        {
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.QRCode);
+            var paymentSetting = new PaymentSetting(gateway);
+            paymentSetting.Order = new Order()
+            {
+                OrderAmount = 0.01,
+                OrderNo = DateTime.Now.ToString("yyyyMMddhhmmss"),
+                Subject = "QRCodePayment",
+                PaymentDate = DateTime.Now
+            };
+            paymentSetting.Payment();
         }
 ```
 
 
 ## AppPayment（手机APP支付）
 ```
-   public JsonResult CreateOrder(GatewayType gatewayType)
+        public JsonResult CreateOrder(GatewayType gatewayType)
         {
-            var gateway = gateways.Get(gatewayType);
+            var gateway = gateways.Get(gatewayType, GatewayTradeType.APP);
             var paymentSetting = new PaymentSetting(gateway);
             paymentSetting.Order = new Order()
             {
@@ -51,7 +67,7 @@ https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化�
                 Subject = "AppPayment",
                 PaymentDate = DateTime.Now
             };
-            return Json(paymentSetting.BuildPayParams());
+            return Json(paymentSetting.Payment());
         }
 ```
 
@@ -66,7 +82,7 @@ https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化�
             querySetting.Order.OrderNo = "20";
             querySetting.Order.OrderAmount = 0.01;
 
-            if (querySetting.CanQueryNow && querySetting.QueryNow())
+            if (querySetting.QueryNow())
             {
                 // 订单已支付
             }
