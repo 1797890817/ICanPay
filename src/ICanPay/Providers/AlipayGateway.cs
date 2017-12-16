@@ -8,7 +8,6 @@ using ICanPay.Interfaces;
 using ICanPay.Utils;
 using System.Collections.Generic;
 using System.Text;
-using System.Web;
 
 namespace ICanPay.Providers
 {

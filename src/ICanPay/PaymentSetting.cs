@@ -231,7 +231,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        //二维码支付
+        ///二维码支付
         /// </summary>
         private void QRCodePayment()
         {          

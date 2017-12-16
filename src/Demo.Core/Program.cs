@@ -13,10 +13,10 @@ namespace Demo.Core
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-              .UseStartup<Startup>()
-              .UseContentRoot(Directory.GetCurrentDirectory())
-              .UseIISIntegration()
-              .UseStartup<Startup>()
-              .Build();
+               .UseKestrel()
+               .UseIISIntegration()
+               .UseContentRoot(Directory.GetCurrentDirectory())          
+               .UseStartup<Startup>()
+               .Build();
     }
 }

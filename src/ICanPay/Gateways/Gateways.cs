@@ -125,7 +125,8 @@ namespace ICanPay
                 .Where(a => a.GatewayType == gatewayType)
                 .ToList();
 
-            var gateway = gatewayList.Count > 0 ? gatewayList[0] : null;
+            var gateway = gatewayList.Count > 0 ? gatewayList[0] : throw new GatewayException("找不到指定网关");
+        
             return gateway;
         }
 
