@@ -1,6 +1,68 @@
 ﻿## ICanPay
 https://github.com/hiihellox10/ICanPay 统一支付网关。对原代码优化。支持NET46和NETSTANDARD2_0。支持支付宝，微信，银联支付渠道通过Web，App，Wap，QRCode方式支付。简化订单的创建、查询、退款跟接收网关返回的支付通知等功能
 
+## 初始网关信息
+
+NET46，需依赖AuotoFac组件
+```
+     var builder = new ContainerBuilder();
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.Register(c =>
+            {
+                var gateways = new Gateways();
+                gateways.Add(new AlipayGateway()
+                {
+                    Merchant = new Merchant()
+                    {
+                        AppId = ConfigurationManager.AppSettings["alipay.appid"],
+                        Partner = ConfigurationManager.AppSettings["alipay.partner"],
+                        Email = ConfigurationManager.AppSettings["alipay.seller_email"],
+                        Key = ConfigurationManager.AppSettings["alipay.key"],
+                        PublicKey = ConfigurationManager.AppSettings["alipay.publicKey"],
+                        PrivateKey = ConfigurationManager.AppSettings["alipay.privateKey"],
+                        NotifyUrl = new Uri(ConfigurationManager.AppSettings["alipay.notify_url"]),
+                        ReturnUrl = new Uri(ConfigurationManager.AppSettings["alipay.return_url"]),
+                    }
+                });               
+               return gateways;
+            }).As<IGateways>().InstancePerDependency();
+
+            //autofac 注册依赖
+            IContainer container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+```
+NETSTANDARD2_0，在Startup初始化
+```
+    public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+
+            services.AddSingleton<IConfiguration>(Configuration);
+
+         
+            services.AddICanPay(a =>
+            {
+                var gateways = new Gateways();
+                gateways.Add(new AlipayGateway()
+                {
+                    Merchant = new Merchant()
+                    {
+                        AppId = Configuration["alipay:appid"],
+                        Partner = Configuration["alipay:partner"],
+                        Email = Configuration["alipay:seller_email"],
+                        Key = Configuration["alipay:key"],
+                        PublicKey = Configuration["alipay:publicKey"],
+                        PrivateKey = Configuration["alipay:privateKey"],
+                        NotifyUrl = new Uri(Configuration["alipay:notifyurl"]),
+                        ReturnUrl = new Uri(Configuration["alipay:returnurl"]),
+                    }
+                });
+               
+                return gateways;
+            });
+        }
+```
+
 ## WebPayment（网站支付）
 ```
    public void CreateOrder(GatewayType gatewayType)
