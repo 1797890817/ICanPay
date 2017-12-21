@@ -1,5 +1,6 @@
 ﻿#if NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 #elif NET46
 using System.Configuration;
@@ -11,64 +12,44 @@ namespace com.unionpay.acp.sdk
     public class SDKConfig
     {
 #if NETSTANDARD2_0
+        private static IConfigurationRoot _config;
 
-         static SDKConfig()
+        private static IConfigurationRoot config
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("acp_sdk.json", optional: true, reloadOnChange: true);
-            var config = builder.Build();
-
-            signCertPath = config["sdk.signCert.path"];  //功能：读取配置文件获取签名证书路径
-            signCertPwd = config["sdk.signCert.pwd"];//功能：读取配置文件获取签名证书密码
-            validateCertDir = config["sdk.validateCert.dir"];//功能：读取配置文件获取验签目录
-            encryptCert = config["sdk.encryptCert.path"];  //功能：加密公钥证书路径
-
-            cardRequestUrl = config["sdk.cardRequestUrl"];  //功能：有卡交易路径;
-            appRequestUrl = config["sdk.appRequestUrl"];  //功能：appj交易路径;
-            singleQueryUrl = config["sdk.singleQueryUrl"]; //功能：读取配置文件获取交易查询地址
-            fileTransUrl = config["sdk.fileTransUrl"];  //功能：读取配置文件获取文件传输类交易地址
-            frontTransUrl = config["sdk.frontTransUrl"]; //功能：读取配置文件获取前台交易地址
-            backTransUrl = config["sdk.backTransUrl"];//功能：读取配置文件获取后台交易地址
-            batTransUrl = config["sdk.batTransUrl"];//功能：读取配批量交易地址
-
-            frontUrl = config["frontUrl"];//功能：读取配置文件获取前台通知地址
-            backUrl = config["backUrl"];//功能：读取配置文件获取前台通知地址
-
-            // jfCardRequestUrl = config["sdk.jf.cardRequestUrl"];  //功能：缴费产品有卡交易路径;
-            // jfAppRequestUrl = config["sdk.jf.appRequestUrl"];  //功能：缴费产品app交易路径;
-            // jfSingleQueryUrl = config["sdk.jf.singleQueryUrl"]; //功能：读取配置文件获取缴费产品交易查询地址
-            // jfFrontTransUrl = config["sdk.jf.frontTransUrl"]; //功能：读取配置文件获取缴费产品前台交易地址
-            // jfBackTransUrl = config["sdk.jf.backTransUrl"];//功能：读取配置文件获取缴费产品后台交易地址
-
-            ifValidateRemoteCert = config["ifValidateRemoteCert"];//功能：是否验证后台https证书
-
+            get
+            {
+                return _config == null ?
+                            new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("acp_sdk.json", optional: true, reloadOnChange: true).Build()
+                            : _config;
+            }
         }
 
-        private static string signCertPath = "";  //功能：读取配置文件获取签名证书路径
-        private static string signCertPwd = ""; //功能：读取配置文件获取签名证书密码
-        private static string validateCertDir = ""; //功能：读取配置文件获取验签目录
-        public static string encryptCert = "";   //功能：加密公钥证书路径
+        private static string signCertPath = config["sdk.signCert.path"];  //功能：读取配置文件获取签名证书路径
+        private static string signCertPwd = config["sdk.signCert.pwd"];//功能：读取配置文件获取签名证书密码
+        private static string validateCertDir = config["sdk.validateCert.dir"];//功能：读取配置文件获取验签目录
+        private static string encryptCert = config["sdk.encryptCert.path"];  //功能：加密公钥证书路径
 
-        private static string cardRequestUrl = "";  //功能：有卡交易路径;
-        private static string appRequestUrl = "";  //功能：appj交易路径;
-        private static string singleQueryUrl = ""; //功能：读取配置文件获取交易查询地址
-        private static string fileTransUrl = ""; //功能：读取配置文件获取文件传输类交易地址
-        private static string frontTransUrl = ""; //功能：读取配置文件获取前台交易地址
-        private static string backTransUrl = ""; //功能：读取配置文件获取后台交易地址
-        private static string batTransUrl = ""; //功能：读取配批量交易地址
+        private static string cardRequestUrl = config["sdk.cardRequestUrl"];  //功能：有卡交易路径;
+        private static string appRequestUrl = config["sdk.appRequestUrl"];  //功能：appj交易路径;
+        private static string singleQueryUrl = config["sdk.singleQueryUrl"]; //功能：读取配置文件获取交易查询地址
+        private static string fileTransUrl = config["sdk.fileTransUrl"];  //功能：读取配置文件获取文件传输类交易地址
+        private static string frontTransUrl = config["sdk.frontTransUrl"]; //功能：读取配置文件获取前台交易地址
+        private static string backTransUrl = config["sdk.backTransUrl"];//功能：读取配置文件获取后台交易地址
+        private static string batTransUrl = config["sdk.batTransUrl"];//功能：读取配批量交易地址
 
-        private static string frontUrl = ""; //功能：读取配置文件获取前台通知地址
-        private static string backUrl = ""; //功能：读取配置文件获取前台通知地址
+        private static string frontUrl = config["frontUrl"];//功能：读取配置文件获取前台通知地址
+        private static string backUrl = config["backUrl"];//功能：读取配置文件获取前台通知地址
 
-        //private static string jfCardRequestUrl =  "";  //功能：缴费产品有卡交易路径;
-        //private static string jfAppRequestUrl =  "";  //功能：缴费产品app交易路径;
-        //private static string jfSingleQueryUrl =  ""; //功能：读取配置文件获取缴费产品交易查询地址
-        //private static string jfFrontTransUrl =  "";  //功能：读取配置文件获取缴费产品前台交易地址
-        //private static string jfBackTransUrl =  ""; //功能：读取配置文件获取缴费产品后台交易地址
+        //private static string jfCardRequestUrl = config["sdk.jf.cardRequestUrl"];  //功能：缴费产品有卡交易路径;
+        //private static string jfAppRequestUrl = config["sdk.jf.appRequestUrl"];  //功能：缴费产品app交易路径;
+        //private static string jfSingleQueryUrl = config["sdk.jf.singleQueryUrl"]; //功能：读取配置文件获取缴费产品交易查询地址
+        //private static string jfFrontTransUrl = config["sdk.jf.frontTransUrl"]; //功能：读取配置文件获取缴费产品前台交易地址
+        //private static string jfBackTransUrl = config["sdk.jf.backTransUrl"];//功能：读取配置文件获取缴费产品后台交易地址
 
-        private static string ifValidateRemoteCert = ""; //功能：是否验证后台https证书
-
+        private static string ifValidateRemoteCert = config["ifValidateRemoteCert"];//功能：是否验证后台https证书
+     
 #elif NET46
        private static Configuration config = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
 

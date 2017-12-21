@@ -32,7 +32,7 @@ namespace Demo
                         ReturnUrl = new Uri(ConfigurationManager.AppSettings["alipay.return_url"]),
                     }
                 });
-                gateways.Add(new WeChatPaymentGataway()
+                gateways.Add(new WeChatPayGataway()
                 {
                     Merchant = new Merchant()
                     {

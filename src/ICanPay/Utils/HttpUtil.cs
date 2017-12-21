@@ -14,7 +14,7 @@ namespace ICanPay.Utils
     /// </summary>
     public static class HttpUtil
     {
-#region 属性
+        #region 属性
 
         private static IHttpContextAccessor _httpContextAccessor;
 
@@ -68,9 +68,9 @@ namespace ICanPay.Utils
         /// </summary>
         public static Stream Body => Current.Request.Body;
 
-#endregion
+        #endregion
 
-#region 构造函数
+        #region 构造函数
 
         /// <summary>
         /// 构造函数
@@ -286,7 +286,7 @@ namespace ICanPay.Utils
             return await Task.Run(() => Download(url, path));
         }
 
-#endregion
+        #endregion
     }
 }
 
@@ -303,6 +303,7 @@ namespace ICanPay.Utils
     /// </summary>
     public static class HttpUtil
     {
+        #region 属性
         /// <summary>
         /// 当前上下文
         /// </summary>
@@ -328,16 +329,18 @@ namespace ICanPay.Utils
         /// </summary>
         public static NameValueCollection Form => Current.Request.Form;
 
-       /// <summary>
+        /// <summary>
         /// Get集合
         /// </summary>
         public static NameValueCollection Query => Current.Request.QueryString;
 
-       /// <summary>
+        /// <summary>
         /// 请求体
         /// </summary>
         public static Stream Body => Current.Request.InputStream;
+        #endregion
 
+        #region 方法
         /// <summary>
         /// 跳转到指定链接
         /// </summary>
@@ -367,6 +370,7 @@ namespace ICanPay.Utils
                 Current.Response.ContentType = contentType;
             Current.Response.Write(text);
         }
+        #endregion
     }
 }
 #endif

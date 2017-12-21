@@ -18,7 +18,7 @@
         /// <summary>
         /// 微信支付
         /// </summary>
-        WeChatPayment = 2,
+        WeChatPay = 2,
 
         /// <summary>
         /// 中国银联

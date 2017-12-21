@@ -14,7 +14,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 微信支付网关
     /// </summary>
-    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
+    public sealed class WeChatPayGataway : GatewayBase, IPaymentQRCode, IWapPaymentUrl, IAppParams, IQueryNow, IRefundReq
     {
         #region 私有字段
 
@@ -30,7 +30,7 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化微信支付网关
         /// </summary>
-        public WeChatPaymentGataway()
+        public WeChatPayGataway()
         {
         }
 
@@ -39,7 +39,7 @@ namespace ICanPay.Providers
         /// 初始化微信支付网关
         /// </summary>
         /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public WeChatPaymentGataway(List<GatewayParameter> gatewayParameterData)
+        public WeChatPayGataway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }
@@ -49,7 +49,7 @@ namespace ICanPay.Providers
         #region 方法
         public override GatewayType GatewayType
         {
-            get { return GatewayType.WeChatPayment; }
+            get { return GatewayType.WeChatPay; }
         }
 
         public string GetPaymentQRCodeContent()

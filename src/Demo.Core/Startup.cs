@@ -47,7 +47,7 @@ namespace Demo.Core
                         ReturnUrl = new Uri(Configuration["alipay:returnurl"]),
                     }
                 });
-                gateways.Add(new WeChatPaymentGataway()
+                gateways.Add(new WeChatPayGataway()
                 {
                     Merchant = new Merchant()
                     {

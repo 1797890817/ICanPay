@@ -115,9 +115,9 @@ namespace ICanPay
                     {
                         return new AlipayGateway();
                     }
-                case GatewayType.WeChatPayment:
+                case GatewayType.WeChatPay:
                     {
-                        return new WeChatPaymentGataway();
+                        return new WeChatPayGataway();
                     }
                 case GatewayType.UnionPay:
                     {
@@ -209,7 +209,7 @@ namespace ICanPay
             IWapPaymentUrl paymentUrl = gateway as IWapPaymentUrl;
             if (paymentUrl != null)
             {
-                if (gateway.GatewayType == GatewayType.WeChatPayment)
+                if (gateway.GatewayType == GatewayType.WeChatPay)
                 {
                     HttpUtil.Write($"<script language='javascript'>window.location='{paymentUrl.BuildWapPaymentUrl(map)}'</script>");
                 }
