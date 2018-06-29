@@ -28,6 +28,12 @@ namespace Aop.Api.Domain
         public string IdentityParam { get; set; }
 
         /// <summary>
+        /// 芝麻平台服务商模式下的二级商户标识，如果是直连商户调用该接口，不需要设置
+        /// </summary>
+        [XmlElement("linked_merchant_id")]
+        public string LinkedMerchantId { get; set; }
+
+        /// <summary>
         /// 商户可选的一些设置
         /// </summary>
         [XmlElement("merchant_config")]

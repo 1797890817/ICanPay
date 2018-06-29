@@ -28,13 +28,13 @@ namespace Aop.Api.Domain
         public string MerchantCode { get; set; }
 
         /// <summary>
-        /// 当前支持支付宝登录号
+        /// 当前支持支付宝登录号,以及支付宝人脸标识
         /// </summary>
         [XmlElement("target_id")]
         public string TargetId { get; set; }
 
         /// <summary>
-        /// 目前只支持登录号,后续可扩展
+        /// 目前支持支付宝登录号( ALIPAY_LOGON_ID ) ,以及支付宝人脸标识 ( ALIPAY_FACE_TOKEN )
         /// </summary>
         [XmlElement("target_id_type")]
         public string TargetIdType { get; set; }

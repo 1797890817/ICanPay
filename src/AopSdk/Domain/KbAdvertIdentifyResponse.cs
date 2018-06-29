@@ -30,7 +30,7 @@ namespace Aop.Api.Domain
         public string Code { get; set; }
 
         /// <summary>
-        /// JSON格式数据，需要ISV自行解析
+        /// JSON格式数据，alipass_url为打开钱包的地址
         /// </summary>
         [XmlElement("ext_info")]
         public string ExtInfo { get; set; }

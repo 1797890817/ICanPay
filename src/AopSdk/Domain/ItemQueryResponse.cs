@@ -30,7 +30,13 @@ namespace Aop.Api.Domain
         public List<KoubeiItemDescription> Descriptions { get; set; }
 
         /// <summary>
-        /// 商品生效时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明： 商品的生效时间不能早于创建当天的0点
+        /// 售卖结束时间。当到达该时间时，商品暂停售卖，将不在客户端中继续展示，用户无法继续购买。  注意：该时间不能晚于核销绝对有效期的结束时间。
+        /// </summary>
+        [XmlElement("gmt_end")]
+        public string GmtEnd { get; set; }
+
+        /// <summary>
+        /// 商品售卖开始时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明： 商品的生效时间不能早于创建当天的0点
         /// </summary>
         [XmlElement("gmt_start")]
         public string GmtStart { get; set; }
@@ -107,6 +113,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("subject")]
         public string Subject { get; set; }
+
+        /// <summary>
+        /// 淘宝首图
+        /// </summary>
+        [XmlElement("tb_cover")]
+        public string TbCover { get; set; }
 
         /// <summary>
         /// 交易凭证类商品模板信息

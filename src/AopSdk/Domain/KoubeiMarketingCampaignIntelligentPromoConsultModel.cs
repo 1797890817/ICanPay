@@ -11,6 +11,12 @@ namespace Aop.Api.Domain
     public class KoubeiMarketingCampaignIntelligentPromoConsultModel : AopObject
     {
         /// <summary>
+        /// 扩展信息，以key-value的形式传递
+        /// </summary>
+        [XmlElement("ext_info")]
+        public string ExtInfo { get; set; }
+
+        /// <summary>
         /// 操作人信息
         /// </summary>
         [XmlElement("operator_context")]
@@ -21,6 +27,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("out_request_no")]
         public string OutRequestNo { get; set; }
+
+        /// <summary>
+        /// 原智能方案id
+        /// </summary>
+        [XmlElement("parent_promo_id")]
+        public string ParentPromoId { get; set; }
 
         /// <summary>
         /// 商户和支付宝交互时，用于代表支付宝分配给商户ID

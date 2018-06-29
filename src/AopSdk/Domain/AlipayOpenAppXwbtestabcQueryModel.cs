@@ -12,6 +12,12 @@ namespace Aop.Api.Domain
         /// <summary>
         /// 1
         /// </summary>
+        [XmlElement("testabc")]
+        public string Testabc { get; set; }
+
+        /// <summary>
+        /// 1
+        /// </summary>
         [XmlElement("xwb")]
         public string Xwb { get; set; }
     }

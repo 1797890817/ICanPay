@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using ICanPay;
+using ICanPay.Events;
 using ICanPay.Providers;
 using System;
 using System.Configuration;
@@ -54,6 +55,8 @@ namespace Demo
                 });
                 return gateways;
             }).As<IGateways>().InstancePerDependency();
+
+            builder.Register(c => new PaymentNotify(c.Resolve<IGateways>().Merchants)).As<PaymentNotify>().InstancePerDependency();
 
             //autofac 注册依赖
             IContainer container = builder.Build();

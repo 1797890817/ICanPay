@@ -15,7 +15,7 @@ namespace Aop.Api.Response
         public string BizNo { get; set; }
 
         /// <summary>
-        /// 用户的芝麻信用评分。分值范围[350,950]。如果用户数据不足，无法评分时，返回字符串"N/A"。
+        /// 用户的芝麻分。分值范围[350,950]。如果用户数据不足，无法评分时，返回字符串"N/A"。
         /// </summary>
         [XmlElement("zm_score")]
         public string ZmScore { get; set; }

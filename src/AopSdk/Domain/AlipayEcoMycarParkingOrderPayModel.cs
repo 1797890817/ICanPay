@@ -16,6 +16,12 @@ namespace Aop.Api.Domain
         public string AgentId { get; set; }
 
         /// <summary>
+        /// 订单描述
+        /// </summary>
+        [XmlElement("body")]
+        public string Body { get; set; }
+
+        /// <summary>
         /// 车牌，需要进行停车缴费代扣的车辆牌照
         /// </summary>
         [XmlElement("car_number")]

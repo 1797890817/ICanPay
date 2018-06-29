@@ -36,22 +36,28 @@ namespace Aop.Api.Domain
         public string IpRoleId { get; set; }
 
         /// <summary>
-        /// 产品码，授信前准入咨询则为运营产品码
+        /// 产品码，授信前准入咨询则为运营产品码，支用准入时可不用传
         /// </summary>
         [XmlElement("pd_code")]
         public string PdCode { get; set; }
 
         /// <summary>
-        /// 场景码，表示本次查询应用于哪个场景。目前已有枚举以及对应场景：  1：授信申请前准入判断
+        /// 场景码，表示本次查询应用于哪个场景。目前已有枚举以及对应场景：  1：授信申请前准入判断，2：支用申请准入，3：产品层可贷额度查询
         /// </summary>
         [XmlElement("scen")]
         public string Scen { get; set; }
 
         /// <summary>
-        /// 站点类型。枚举ALIPAY,TAOBAO,ICBU等
+        /// 站点类型。枚举ALIPAY,TAOBAO,B2B_CN,B2B_EN,HAVANA,ALICLOUD_CN,DINGDING,ZM,MYBANK,IPAY等
         /// </summary>
         [XmlElement("site")]
         public string Site { get; set; }
+
+        /// <summary>
+        /// 站点登录账号
+        /// </summary>
+        [XmlElement("site_login_id")]
+        public string SiteLoginId { get; set; }
 
         /// <summary>
         /// 站点ID。咨询的客户在对应站点拥有的角色的ID。比方说站点是ALIPAY的话站点ID就是ALIPAY的ID。

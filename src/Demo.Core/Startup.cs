@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using ICanPay.Providers;
 using System;
+using ICanPay.Events;
+using Microsoft.AspNetCore.Http;
 
 namespace Demo.Core
 {
@@ -29,10 +31,10 @@ namespace Demo.Core
 
             services.AddSingleton<IConfiguration>(Configuration);
 
-         
-            services.AddICanPay(a =>
-            {
-                var gateways = new Gateways();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddTransient(c => {
+                IGateways gateways = new Gateways();
                 gateways.Add(new AlipayGateway()
                 {
                     Merchant = new Merchant()
@@ -69,6 +71,8 @@ namespace Demo.Core
                 });
                 return gateways;
             });
+
+            services.AddTransient(c=>new PaymentNotify(c.GetService<IGateways>().Merchants));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

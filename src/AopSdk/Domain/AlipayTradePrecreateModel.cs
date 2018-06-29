@@ -35,7 +35,7 @@ namespace Aop.Api.Domain
         public string BuyerLogonId { get; set; }
 
         /// <summary>
-        /// 禁用渠道，用户不可用指定渠道支付  当有多个渠道时用“,”分隔  注，与enable_pay_channels互斥
+        /// 禁用渠道，用户不可用指定渠道支付  当有多个渠道时用“,”分隔  注，与enable_pay_channels互斥  渠道列表：https://docs.open.alipay.com/common/wifww7
         /// </summary>
         [XmlElement("disable_pay_channels")]
         public string DisablePayChannels { get; set; }
@@ -47,7 +47,7 @@ namespace Aop.Api.Domain
         public string DiscountableAmount { get; set; }
 
         /// <summary>
-        /// 可用渠道，用户只能在指定渠道范围内支付  当有多个渠道时用“,”分隔  注，与disable_pay_channels互斥
+        /// 可用渠道，用户只能在指定渠道范围内支付  当有多个渠道时用“,”分隔  注，与disable_pay_channels互斥  <a href="https://docs.open.alipay.com/common/wifww7">渠道列表</a>
         /// </summary>
         [XmlElement("enable_pay_channels")]
         public string EnablePayChannels { get; set; }
@@ -65,7 +65,7 @@ namespace Aop.Api.Domain
         public ExtendParams ExtendParams { get; set; }
 
         /// <summary>
-        /// 订单包含的商品列表信息.Json格式. 其它说明详见：“商品明细说明”
+        /// 订单包含的商品列表信息.json格式. 其它说明详见：“商品明细说明”
         /// </summary>
         [XmlArray("goods_detail")]
         [XmlArrayItem("goods_detail")]
@@ -84,6 +84,12 @@ namespace Aop.Api.Domain
         public string OutTradeNo { get; set; }
 
         /// <summary>
+        /// 该笔订单允许的最晚付款时间，逾期将关闭交易，从生成二维码开始计时。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
+        /// </summary>
+        [XmlElement("qr_code_timeout_express")]
+        public string QrCodeTimeoutExpress { get; set; }
+
+        /// <summary>
         /// 描述分账信息，json格式。
         /// </summary>
         [XmlElement("royalty_info")]
@@ -94,6 +100,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("seller_id")]
         public string SellerId { get; set; }
+
+        /// <summary>
+        /// 描述结算信息，json格式，详见结算参数说明
+        /// </summary>
+        [XmlElement("settle_info")]
+        public SettleInfo SettleInfo { get; set; }
 
         /// <summary>
         /// 商户门店编号

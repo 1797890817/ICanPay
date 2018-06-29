@@ -28,6 +28,12 @@ namespace Aop.Api.Domain
         public string IdentityParam { get; set; }
 
         /// <summary>
+        /// 芝麻平台服务商模式下的二级商户标识，如果是直连商户调用该接口，不需要设置
+        /// </summary>
+        [XmlElement("linked_merchant_id")]
+        public string LinkedMerchantId { get; set; }
+
+        /// <summary>
         /// 认证过程中需要的认证材料，不同认证场景需要的材料不同，biz_code值为FACE_API时需要材料FACIAL_PICTURE_FRONT
         /// </summary>
         [XmlElement("materials")]

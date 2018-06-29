@@ -16,13 +16,13 @@ namespace Aop.Api.Domain
         public string Channel { get; set; }
 
         /// <summary>
-        /// 优惠类型
+        /// 优惠类型，CAMPAIGN：活动，ITEM：商品
         /// </summary>
         [XmlElement("discount_type")]
         public string DiscountType { get; set; }
 
         /// <summary>
-        /// 触发权益的优惠id，当discount_type是ITEM的时候这个内容是商品id
+        /// 触发权益的优惠id，当discount_type是ITEM的时候这个内容是商品id，当discount_type是CAMPAIGN的时候这个内容是活动id
         /// </summary>
         [XmlElement("item_id")]
         public string ItemId { get; set; }

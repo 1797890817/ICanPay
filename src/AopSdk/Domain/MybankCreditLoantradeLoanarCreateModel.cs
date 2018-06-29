@@ -125,6 +125,12 @@ namespace Aop.Api.Domain
         public string LoanTermUnit { get; set; }
 
         /// <summary>
+        /// 是否需要签署合同
+        /// </summary>
+        [XmlElement("need_sign_contract")]
+        public bool NeedSignContract { get; set; }
+
+        /// <summary>
         /// 客户签约的销售产品编码，由网商银行事先分配给外部机构
         /// </summary>
         [XmlElement("pd_code")]

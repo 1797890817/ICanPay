@@ -11,6 +11,12 @@ namespace Aop.Api.Domain
     public class SceneContent : AopObject
     {
         /// <summary>
+        /// 文章分类
+        /// </summary>
+        [XmlElement("article_classify")]
+        public long ArticleClassify { get; set; }
+
+        /// <summary>
         /// 文章作者
         /// </summary>
         [XmlElement("author")]

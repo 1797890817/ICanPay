@@ -36,7 +36,13 @@ namespace Aop.Api.Domain
         public List<KoubeiItemDescription> Descriptions { get; set; }
 
         /// <summary>
-        /// 商品生效时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明：商品的生效时间不能早于创建当天的0点
+        /// 售卖结束时间。当到达该时间时，商品暂停售卖，将不在客户端中继续展示，用户无法继续购买。  注意：该时间不能晚于核销绝对有效期的结束时间。
+        /// </summary>
+        [XmlElement("gmt_end")]
+        public string GmtEnd { get; set; }
+
+        /// <summary>
+        /// 商品售卖开始时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明：商品的生效时间不能早于创建当天的0点
         /// </summary>
         [XmlElement("gmt_start")]
         public string GmtStart { get; set; }
@@ -102,6 +108,12 @@ namespace Aop.Api.Domain
         public string RequestId { get; set; }
 
         /// <summary>
+        /// 行业场景 例如泛行业SERV_INDUSTRY，综合体MALL
+        /// </summary>
+        [XmlElement("scene")]
+        public string Scene { get; set; }
+
+        /// <summary>
         /// 上架门店id列表，即传入一个或多个shop_id。多个ID则以英文分隔
         /// </summary>
         [XmlElement("shop_ids")]
@@ -112,6 +124,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("subject")]
         public string Subject { get; set; }
+
+        /// <summary>
+        /// 商品1:1首图，该封面图将展示在淘抢购、聚划算等商品售卖渠道。支持bmp、png、jpeg、jpg、gif格式，建议宽高比1:1，建议宽高1500*1500px，图片大小≤5M。图片大小超过5M，接口会报错。若图片尺寸不符，口碑服务器自身不会做压缩，但在口碑客户端展现时，会自动做性能优化（等比缩放，以图片中心为基准裁剪）。
+        /// </summary>
+        [XmlElement("tb_cover")]
+        public string TbCover { get; set; }
 
         /// <summary>
         /// 交易凭证类商品模板信息

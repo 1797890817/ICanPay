@@ -10,6 +10,12 @@ namespace Aop.Api.Domain
     public class AlipayEbppIndustryOrderCreateModel : AopObject
     {
         /// <summary>
+        /// 能力码是由支付宝分配的标识code
+        /// </summary>
+        [XmlElement("ability_code")]
+        public string AbilityCode { get; set; }
+
+        /// <summary>
         /// 账单的账期，例如201703表示2017年3月的账单。
         /// </summary>
         [XmlElement("bill_date")]

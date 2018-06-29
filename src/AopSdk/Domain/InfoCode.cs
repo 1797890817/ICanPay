@@ -28,7 +28,7 @@ namespace Aop.Api.Domain
         public string RiskFactorName { get; set; }
 
         /// <summary>
-        /// 风险度量
+        /// 风险度量，子特征风险分，范围 0-10，值越大表示风险越高
         /// </summary>
         [XmlElement("risk_magnitude")]
         public string RiskMagnitude { get; set; }

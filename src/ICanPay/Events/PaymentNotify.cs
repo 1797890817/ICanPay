@@ -1,4 +1,5 @@
 using ICanPay.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,19 +53,19 @@ namespace ICanPay.Events
         /// <summary>
         /// 网关返回的支付通知验证失败时触发
         /// </summary>
-        public event PaymentFailedEventHandler PaymentFailed;
+        public event Action<PaymentFailedEventArgs> PaymentFailed;
 
 
         /// <summary>
         /// 网关返回的支付通知验证成功时触发
         /// </summary>
-        public event PaymentSucceedEventHandler PaymentSucceed;
+        public event Action<PaymentSucceedEventArgs> PaymentSucceed;
 
 
         /// <summary>
         /// 返回通知消息的网关无法识别时触发
         /// </summary>
-        public event UnknownGatewayEventHandler UnknownGateway;
+        public event Action<UnknownGatewayEventArgs> UnknownGateway;
 
         #endregion
 
@@ -72,19 +73,19 @@ namespace ICanPay.Events
 
         protected virtual void OnPaymentFailed(PaymentFailedEventArgs e)
         {
-            PaymentFailed?.Invoke(this, e);
+            PaymentFailed?.Invoke(e);
         }
 
 
         protected virtual void OnPaymentSucceed(PaymentSucceedEventArgs e)
         {
-            PaymentSucceed?.Invoke(this, e);
+            PaymentSucceed?.Invoke(e);
         }
 
 
         protected virtual void OnUnknownGateway(UnknownGatewayEventArgs e)
         {
-            UnknownGateway?.Invoke(this, e);
+            UnknownGateway?.Invoke(e);
         }
 
 
@@ -157,21 +158,20 @@ namespace ICanPay.Events
     #region 委托
 
     /// <summary>
-    /// 支付成功时引发事件
+    ///  支付失败时引发事件
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     public delegate void PaymentFailedEventHandler(object sender, PaymentFailedEventArgs e);
 
-
     /// <summary>
-    /// 支付失败时引发事件
+    ///支付成功时引发事件
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     public delegate void PaymentSucceedEventHandler(object sender, PaymentSucceedEventArgs e);
 
-
+   
     /// <summary>
     /// 无法识别的网关时引发事件
     /// </summary>

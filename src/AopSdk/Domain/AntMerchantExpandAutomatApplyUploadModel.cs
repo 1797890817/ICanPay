@@ -10,6 +10,12 @@ namespace Aop.Api.Domain
     public class AntMerchantExpandAutomatApplyUploadModel : AopObject
     {
         /// <summary>
+        /// 自助售卖机合作伙伴信息
+        /// </summary>
+        [XmlElement("associate")]
+        public SmartAutomatAssociate Associate { get; set; }
+
+        /// <summary>
         /// 机具发货地址信息
         /// </summary>
         [XmlElement("delivery_address")]
@@ -62,6 +68,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("product_user_id")]
         public string ProductUserId { get; set; }
+
+        /// <summary>
+        /// 自助售卖机场景信息
+        /// </summary>
+        [XmlElement("scene")]
+        public SmartAutomatScene Scene { get; set; }
 
         /// <summary>
         /// 机具终端ID，由开发者生成，并需保证在开发者端不重复

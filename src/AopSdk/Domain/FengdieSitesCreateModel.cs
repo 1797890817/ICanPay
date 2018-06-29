@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -28,10 +29,17 @@ namespace Aop.Api.Domain
         public string OfflineTime { get; set; }
 
         /// <summary>
-        /// 站点页面在编辑器中默认展示的数据
+        /// 站点页面在编辑器中默认展示的数据(废弃，请使用pages)
         /// </summary>
         [XmlElement("page")]
         public FengdieActivityCreatePageData Page { get; set; }
+
+        /// <summary>
+        /// 站点页面在编辑器中默认展示的数据
+        /// </summary>
+        [XmlArray("pages")]
+        [XmlArrayItem("fengdie_activity_create_pages_data")]
+        public List<FengdieActivityCreatePagesData> Pages { get; set; }
 
         /// <summary>
         /// 站点标题

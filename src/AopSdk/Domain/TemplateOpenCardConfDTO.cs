@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -9,6 +10,13 @@ namespace Aop.Api.Domain
     [Serializable]
     public class TemplateOpenCardConfDTO : AopObject
     {
+        /// <summary>
+        /// 领卡权益信息
+        /// </summary>
+        [XmlArray("card_rights")]
+        [XmlArrayItem("template_rights_content_d_t_o")]
+        public List<TemplateRightsContentDTO> CardRights { get; set; }
+
         /// <summary>
         /// 配置，预留字段，暂时不用
         /// </summary>

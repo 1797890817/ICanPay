@@ -9,6 +9,12 @@ namespace Aop.Api.Response
     public class KoubeiTradeTicketTicketcodeUseResponse : AopResponse
     {
         /// <summary>
+        /// 该字段用于描述本次返回中的业务属性，现有：BIZ_ALREADY_SUCCESS（幂等业务码）
+        /// </summary>
+        [XmlElement("biz_code")]
+        public string BizCode { get; set; }
+
+        /// <summary>
         /// 用户购买券的时候实际支付的金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("buyer_pay_amount")]
@@ -21,7 +27,7 @@ namespace Aop.Api.Response
         public string CurrentPrice { get; set; }
 
         /// <summary>
-        /// 优惠金额，含商家补贴金额和口碑补贴金额，单位为元，精确到小数点后两位
+        /// 商家优惠金额，单位为元，精确到小数点后两位
         /// </summary>
         [XmlElement("discount_amount")]
         public string DiscountAmount { get; set; }
@@ -51,7 +57,7 @@ namespace Aop.Api.Response
         public string KoubeiSubsidyAmount { get; set; }
 
         /// <summary>
-        /// 券码所属的订单id
+        /// 凭证码所属的订单id
         /// </summary>
         [XmlElement("order_no")]
         public string OrderNo { get; set; }
@@ -105,7 +111,7 @@ namespace Aop.Api.Response
         public string UseShopName { get; set; }
 
         /// <summary>
-        /// 券码对应的凭证资产id
+        /// 凭证码对应的凭证资产id
         /// </summary>
         [XmlElement("voucher_id")]
         public string VoucherId { get; set; }

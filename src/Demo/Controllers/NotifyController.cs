@@ -1,5 +1,4 @@
-﻿using ICanPay;
-using ICanPay.Enums;
+﻿using ICanPay.Enums;
 using ICanPay.Events;
 using System.Web.Mvc;
 
@@ -7,31 +6,27 @@ namespace Demo.Controllers
 {
     public class NotifyController : Controller
     {
-        private readonly IGateways gateways;
+        private readonly PaymentNotify paymentNotify;
 
-        private PaymentNotify notify;
-
-        public NotifyController(IGateways gateways)
+        public NotifyController(PaymentNotify paymentNotify)
         {
-            this.gateways = gateways;
-
-            notify = new PaymentNotify(gateways.Merchants);
-            notify.PaymentSucceed += new PaymentSucceedEventHandler(notify_PaymentSucceed);
-            notify.PaymentFailed += new PaymentFailedEventHandler(notify_PaymentFailed);
-            notify.UnknownGateway += new UnknownGatewayEventHandler(notify_UnknownGateway);
+            this.paymentNotify = paymentNotify;
+            paymentNotify.PaymentSucceed += new PaymentSucceedEventHandler(notify_PaymentSucceed);
+            paymentNotify.PaymentFailed += new PaymentFailedEventHandler(notify_PaymentFailed);
+            paymentNotify.UnknownGateway += new UnknownGatewayEventHandler(notify_UnknownGateway);
         }
 
     
         public void ServerNotify()
         {          
             // 接收并处理支付通知
-            notify.Received(PaymentNotifyMethod.ServerNotify);
+            paymentNotify.Received(PaymentNotifyMethod.ServerNotify);
         }
 
         public void AutoReturn()
         {
             // 接收并处理支付通知
-            notify.Received(PaymentNotifyMethod.AutoReturn);
+            paymentNotify.Received(PaymentNotifyMethod.AutoReturn);
         }
 
         private void notify_PaymentSucceed(object sender, PaymentSucceedEventArgs e)

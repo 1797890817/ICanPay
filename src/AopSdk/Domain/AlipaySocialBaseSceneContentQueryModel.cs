@@ -10,6 +10,12 @@ namespace Aop.Api.Domain
     public class AlipaySocialBaseSceneContentQueryModel : AopObject
     {
         /// <summary>
+        /// 城市id
+        /// </summary>
+        [XmlElement("city_id")]
+        public string CityId { get; set; }
+
+        /// <summary>
         /// 内容中台提供的运营后台配置场景id
         /// </summary>
         [XmlElement("scene_id")]

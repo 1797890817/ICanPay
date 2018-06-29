@@ -42,7 +42,25 @@ namespace Aop.Api.Domain
         public string Cover { get; set; }
 
         /// <summary>
-        /// 商品生效时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明：商品的生效时间不能早于创建当天的0点
+        /// 外部码库id。仅适用于核销方式为外部核销的商品。当核销方式为外部核销时，该参数必填。当核销方式为券码核销或付款码核销时，接口不会使用该参数。
+        /// </summary>
+        [XmlElement("external_code_inventory_id")]
+        public string ExternalCodeInventoryId { get; set; }
+
+        /// <summary>
+        /// 外部券模板id。仅适用于核销方式为外部核销的商品。当核销方式为外部核销时，该参数必填。当核销方式为券码核销或付款码核销时，接口不会使用该参数。
+        /// </summary>
+        [XmlElement("external_code_template_id")]
+        public string ExternalCodeTemplateId { get; set; }
+
+        /// <summary>
+        /// 售卖结束时间。当到达该时间时，商品暂停售卖，将不在客户端中继续展示，用户无法继续购买。  注意：该时间不能晚于核销绝对有效期的结束时间。如果该值不填，则默认为2037-12-31 23:59:59
+        /// </summary>
+        [XmlElement("gmt_end")]
+        public string GmtEnd { get; set; }
+
+        /// <summary>
+        /// 商品售卖开始时间，商品状态有效并且到达生效时间后才可在客户端（消费者端）展示出来，如果商品生效时间小于当前时间，则立即生效。  说明：商品售卖开始时间不能早于创建当天的0点。商品售卖时间开始后，则不允许修改商品售卖开始时间
         /// </summary>
         [XmlElement("gmt_start")]
         public string GmtStart { get; set; }
@@ -59,6 +77,12 @@ namespace Aop.Api.Domain
         [XmlArray("item_dishes")]
         [XmlArrayItem("item_dish_info")]
         public List<ItemDishInfo> ItemDishes { get; set; }
+
+        /// <summary>
+        /// 商品展示渠道。ALL表示正常投放，允许在口碑门店详情页、搜索结果、大牌抢购及其他频道中展示。ORIENTATION表示定向投放，仅限报名参加大牌抢购后投放或用户扫商品二维码购买。不填默认为ALL。
+        /// </summary>
+        [XmlElement("item_display_channel")]
+        public string ItemDisplayChannel { get; set; }
 
         /// <summary>
         /// 口碑体系内部商品的唯一标识
@@ -149,7 +173,13 @@ namespace Aop.Api.Domain
         public string Subject { get; set; }
 
         /// <summary>
-        /// 商品购买凭证核销方式。枚举值为：USER_PAY_CODE代表付款码核销方式，如果选择付款码核销，则sku_id必填。TICKET_CODE代表券码核销方式，如果选择券码核销，则sku_id必须为空
+        /// 商品首图(1:1)版本，作为商品在淘宝渠道露出的首图。支持bmp，png，jpeg，jpg，gif格式的图片。如果某个商品的本字段为空，则该商品无法再淘宝渠道露出
+        /// </summary>
+        [XmlElement("taobao_cover_image")]
+        public string TaobaoCoverImage { get; set; }
+
+        /// <summary>
+        /// 商品购买凭证核销方式。枚举值为：USER_PAY_CODE代表付款码核销方式，如果选择付款码核销，则sku_id必填。TICKET_CODE代表券码核销方式，如果选择券码核销，则sku_id必须为空。EXTERNAL_TICKET_CODE表示 外部券码核销方式
         /// </summary>
         [XmlElement("ticket_display_mode")]
         public string TicketDisplayMode { get; set; }
@@ -168,7 +198,7 @@ namespace Aop.Api.Domain
         public long ValidityPeriod { get; set; }
 
         /// <summary>
-        /// 商品顺序权重，必须是整数，不传默认为0，权重数值越大排序越靠前
+        /// 商品顺序权重，影响商品在c端货架露出顺序。必须是整数，不传默认为0，权重数值越大排序越靠前
         /// </summary>
         [XmlElement("weight")]
         public string Weight { get; set; }

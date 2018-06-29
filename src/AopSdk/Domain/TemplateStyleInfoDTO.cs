@@ -17,6 +17,18 @@ namespace Aop.Api.Domain
         public string BackgroundId { get; set; }
 
         /// <summary>
+        /// banner图片地址。 通过接口（alipay.offline.material.image.upload）上传图片。
+        /// </summary>
+        [XmlElement("banner_img_id")]
+        public string BannerImgId { get; set; }
+
+        /// <summary>
+        /// banner跳转地址。
+        /// </summary>
+        [XmlElement("banner_url")]
+        public string BannerUrl { get; set; }
+
+        /// <summary>
         /// 背景色
         /// </summary>
         [XmlElement("bg_color")]
@@ -41,6 +53,12 @@ namespace Aop.Api.Domain
         public string Color { get; set; }
 
         /// <summary>
+        /// 栏位信息布局。目前只支持list（列表）或grid（宫格）形式。如果为空则默认为list。
+        /// </summary>
+        [XmlElement("column_info_layout")]
+        public string ColumnInfoLayout { get; set; }
+
+        /// <summary>
         /// 特色信息，用于领卡预览
         /// </summary>
         [XmlArray("feature_descriptions")]
@@ -54,7 +72,7 @@ namespace Aop.Api.Domain
         public bool FrontImageEnable { get; set; }
 
         /// <summary>
-        /// 设置是否在卡面展示文案信息，默认不展示；  文案信息分行展示，最多展示3行文案，每行文案分为label和value两部分；  文案实际内容随创建卡/更新卡时传入；  详见会员卡产品说明文档。
+        /// 设置是否在卡面展示文案信息，默认不展示；  文案信息分行展示，最多展示4行文案，每行文案分为label和value两部分；  文案实际内容随创建卡/更新卡时传入；  详见会员卡产品说明文档。
         /// </summary>
         [XmlElement("front_text_list_enable")]
         public bool FrontTextListEnable { get; set; }

@@ -35,7 +35,14 @@ namespace Aop.Api.Domain
         public string Description { get; set; }
 
         /// <summary>
-        /// 折扣，包含分期信息
+        /// 按天折扣信息
+        /// </summary>
+        [XmlArray("discount_by_day_list")]
+        [XmlArrayItem("discount_by_day_model")]
+        public List<DiscountByDayModel> DiscountByDayList { get; set; }
+
+        /// <summary>
+        /// 分期和整笔折扣信息
         /// </summary>
         [XmlArray("discount_list")]
         [XmlArrayItem("discount_model")]
@@ -78,7 +85,7 @@ namespace Aop.Api.Domain
         public string TotalAmount { get; set; }
 
         /// <summary>
-        /// 奖品类型  DISCOUNT_VOUCHER 利率打折卡券  COUPON_VOUCHER 利息红包卡券
+        /// 奖品类型  DISCOUNT_VOUCHER 利率打折卡券  COUPON_VOUCHER 利息红包卡券  DISCOUNT_CAMP 实时优惠活动
         /// </summary>
         [XmlElement("type")]
         public string Type { get; set; }

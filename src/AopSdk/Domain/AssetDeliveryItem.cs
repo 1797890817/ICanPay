@@ -10,6 +10,12 @@ namespace Aop.Api.Domain
     public class AssetDeliveryItem : AopObject
     {
         /// <summary>
+        /// SEND - 发货指令(执行向目的地进行发货动作) , RECEIVE - 收货指令(执行从来源地进行收货动作)
+        /// </summary>
+        [XmlElement("action_type")]
+        public string ActionType { get; set; }
+
+        /// <summary>
         /// 配送数量
         /// </summary>
         [XmlElement("amount")]
@@ -32,6 +38,12 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("assign_out_order_id")]
         public string AssignOutOrderId { get; set; }
+
+        /// <summary>
+        /// 物料渠道标识
+        /// </summary>
+        [XmlElement("biz_tag")]
+        public string BizTag { get; set; }
 
         /// <summary>
         /// 发送地址
@@ -70,10 +82,22 @@ namespace Aop.Api.Domain
         public string Memo { get; set; }
 
         /// <summary>
-        /// 物料供应商id
+        /// 面单信息
+        /// </summary>
+        [XmlElement("print_data")]
+        public string PrintData { get; set; }
+
+        /// <summary>
+        /// 对应供应商pid
         /// </summary>
         [XmlElement("supplier_id")]
         public string SupplierId { get; set; }
+
+        /// <summary>
+        /// 对应供应商名称
+        /// </summary>
+        [XmlElement("supplier_name")]
+        public string SupplierName { get; set; }
 
         /// <summary>
         /// 接收地址(目的地址)

@@ -11,25 +11,67 @@ namespace Aop.Api.Domain
     public class AlipayEcoRenthouseRoomConcentrationSyncModel : AopObject
     {
         /// <summary>
+        /// 阿里短号
+        /// </summary>
+        [XmlElement("ali_short_num")]
+        public string AliShortNum { get; set; }
+
+        /// <summary>
+        /// 总计房间数量
+        /// </summary>
+        [XmlElement("all_room_num")]
+        public long AllRoomNum { get; set; }
+
+        /// <summary>
         /// 户型-房  数值范围：1-26
         /// </summary>
         [XmlElement("bedroom_count")]
         public long BedroomCount { get; set; }
 
         /// <summary>
-        /// 可入住时间 YYYY-MM-DD
+        /// 可租房间数量，为0时该房型不在前端展示。此字段不为空时，rent_status字段失效
+        /// </summary>
+        [XmlElement("can_rent_num")]
+        public long CanRentNum { get; set; }
+
+        /// <summary>
+        /// 可入住时间YYYY-MM-DD。大于今日，且小于等于185天
         /// </summary>
         [XmlElement("checkin_time")]
         public string CheckinTime { get; set; }
 
         /// <summary>
-        /// 小区Code，详见文档  http://ecopublic.oss-cn-hangzhou.aliyuncs.com/eco/tpmogo/CommunityInfos/CommunityInfos.xls
+        /// 小区同步请求号
+        /// </summary>
+        [XmlElement("comm_req_id")]
+        public string CommReqId { get; set; }
+
+        /// <summary>
+        /// 佣金
+        /// </summary>
+        [XmlElement("commission")]
+        public string Commission { get; set; }
+
+        /// <summary>
+        /// 佣金类型（p：百分比，m：金额）
+        /// </summary>
+        [XmlElement("commission_type")]
+        public string CommissionType { get; set; }
+
+        /// <summary>
+        /// 小区Code和小区请求号必输入其一  小区Code，详见文档  http://ecopublic.oss-cn-hangzhou.aliyuncs.com/eco/tpmogo/CommunityInfos/CommunityInfos.xls
         /// </summary>
         [XmlElement("community_code")]
         public string CommunityCode { get; set; }
 
         /// <summary>
-        /// 所在楼层  数值范围：1-99，不能大于房屋总楼层
+        /// 费用说明
+        /// </summary>
+        [XmlElement("fee_remark")]
+        public string FeeRemark { get; set; }
+
+        /// <summary>
+        /// 所在楼层
         /// </summary>
         [XmlElement("floor_count")]
         public long FloorCount { get; set; }
@@ -72,6 +114,24 @@ namespace Aop.Api.Domain
         public string MaxAmount { get; set; }
 
         /// <summary>
+        /// 集中式房源最大押金
+        /// </summary>
+        [XmlElement("max_deposit_amount")]
+        public string MaxDepositAmount { get; set; }
+
+        /// <summary>
+        /// 可签约至YYYY-MM-DD
+        /// </summary>
+        [XmlElement("max_lease_time")]
+        public string MaxLeaseTime { get; set; }
+
+        /// <summary>
+        /// 多少天起可租
+        /// </summary>
+        [XmlElement("min_rent_days")]
+        public long MinRentDays { get; set; }
+
+        /// <summary>
         /// 公寓别名  是否必须:（新增）是/（修改）否
         /// </summary>
         [XmlElement("nickname")]
@@ -107,6 +167,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("pay_type")]
         public long PayType { get; set; }
+
+        /// <summary>
+        /// 付款方式列表，包括上述单独传递的付款方式。如果2种都传递，默认覆盖单独传递的付款方式。
+        /// </summary>
+        [XmlArray("pay_type_list")]
+        [XmlArrayItem("eco_cen_renthousepay_type_list")]
+        public List<EcoCenRenthousepayTypeList> PayTypeList { get; set; }
 
         /// <summary>
         /// 出租状态   数值范围：1未租、2已租
@@ -146,10 +213,29 @@ namespace Aop.Api.Domain
         public List<string> RoomConfigs { get; set; }
 
         /// <summary>
+        /// 集中式房间列表
+        /// </summary>
+        [XmlArray("room_info_list")]
+        [XmlArrayItem("eco_renthouse_room_info_list")]
+        public List<EcoRenthouseRoomInfoList> RoomInfoList { get; set; }
+
+        /// <summary>
+        /// 房间最大面积
+        /// </summary>
+        [XmlElement("room_max_area")]
+        public string RoomMaxArea { get; set; }
+
+        /// <summary>
         /// 房源初始上下架状态  上架状态租房平台会展示该房间信息，下架状态反之
         /// </summary>
         [XmlElement("room_status")]
         public long RoomStatus { get; set; }
+
+        /// <summary>
+        /// 房源对应的店铺编号
+        /// </summary>
+        [XmlElement("room_store_no")]
+        public string RoomStoreNo { get; set; }
 
         /// <summary>
         /// 户型-卫  数值范围：0-10
@@ -158,7 +244,7 @@ namespace Aop.Api.Domain
         public long ToiletCount { get; set; }
 
         /// <summary>
-        /// 房屋总楼层  数值范围：1-99，不能小于所在楼层
+        /// 房屋总楼层
         /// </summary>
         [XmlElement("total_floor_count")]
         public long TotalFloorCount { get; set; }

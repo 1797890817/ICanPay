@@ -52,7 +52,7 @@ namespace Aop.Api.Domain
         public string SalePdCode { get; set; }
 
         /// <summary>
-        /// 基于哪个场景查询授信方案(FIXED_CREDIT:固化授信；PROD：产品；APPLY：申请；BL:保理)
+        /// 基于哪个场景查询授信方案(FIXED_CREDIT:固化授信；PROD：产品；APPLY：申请；BL:保理；TYZBL：通用自保理；DYNAMIC：动态授信)
         /// </summary>
         [XmlElement("scen")]
         public string Scen { get; set; }

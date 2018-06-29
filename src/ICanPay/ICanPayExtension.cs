@@ -9,12 +9,6 @@ namespace ICanPay
 {
     public static class ICanPayExtension
     {
-        public static void AddICanPay(this IServiceCollection services, Func<IServiceProvider, IGateways> func)
-        {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient(func);
-        }
-
         public static IApplicationBuilder UseICanPay(this IApplicationBuilder app)
         {
             var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();

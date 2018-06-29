@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Aop.Api.Domain
 {
@@ -40,6 +41,12 @@ namespace Aop.Api.Domain
         public string CampGuide { get; set; }
 
         /// <summary>
+        /// 活动id
+        /// </summary>
+        [XmlElement("camp_id")]
+        public string CampId { get; set; }
+
+        /// <summary>
         /// 活动结束时间
         /// </summary>
         [XmlElement("end_time")]
@@ -50,6 +57,13 @@ namespace Aop.Api.Domain
         /// </summary>
         [XmlElement("ext_info")]
         public string ExtInfo { get; set; }
+
+        /// <summary>
+        /// 活动规则标识列表，列表中存在的标识，代表该活动包含对应的规则。目前只有人群规则一种。标识说明：  CROWD：人群规则
+        /// </summary>
+        [XmlArray("rule_flag_list")]
+        [XmlArrayItem("string")]
+        public List<string> RuleFlagList { get; set; }
 
         /// <summary>
         /// 每人每日参与次数 -1为不限制

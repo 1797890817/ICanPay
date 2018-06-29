@@ -70,6 +70,12 @@ namespace Aop.Api.Domain
         public string LastUpdateTime { get; set; }
 
         /// <summary>
+        /// 交易场景，标示卡当前的支付模式，如为空，则默认PCREDIT。  PCREDIT ---- 先享后付  EXTRA_PREPAY ---- 域外储值卡
+        /// </summary>
+        [XmlElement("trade_scene")]
+        public string TradeScene { get; set; }
+
+        /// <summary>
         /// 支付宝用户id
         /// </summary>
         [XmlElement("user_id")]

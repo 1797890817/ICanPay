@@ -161,6 +161,11 @@ namespace ICanPay
         public string PublicKey { get; set; }
 
         /// <summary>
+        /// 文件读取密钥
+        /// </summary>
+        public bool KeyFromFile { get; set; } = false;
+
+        /// <summary>
         /// 网关类型
         /// </summary>
         public GatewayType GatewayType { get; set; }

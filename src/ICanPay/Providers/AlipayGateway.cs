@@ -202,7 +202,7 @@ namespace ICanPay.Providers
 
         public IAopClient GetAopClient()
         {
-            return new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKey, "json", Charset, Merchant.PublicKey, "RSA"); 
+            return new DefaultAopClient(openapiGatewayUrl, Merchant.AppId, Merchant.PrivateKey, "json", Charset, Merchant.PublicKey, "RSA", Charset, Merchant.KeyFromFile);
         }
 
         /// <summary>

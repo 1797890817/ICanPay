@@ -24,6 +24,12 @@ namespace Aop.Api.Domain
         public string Chat { get; set; }
 
         /// <summary>
+        /// 触发消息的事件类型，默认为空。代表商户未改造。如果是follow，代表关注消息。click代表菜单点击，enter_ppchat代表进入事件；请注意事件类型的大小写
+        /// </summary>
+        [XmlElement("event_type")]
+        public string EventType { get; set; }
+
+        /// <summary>
         /// 消息类型，text：文本消息，image-text：图文消息
         /// </summary>
         [XmlElement("msg_type")]
